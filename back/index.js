@@ -5,5 +5,3 @@ var io = require('socket.io').listen(PORT);
 
 var allGameObjects = new HashMap();
 
-
-
