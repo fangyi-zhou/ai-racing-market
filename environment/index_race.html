@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test demo - p2.js physics engine</title>
+  <script src="p2.js/build/p2.js"></script>
+  <script src="p2.js/demos/js/pixi.js"></script>
+  <script src="RaceCar.js"></script>
+  <meta name="description" content="">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+</head>
+<body>
+  <script>
+    // Hyperparameters
+    var num_cars = 5
+    var car_mass = 1
+    var car_width = 0.5
+    var car_height = 1.3
+    var raceCars = []
+    var fixedTimeStep = 0.01;
+    graphics = new PIXI.Graphics();
+    zoom = 40;
+
+    // Create the PIXI renderer
+    // var renderer = PIXI.autoDetectRenderer(600, 400),
+    var renderer = PIXI.autoDetectRenderer(800, 450, null, false, true),
+    stage = new PIXI.Stage(0xFFFFAA);
+    container = new PIXI.DisplayObjectContainer(),
+    stage.addChild(container);
+    document.body.appendChild(renderer.view);
+
+    // Add transform to the container
+    container.position.x =  renderer.width/2; // center at origin
+    container.position.y =  renderer.height/2;
+    container.scale.x =  zoom;  // zoom in
+    container.scale.y = -zoom; // Note: we flip the y axis to make "up" the physics "up"
+
+    // Send details of p2 race car to its graphical counterpart
+    function updateGraphics (raceCars) {
+      for (i = 0; i < raceCars.length; i++) {
+        raceCars[i].updateGraphics ();
+      }
+    }
+
+    // Create the world
+    var world = new p2.World({
+        gravity : [0,0]
+    });
+
+    // Create p2 cars
+    for (i = 0; i < num_cars; i++) {
+      position = [i/2, i/2]
+      raceCars.push (new RaceCar (i, world, position, car_width, car_height, car_mass, container))
+    }
+
+    // Loop the program
+    function animate() {
+        requestAnimationFrame(animate);
+        world.step(fixedTimeStep);
+
+        // Update graphics
+        updateGraphics (raceCars);
+
+        // console.log(world.time)
+        renderer.render(stage);
+    }
+
+    // Start animation loop
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

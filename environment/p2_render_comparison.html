@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Graphics Comparison</title>
+  <script src="p2.js/build/p2.js"></script>
+  <script src="p2.js/demos/js/pixi.js"></script>
+  <script src="p2.js/build/p2.renderer.js"></script>
+  <script src="RaceCar.js"></script>
+  <meta name="description" content="">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+</head>
+<body>
+  <script>
+    // Create demo application
+    var app = new p2.WebGLRenderer(function(){
+      // Hyperparameters
+      var num_cars = 2
+      var car_mass = 1
+      var car_width = 2
+      var car_height = 4
+      var raceCars = []
+
+      var world = new p2.World({
+          gravity : [0,0]
+      });
+      this.setWorld(world);
+
+      // Create p2 cars
+      for (i = 0; i < num_cars; i++) {
+        position = [0, 0]
+        raceCars.push (p2RaceCar(i, world, position, car_width, car_height, car_mass))
+      }
+
+    });
+  </script>
+</body>
+</html>
