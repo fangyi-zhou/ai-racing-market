@@ -13,15 +13,17 @@
     // Hyperparameters
     var num_cars = 5
     var car_mass = 1
-    var car_width = 4
-    var car_height = 10
+    var car_width = 8
+    var car_height = 20
     var raceCars = []
     var fixedTimeStep = 1 / 2;
     graphics = new PIXI.Graphics();
-    zoom = 2;
+    zoom = 3;
 
     // Create the PIXI renderer
-    var renderer = PIXI.autoDetectRenderer(600, 400),
+    // var renderer = PIXI.autoDetectRenderer(600, 400),
+    var renderer = PIXI.autoDetectRenderer(800, 450, null, false, true
+    ),
     stage = new PIXI.Stage(0xFFFFAA);
     container = new PIXI.DisplayObjectContainer(),
     stage.addChild(container);
@@ -41,6 +43,7 @@
       this.graphic = new PIXI.Graphics ();
 
       this.graphic.beginFill(0xFF0000);
+      this.graphic.lineStyle ( 0.2 , 0x000000,  1)
       this.graphic.drawRect(position[0] - width/2, position[1] - width/2, width, height);
       container.addChild(this.graphic);
     }
@@ -54,8 +57,8 @@
         this.box_graphic.position = this.vehicle.chassisBody.position
 
         // Here send the position to the front end
-        this.box_graphic.graphic.position.x = this.box_graphic.position[0]
-        this.box_graphic.graphic.position.y = this.box_graphic.position[1]
+        this.box_graphic.graphic.position.x = this.box_graphic.position[0] - width / 2
+        this.box_graphic.graphic.position.y = this.box_graphic.position[1] - height / 2
         this.box_graphic.graphic.rotation = this.vehicle.chassisBody.angle;
       }
     }
@@ -94,7 +97,7 @@
       backWheel.setSideFriction(3); // Less side friction on back wheel makes it easier to drift
 
       backWheel.engineForce = 0.5;
-      frontWheel.steerValue = 0.01;
+      frontWheel.steerValue = 0.5;
 
       vehicle.addToWorld(world);
       return vehicle;
@@ -108,7 +111,7 @@
     // Create p2 cars
     for (i = 0; i < num_cars; i++) {
       position = [0, 0]
-      raceCars.push (new RaceCar (world, position, car_width, car_height, container))
+      raceCars.push (new RaceCar (world, position, 2*car_width / (i + 1), (i + 1) * car_height, container))
     }
 
     // Loop the program
