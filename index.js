@@ -29,9 +29,7 @@ io.on('connection', function(socket){
     //iterate physics
     setInterval(function(){
         raceBack.animate();
-        var foo  = raceBack.packageGraphics();
-        console.log(foo);
-        socket.emit('updateClient',foo);
+        socket.emit('updateClient',raceBack.packageGraphics());
     }, 200);
     socket.on('disconnect', function(){
         console.log('user disconnected');

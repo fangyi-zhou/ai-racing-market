@@ -38,9 +38,9 @@ function RaceCar (id, world, position, width, height, mass) {
 };
 
 function packageGraphics () {
-    var graphics_dict = []
+    var graphics_dict = [];
     for (i = 0; i < raceCars.length; i++) {
-        raceCar = raceCars[i]
+        var raceCar = raceCars[i];
         graphics_dict.push ({
             position: raceCar.box_graphic.position,
             angle: raceCar.box_graphic.angle
