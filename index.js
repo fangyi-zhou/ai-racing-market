@@ -4,6 +4,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 1140;
 var hashMap = require('hashmap');
+var raceBack = require('./environment/raceBack.js');
 
 server.listen(port, function () {
     console.log('Server listening at port %d', port);
@@ -23,11 +24,18 @@ setInterval(function(){
    time++;
 }, 2000);
 
-
-function onConnection(socket){
-    //Add emitting code here
-}
-
-io.on('connection', onConnection);
+io.on('connection', function(socket){
+    console.log('user connection');
+    //iterate physics
+    setInterval(function(){
+        raceBack.animate();
+        var foo  = raceBack.packageGraphics();
+        console.log(foo);
+        socket.emit('updateClient',foo);
+    }, 200);
+    socket.on('disconnect', function(){
+        console.log('user disconnected');
+    });
+});
 
 
