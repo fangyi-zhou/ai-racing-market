@@ -2,6 +2,7 @@
  * Created by ruiaohu on 27/05/2017.
  */
 var p2 = require('p2');
+var graphicsFormat = require('./graphicsFormat');
 
 // Hyperparameters
 var num_cars = 5;
@@ -16,19 +17,11 @@ var world = new p2.World({
     gravity : [0,0]
 });
 
-// Abstract information required for car drawing
-function RaceCarGraphic (position, angle, width, height) {
-    this.position = position;
-    this.width = width;
-    this.height = height;
-    this.angle = angle;
-}
-
 // Race Car
 function RaceCar (id, world, position, width, height, mass) {
     this.id = id;
     this.vehicle = p2RaceCar (id, world, position, width, height, mass);
-    this.box_graphic = new RaceCarGraphic (position, 0, width, height);
+    this.box_graphic = new graphicsFormat.RaceCarGraphic (position, 0, width, height);
 
     this.updateGraphics = function () {
         // Update backend's abstract graphics for message
