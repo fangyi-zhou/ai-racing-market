@@ -1,7 +1,7 @@
 {
   "name": "back",
   "version": "0.0.1",
-  "description": "",
+  "description": "AI RACING WITH STORIES",
   "main": "index.js",
   "dependencies": {
     "express": "^4.15.3",
