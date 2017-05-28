@@ -6,6 +6,10 @@ serverCallBack();
 
 function serverCallBack(){
     socket.on('updateClient', function (info) {
-        console.log(info);
+        updateGraphics(info);
+    });
+
+    socket.on('carNumber', function (info) {
+        console.log(info.numCars);
     });
 };

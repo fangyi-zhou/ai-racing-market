@@ -5,10 +5,10 @@ var p2 = require('p2');
 var graphicsFormat = require('./graphicsFormat');
 
 // Hyperparameters
-var num_cars = 5;
-var car_mass = 1;
-var car_width = 0.5;
-var car_height = 1.3;
+var numCars = 5;
+var carMass = 1;
+var carWidth = 0.5;
+var carHeight = 1.3;
 var raceCars = [];
 var fixedTimeStep = 0.1;
 
@@ -76,9 +76,9 @@ function p2RaceCar(id, world, position, width, height, mass) {
 };
 
 // Create p2 cars
-for (i = 0; i < num_cars; i++) {
+for (i = 0; i < numCars; i++) {
     position = [i/2, i/2]
-    raceCars.push (new RaceCar (i, world, position, car_width, car_height, car_mass))
+    raceCars.push (new RaceCar (i, world, position, carWidth, carHeight, carMass))
 };
 
 // Send details of p2 race car to its graphical counterpart
@@ -97,3 +97,4 @@ function animate() {
 
 module.exports.animate = animate;
 module.exports.packageGraphics = packageGraphics;
+module.exports.numCars = numCars;

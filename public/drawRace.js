@@ -18,3 +18,14 @@ container.position.x =  renderer.width/2; // center at origin
 container.position.y =  renderer.height/2;
 container.scale.x =  zoom;  // zoom in
 container.scale.y = -zoom; // Note: we flip the y axis to make "up" the physics "up"
+renderer.render(stage);
+
+function updateGraphics(info){
+    console.log(info);
+    for(var cars in info){
+        console.log(cars);
+    }
+    requestAnimationFrame(function(){
+        renderer.render(stage);
+    });
+};
