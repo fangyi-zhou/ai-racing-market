@@ -2,25 +2,28 @@
  * Created by ruiaohu on 27/05/2017.
  */
 var p2 = require('p2');
+var hashMap = require('hashmap');
 var graphicsFormat = require('./graphicsFormat');
 
 // Hyperparameters
-var numCars = 5;
+var numCars = 1;
 var carMass = 1;
 var carWidth = 0.5;
 var carHeight = 1.3;
-var raceCars = [];
 var fixedTimeStep = 0.1;
-
+var raceCars = new hashMap();
+var maxSteer = Math.PI / 5;
 // Create the world
 var world = new p2.World({
     gravity : [0,0]
 });
 
 // Race Car
-function RaceCar (id, world, position, width, height, mass) {
-    this.id = id;
-    this.vehicle = p2RaceCar (id, world, position, width, height, mass);
+function RaceCar (world, position, width, height, mass) {
+    var carComponets= p2RaceCar (world, position, width, height, mass);
+    this.vehicle = carComponets[0];
+    this.frontWheel = carComponets[1];
+    this.backWheel = carComponets[2];
     this.box_graphic = new graphicsFormat.RaceCarGraphic (position, 0, width, height);
 
     this.updateGraphics = function () {
@@ -32,18 +35,17 @@ function RaceCar (id, world, position, width, height, mass) {
 
 function packageGraphics () {
     var graphics_dict = [];
-    for (i = 0; i < raceCars.length; i++) {
-        var raceCar = raceCars[i];
+    raceCars.forEach(function (raceCar, key) {
         graphics_dict.push ({
             position: raceCar.box_graphic.position,
             angle: raceCar.box_graphic.angle
         })
-    }
+    })
     return graphics_dict;
 }
 
 // Create the p2 RaceCar
-function p2RaceCar(id, world, position, width, height, mass) {
+function p2RaceCar(world, position, width, height, mass) {
     // Create a dynamic body for the chassis
     chassisBody = new p2.Body({
         mass: mass,
@@ -54,16 +56,16 @@ function p2RaceCar(id, world, position, width, height, mass) {
     world.addBody(chassisBody);
 
     // Create the vehicle
-    vehicle = new p2.TopDownVehicle(chassisBody);
+    var vehicle = new p2.TopDownVehicle(chassisBody);
 
     // Add one front wheel and one back wheel
-    frontWheel = vehicle.addWheel({
+    var frontWheel = vehicle.addWheel({
         localPosition: [0, 0.5] // front
     });
     frontWheel.setSideFriction(4);
 
     // Back wheel
-    backWheel = vehicle.addWheel({
+    var backWheel = vehicle.addWheel({
         localPosition: [0, -0.5] // back
     });
     backWheel.setSideFriction(3); // Less side friction on back wheel makes it easier to drift
@@ -72,31 +74,62 @@ function p2RaceCar(id, world, position, width, height, mass) {
     frontWheel.steerValue = 0.5;
 
     vehicle.addToWorld(world);
-    return vehicle;
+    return [vehicle,frontWheel,backWheel];
 };
 
 // Create p2 cars
 for (i = 0; i < numCars; i++) {
-    position = [i/2, i/2]
-    raceCars.push (new RaceCar (i, world, position, carWidth, carHeight, carMass))
+    position = [i/2, i/2];
+    raceCars.set (i, new RaceCar (world, position, carWidth, carHeight, carMass));
 };
 
+function addClient(id){
+    var client = new RaceCar(world, [10,10], carWidth, carHeight, carMass);
+    client.backWheel.engineForce = 0;
+    client.frontWheel.steerValue = 0;
+    raceCars.set(id, client);
+}
+
 // Send details of p2 race car to its graphical counterpart
-function updateGraphics (raceCars) {
-    for (i = 0; i < raceCars.length; i++) {
-        raceCars[i].updateGraphics ();
-    }
+function updateGraphics () {
+    raceCars.forEach(function (value, key) {
+        //update information of each racer.
+        value.updateGraphics();
+    });
 };
 // Loop the program
 function animate() {
     world.step(fixedTimeStep);
 
     // Update graphics
-    updateGraphics (raceCars);
+    updateGraphics ();
+}
+
+function updateMovement(keys, id){
+    var clientCar = raceCars.get(id);
+    if (clientCar != null){
+        // Steer value zero means straight forward. Positive is left and negative right.
+        clientCar.frontWheel.steerValue = maxSteer * (keys[37] - keys[39]);
+        // Engine force forward
+        clientCar.backWheel.engineForce = keys[38] * 0.5;
+        clientCar.backWheel.setBrakeForce(0);
+        if(keys[40]){
+            if(clientCar.backWheel.getSpeed() > 0.1){
+                // Moving forward - add some brake force to slow down
+                clientCar.backWheel.setBrakeForce(5);
+            } else {
+                // Moving backwards - reverse the engine force
+                clientCar.backWheel.setBrakeForce(0);
+                clientCar.backWheel.engineForce = -2;
+            }
+        }
+    }
 }
 
 module.exports.animate = animate;
 module.exports.packageGraphics = packageGraphics;
-module.exports.numCars = numCars;
+module.exports.numCars = raceCars.count();
 module.exports.carWidth = carWidth;
 module.exports.carHeight = carHeight;
+module.exports.addClient = addClient;
+module.exports.updateMovement = updateMovement;

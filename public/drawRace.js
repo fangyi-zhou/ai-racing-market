@@ -34,6 +34,7 @@ function updateAllGraphics(info){
 };
 
 function initCars(info){
+    carList = [];
     this.numCars = info.numCars;
     for(i = 0; i < info.numCars; i++){
         carList.push (new RaceCarGraphic (info.carWidth, info.carHeight, container))
