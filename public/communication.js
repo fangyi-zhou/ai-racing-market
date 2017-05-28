@@ -26,8 +26,9 @@ document.addEventListener('keydown', onKeyPress);
 function onKeyPress(evt){
     keys[evt.keyCode] = 1;
     syncServerWithMovement();
+
 }
-document.addEventListener('keydown', onKeyRelease);
+document.addEventListener('keyup', onKeyRelease);
 function onKeyRelease(evt){
     keys[evt.keyCode] = 0;
     syncServerWithMovement();

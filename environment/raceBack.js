@@ -6,7 +6,7 @@ var hashMap = require('hashmap');
 var graphicsFormat = require('./graphicsFormat');
 
 // Hyperparameters
-var numCars = 1;
+var numCars = 5;
 var carMass = 1;
 var carWidth = 0.5;
 var carHeight = 1.3;
@@ -84,7 +84,7 @@ for (i = 0; i < numCars; i++) {
 };
 
 function addClient(id){
-    var client = new RaceCar(world, [10,10], carWidth, carHeight, carMass);
+    var client = new RaceCar(world, [5,5], carWidth, carHeight, carMass);
     client.backWheel.engineForce = 0;
     client.frontWheel.steerValue = 0;
     raceCars.set(id, client);
@@ -111,7 +111,7 @@ function updateMovement(keys, id){
         // Steer value zero means straight forward. Positive is left and negative right.
         clientCar.frontWheel.steerValue = maxSteer * (keys[37] - keys[39]);
         // Engine force forward
-        clientCar.backWheel.engineForce = keys[38] * 0.5;
+        clientCar.backWheel.engineForce = keys[38];
         clientCar.backWheel.setBrakeForce(0);
         if(keys[40]){
             if(clientCar.backWheel.getSpeed() > 0.1){
@@ -120,7 +120,7 @@ function updateMovement(keys, id){
             } else {
                 // Moving backwards - reverse the engine force
                 clientCar.backWheel.setBrakeForce(0);
-                clientCar.backWheel.engineForce = -2;
+                clientCar.backWheel.engineForce = -0.5;
             }
         }
     }
