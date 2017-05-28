@@ -98,3 +98,5 @@ function animate() {
 module.exports.animate = animate;
 module.exports.packageGraphics = packageGraphics;
 module.exports.numCars = numCars;
+module.exports.carWidth = carWidth;
+module.exports.carHeight = carHeight;

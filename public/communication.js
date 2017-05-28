@@ -5,11 +5,11 @@ var socket = io();
 serverCallBack();
 
 function serverCallBack(){
-    socket.on('updateClient', function (info) {
-        updateGraphics(info);
+    socket.on('updateClient', function(info){
+        updateAllGraphics(info)
     });
 
     socket.on('carNumber', function (info) {
-        console.log(info.numCars);
+        initCars(info);
     });
 };

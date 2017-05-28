@@ -4,6 +4,7 @@
 
 var graphics = new PIXI.Graphics();
 var zoom = 40;
+var carList = [];
 
 // Create the PIXI renderer
 // var renderer = PIXI.autoDetectRenderer(600, 400),
@@ -20,7 +21,7 @@ container.scale.x =  zoom;  // zoom in
 container.scale.y = -zoom; // Note: we flip the y axis to make "up" the physics "up"
 renderer.render(stage);
 
-function updateGraphics(info){
+function updateAllGraphics(info){
     console.log(info);
     for(var cars in info){
         console.log(cars);
@@ -29,3 +30,24 @@ function updateGraphics(info){
         renderer.render(stage);
     });
 };
+
+function initCars(info){
+    //this.numCar = info.numCar;
+    for(i = 0; i < info.numCars; i++){
+        carList.push (new RaceCarGraphic (info.carWidth, info.carHeight, container))
+    }
+    console.log(carList);
+}
+
+// Abstract information required for car drawing
+function RaceCarGraphic (width, height, container) {
+    this.position = [0,0];
+    this.width = width;
+    this.height = height;
+    this.graphic = new PIXI.Graphics ();
+
+    this.graphic.beginFill(0xFF0000);
+    this.graphic.lineStyle ( 0.01 , 0x000000,  1);
+    this.graphic.drawRect(-width/2, -height/2, width, height);
+    container.addChild(this.graphic);
+}

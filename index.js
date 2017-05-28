@@ -26,7 +26,11 @@ setInterval(function(){
 
 io.on('connection', function(socket){
     //send back the number of cars need to be rendered
-    io.to(socket.id).emit('carNumber',{numCars:raceBack.numCars});
+    io.to(socket.id).emit('carNumber',{
+        numCars:raceBack.numCars,
+        carWidth: raceBack.carWidth,
+        carHeight: raceBack.carHeight
+    });
     console.log('user connection, socket id = '+socket.id);
 
     //iterate physics
