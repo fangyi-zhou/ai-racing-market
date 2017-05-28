@@ -6,7 +6,7 @@ serverCallBack();
 
 function serverCallBack(){
     socket.on('updateClient', function(info){
-        updateAllGraphics(info)
+        updateAllGraphics(info);
     });
 
     socket.on('carNumber', function (info) {
