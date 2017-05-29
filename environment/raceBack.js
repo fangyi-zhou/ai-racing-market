@@ -127,6 +127,11 @@ function removeUser(id){
     raceCars.remove(id);
 }
 
+function carCount(){
+    var num = raceCars.count();
+    return num;
+}
+
 // Loop the program
 setInterval(function(){
     world.step(fixedTimeStep);
@@ -136,7 +141,7 @@ setInterval(function(){
 }, 1000/30);
 
 module.exports.packageGraphics = packageGraphics;
-module.exports.numCars = raceCars.count();
+module.exports.allCarNumber = carCount;
 module.exports.carWidth = carWidth;
 module.exports.carHeight = carHeight;
 module.exports.addClient = addClient;
