@@ -119,6 +119,10 @@ function updateMovement(keys, id){
     }
 }
 
+function removeUser(id){
+    raceCars.remove(id);
+}
+
 // Loop the program
 setInterval(function(){
     world.step(fixedTimeStep);
@@ -133,3 +137,4 @@ module.exports.carWidth = carWidth;
 module.exports.carHeight = carHeight;
 module.exports.addClient = addClient;
 module.exports.updateMovement = updateMovement;
+module.exports.removeUser= removeUser;

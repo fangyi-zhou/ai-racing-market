@@ -36,7 +36,9 @@ io.on('connection', function(socket){
     }, 1000/30);
 
     socket.on('disconnect', function(){
-        console.log('user disconnected');
+        console.log('user disconnected, socket id = '+socket.id);
+        raceBack.removeUser(socket.id);
+        socket.emit('updateClient',raceBack.packageGraphics());
     });
 
     socket.on('movement', function(info){
