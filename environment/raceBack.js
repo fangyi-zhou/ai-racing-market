@@ -4,6 +4,7 @@
 var p2 = require('p2');
 var hashMap = require('hashmap');
 var graphicsFormat = require('./graphicsFormat');
+var rays = require('./rays');
 
 // Hyperparameters
 var numCars = 5;
@@ -28,6 +29,10 @@ function RaceCar (world, position, width, height, mass) {
     this.vehicle = carComponets[0];
     this.frontWheel = carComponets[1];
     this.backWheel = carComponets[2];
+    this.rayClosest = new p2.Ray({
+        mode: p2.Ray.CLOSEST
+    });
+    this.rayEnd;
     this.box_graphic = new graphicsFormat.RaceCarGraphic (position, 0, width, height);
 
     this.updateGraphics = function () {
@@ -42,7 +47,8 @@ function packageGraphics () {
     raceCars.forEach(function (raceCar, key) {
         graphics_dict.push ({
             position: raceCar.box_graphic.position,
-            angle: raceCar.box_graphic.angle
+            angle: raceCar.box_graphic.angle,
+            rayEnd: raceCar.rayEnd
         })
     })
     return graphics_dict;
@@ -99,6 +105,7 @@ function updateGraphics () {
     raceCars.forEach(function (value, key) {
         //update information of each racer.
         value.updateGraphics();
+        rays.drawRay(value,world);
     });
 };
 

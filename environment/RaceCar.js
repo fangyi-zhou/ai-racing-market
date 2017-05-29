@@ -3,12 +3,12 @@ function RaceCarGraphic (position, width, height, container) {
   this.position = position
   this.width = width
   this.height = height
-  this.graphic = new PIXI.Graphics ();
+  this.carGraphic = new PIXI.Graphics ();
 
-  this.graphic.beginFill(0xFF0000);
-  this.graphic.lineStyle ( 0.01 , 0x000000,  1)
-  this.graphic.drawRect(-width/2, -height/2, width, height);
-  container.addChild(this.graphic);
+  this.carGraphic.beginFill(0xFF0000);
+  this.carGraphic.lineStyle ( 0.01 , 0x000000,  1)
+  this.carGraphic.drawRect(-width/2, -height/2, width, height);
+  container.addChild(this.carGraphic);
 }
 
 // Race Car
@@ -21,9 +21,9 @@ function RaceCar (id, world, position, width, height, mass, container) {
     this.box_graphic.position = this.vehicle.chassisBody.position
 
     // Here send the position to the front end
-    this.box_graphic.graphic.position.x = this.box_graphic.position[0];
-    this.box_graphic.graphic.position.y = this.box_graphic.position[1];
-    this.box_graphic.graphic.rotation = this.vehicle.chassisBody.angle;
+    this.box_graphic.carGraphic.position.x = this.box_graphic.position[0];
+    this.box_graphic.carGraphic.position.y = this.box_graphic.position[1];
+    this.box_graphic.carGraphic.rotation = this.vehicle.chassisBody.angle;
   }
 }
 
