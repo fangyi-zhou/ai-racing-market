@@ -66,7 +66,7 @@ function RaceCarGraphic(width, height, container) {
     this.rayGraphics = [];
     for (let i = 0; i < 5; i++) {
         let rayGraphic = new PIXI.Graphics();
-        rayGraphic.lineStyle(0.05, 0xfffff, 1);
+        rayGraphic.lineStyle(0.01, 0xfffff, 1);
         rayGraphic.moveTo(0, 0);
         rayGraphic.lineTo(0, 0);
         container.addChild(rayGraphic);

@@ -15,11 +15,11 @@
     // Create demo application
     var app = new p2.WebGLRenderer(function(){
       // Hyperparameters
-      var num_cars = 2
-      var car_mass = 1
-      var car_width = 2
-      var car_height = 4
-      var raceCars = []
+      var num_cars = 2;
+      var car_mass = 1;
+      var car_width = 2;
+      var car_height = 4;
+      var raceCars = [];
 
       var world = new p2.World({
           gravity : [0,0]
@@ -28,7 +28,7 @@
 
       // Create p2 cars
       for (i = 0; i < num_cars; i++) {
-        position = [0, 0]
+        position = [0, 0];
         raceCars.push (p2RaceCar(i, world, position, car_width, car_height, car_mass))
       }
 

@@ -67,12 +67,13 @@ function p2RaceCar(id,world, position, width, height, mass) {
     // Create a dynamic body for the chassis
     chassisBody = new p2.Body({
         mass: mass,
-        position: position,
+        position: position
     });
     var boxShape = new p2.Box({
         width: width,
         height: height,
-        collisionGroup:Math.pow(2,id)
+        collisionGroup:Math.pow(2,id),
+        collisionMask:-1
     });
     chassisBody.addShape(boxShape);
     world.addBody(chassisBody);
