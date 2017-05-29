@@ -24,8 +24,6 @@ function RaceCar (id, world, position, width, height, mass, container) {
     this.box_graphic.graphic.position.x = this.box_graphic.position[0];
     this.box_graphic.graphic.position.y = this.box_graphic.position[1];
     this.box_graphic.graphic.rotation = this.vehicle.chassisBody.angle;
-    console.log(this.vehicle.chassisBody.position)
-    console.log(this.box_graphic.graphic.position)
   }
 }
 

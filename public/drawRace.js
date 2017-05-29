@@ -8,7 +8,8 @@ var carList = [];
 var numCars;
 // Create the PIXI renderer
 // var renderer = PIXI.autoDetectRenderer(600, 400),
-var renderer = PIXI.autoDetectRenderer(1000, 800, null, false, true);
+var renderer = PIXI.autoDetectRenderer(1000, 800, null, true);
+console.log(renderer)
 var stage = new PIXI.Stage(0xFFFFAA);
 var container = new PIXI.DisplayObjectContainer();
 stage.addChild(container);
