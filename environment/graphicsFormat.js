@@ -8,5 +8,5 @@ function RaceCarGraphic (position, angle, width, height) {
     this.width = width;
     this.height = height;
     this.angle = angle;
-};
+}
 module.exports.RaceCarGraphic = RaceCarGraphic;

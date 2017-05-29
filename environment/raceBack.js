@@ -11,6 +11,8 @@ var numCars = 5;
 var carMass = 1;
 var carWidth = 0.5;
 var carHeight = 1;
+//fix numRays
+var numRays = 5;
 var fixedTimeStep = 0.06;
 var raceCars = new hashMap();
 var maxSteer = Math.PI / 5;
@@ -21,7 +23,7 @@ var world = new p2.World({
 
 // For now, set default friction between ALL objects
 // In future may wish to have it vary between objects
-world.defaultContactMaterial.friction = 0.001
+world.defaultContactMaterial.friction = 0.001;
 
 // Race Car
 function RaceCar (id, world, position, width, height, mass) {
@@ -29,11 +31,17 @@ function RaceCar (id, world, position, width, height, mass) {
     this.vehicle = carComponets[0];
     this.frontWheel = carComponets[1];
     this.backWheel = carComponets[2];
-    this.ray = new p2.Ray({
-        mode: p2.Ray.CLOSEST,
-        collisionMask:-1^Math.pow(2,id)
-    });
-    this.rayEnd;
+
+    this.rays = [];
+    for(let i = 0;i<numRays;i++){
+        this.rays.push(new p2.Ray({
+            mode: p2.Ray.CLOSEST,
+            collisionMask:-1^Math.pow(2,id)
+        }));
+    }
+
+    this.rayEnds = [null,null,null,null,null];
+
     this.box_graphic = new graphicsFormat.RaceCarGraphic (position, 0, width, height);
 
     this.updateGraphics = function () {
@@ -41,17 +49,16 @@ function RaceCar (id, world, position, width, height, mass) {
         this.box_graphic.position = this.vehicle.chassisBody.position;
         this.box_graphic.angle = this.vehicle.chassisBody.angle;
     }
-};
-
+}
 function packageGraphics () {
     var graphics_dict = [];
     raceCars.forEach(function (raceCar, key) {
         graphics_dict.push ({
             position: raceCar.box_graphic.position,
             angle: raceCar.box_graphic.angle,
-            rayEnd: raceCar.rayEnd
+            rayEnds: raceCar.rayEnds
         })
-    })
+    });
     return graphics_dict;
 }
 
@@ -90,14 +97,12 @@ function p2RaceCar(id,world, position, width, height, mass) {
 
     vehicle.addToWorld(world);
     return [vehicle,frontWheel,backWheel];
-};
-
+}
 // Create p2 cars
-for (i = 0; i < numCars; i++) {
+for (let i = 0; i < numCars; i++) {
     position = [i/2, i/2];
     raceCars.set (i, new RaceCar (i,world, position, carWidth, carHeight, carMass));
-};
-
+}
 function addClient(id){
     var client = new RaceCar(raceCars.count()+1,world, [5,5], carWidth, carHeight, carMass);
     client.backWheel.engineForce = 0;
@@ -113,8 +118,7 @@ function updateGraphics () {
         rays.drawRay(value,world);
     });
 
-};
-
+}
 function updateMovement(keys, id){
     let control = {};
     control["steerValue"] = keys[37] - keys[39];

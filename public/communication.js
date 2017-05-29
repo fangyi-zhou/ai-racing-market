@@ -12,8 +12,7 @@ function serverCallBack(){
     socket.on('carNumber', function (info) {
         initCars(info);
     });
-};
-
+}
 // Key controls
 var keys = {
     '37': 0, // left
