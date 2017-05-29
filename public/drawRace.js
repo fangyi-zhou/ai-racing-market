@@ -6,6 +6,9 @@ var graphics = new PIXI.Graphics();
 var zoom = 40;
 var carList = [];
 var numCars;
+var carWidth;
+var carHeight;
+
 // Create the PIXI renderer
 // var renderer = PIXI.autoDetectRenderer(600, 400),
 var renderer = PIXI.autoDetectRenderer(1000, 800, null, true);
@@ -23,7 +26,7 @@ container.scale.y = -zoom; // Note: we flip the y axis to make "up" the physics 
 renderer.render(stage);
 
 function updateAllGraphics(info){
-    for(i = 0;i < numCars ;i++){
+    for(i = 0;i < info.length ;i++){
         //console.log(info[i]);
         carList[i].graphic.position.x = info[i].position[0];
         carList[i].graphic.position.y = info[i].position[1];
@@ -37,6 +40,9 @@ function updateAllGraphics(info){
 function initCars(info){
     carList = [];
     this.numCars = info.numCars;
+    this.carWidth = info.carWidth;
+    this.carHeight = info.carHeight;
+
     for(i = 0; i < info.numCars; i++){
         carList.push (new RaceCarGraphic (info.carWidth, info.carHeight, container))
     }
