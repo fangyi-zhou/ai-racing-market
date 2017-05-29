@@ -103,22 +103,18 @@ function updateGraphics () {
 };
 
 function updateMovement(keys, id){
-    var clientCar = raceCars.get(id);
-    if (clientCar != null){
+    let clientCar = raceCars.get(id);
+    if (clientCar !== null){
         // Steer value zero means straight forward. Positive is left and negative right.
         clientCar.frontWheel.steerValue = maxSteer * (keys[37] - keys[39]);
-        // Engine force forward
-        clientCar.backWheel.engineForce = keys[38];
-        clientCar.backWheel.setBrakeForce(0);
-        if(keys[40]){
-            if(clientCar.backWheel.getSpeed() > 0.1){
-                // Moving forward - add some brake force to slow down
-                clientCar.backWheel.setBrakeForce(5);
-            } else {
-                // Moving backwards - reverse the engine force
-                clientCar.backWheel.setBrakeForce(0);
-                clientCar.backWheel.engineForce = -0.5;
-            }
+        let breaking = (clientCar.backWheel.getSpeed() > 0.1 && keys[40])
+            || (clientCar.backWheel.getSpeed() < -0.1 && keys[38]);
+        clientCar.backWheel.setBrakeForce(breaking ? 5 : 0);
+        if (!breaking) {
+            if (keys[38] && keys[40]) clientCar.backWheel.engineForce = 0;
+            else if (keys[38]) clientCar.backWheel.engineForce = 1;
+            else if (keys[40]) clientCar.backWheel.engineForce = -0.5;
+            else clientCar.backWheel.engineForce = 0;
         }
     }
 }
