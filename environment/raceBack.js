@@ -9,7 +9,7 @@ var graphicsFormat = require('./graphicsFormat');
 var numCars = 5;
 var carMass = 1;
 var carWidth = 0.5;
-var carHeight = 1.3;
+var carHeight = 1;
 var fixedTimeStep = 0.1;
 var raceCars = new hashMap();
 var maxSteer = Math.PI / 5;
@@ -17,6 +17,10 @@ var maxSteer = Math.PI / 5;
 var world = new p2.World({
     gravity : [0,0]
 });
+
+// For now, set default friction between ALL objects
+// In future may wish to have it vary between objects
+world.defaultContactMaterial.friction = 0.001
 
 // Race Car
 function RaceCar (world, position, width, height, mass) {
