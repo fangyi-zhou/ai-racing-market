@@ -10,7 +10,7 @@ var numCars = 5;
 var carMass = 1;
 var carWidth = 0.5;
 var carHeight = 1;
-var fixedTimeStep = 0.1;
+var fixedTimeStep = 0.06;
 var raceCars = new hashMap();
 var maxSteer = Math.PI / 5;
 // Create the world
@@ -72,7 +72,7 @@ function p2RaceCar(world, position, width, height, mass) {
     var backWheel = vehicle.addWheel({
         localPosition: [0, -0.5] // back
     });
-    backWheel.setSideFriction(3); // Less side friction on back wheel makes it easier to drift
+    backWheel.setSideFriction(2.5); // Less side friction on back wheel makes it easier to drift
 
     backWheel.engineForce = 0.5;
     frontWheel.steerValue = 0.5;
