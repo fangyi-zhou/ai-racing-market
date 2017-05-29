@@ -101,13 +101,6 @@ function updateGraphics () {
         value.updateGraphics();
     });
 };
-// Loop the program
-function animate() {
-    world.step(fixedTimeStep);
-
-    // Update graphics
-    updateGraphics ();
-}
 
 function updateMovement(keys, id){
     var clientCar = raceCars.get(id);
@@ -130,10 +123,22 @@ function updateMovement(keys, id){
     }
 }
 
-module.exports.animate = animate;
+function removeUser(id){
+    raceCars.remove(id);
+}
+
+// Loop the program
+setInterval(function(){
+    world.step(fixedTimeStep);
+
+    // Update graphics
+    updateGraphics ();
+}, 1000/30);
+
 module.exports.packageGraphics = packageGraphics;
 module.exports.numCars = raceCars.count();
 module.exports.carWidth = carWidth;
 module.exports.carHeight = carHeight;
 module.exports.addClient = addClient;
 module.exports.updateMovement = updateMovement;
+module.exports.removeUser= removeUser;
