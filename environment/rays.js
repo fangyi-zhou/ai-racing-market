@@ -9,15 +9,15 @@ var rayLength = 5;
 
 function drawRay(car, world){
     //Update ray for Car
-    p2.vec2.copy(car.rayClosest.from, car.vehicle.chassisBody.position);
+    p2.vec2.copy(car.ray.from, car.vehicle.chassisBody.position);
     let end = findRayEnd(car.vehicle.chassisBody.position,car.vehicle.chassisBody.angle,0 );
-    p2.vec2.copy(car.rayClosest.to, end);
-    car.rayClosest.update();
+    p2.vec2.copy(car.ray.to, end);
+    car.ray.update();
     result.reset();
 
     //find collision, if any
-    world.raycast(result, car.rayClosest);
-    result.getHitPoint(hitPoint, car.rayClosest);
+    world.raycast(result, car.ray);
+    result.getHitPoint(hitPoint, car.ray);
     car.rayEnd = end;
     if(result.hasHit()){
         p2.vec2.copy(car.rayEnd, hitPoint);

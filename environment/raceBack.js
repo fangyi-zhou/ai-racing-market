@@ -24,13 +24,14 @@ var world = new p2.World({
 world.defaultContactMaterial.friction = 0.001
 
 // Race Car
-function RaceCar (world, position, width, height, mass) {
-    var carComponets= p2RaceCar (world, position, width, height, mass);
+function RaceCar (id, world, position, width, height, mass) {
+    var carComponets= p2RaceCar (id, world, position, width, height, mass);
     this.vehicle = carComponets[0];
     this.frontWheel = carComponets[1];
     this.backWheel = carComponets[2];
-    this.rayClosest = new p2.Ray({
-        mode: p2.Ray.CLOSEST
+    this.ray = new p2.Ray({
+        mode: p2.Ray.CLOSEST,
+        collisionMask:-1^Math.pow(2,id)
     });
     this.rayEnd;
     this.box_graphic = new graphicsFormat.RaceCarGraphic (position, 0, width, height);
@@ -55,13 +56,17 @@ function packageGraphics () {
 }
 
 // Create the p2 RaceCar
-function p2RaceCar(world, position, width, height, mass) {
+function p2RaceCar(id,world, position, width, height, mass) {
     // Create a dynamic body for the chassis
     chassisBody = new p2.Body({
         mass: mass,
-        position: position
+        position: position,
     });
-    var boxShape = new p2.Box({ width: width, height: height });
+    var boxShape = new p2.Box({
+        width: width,
+        height: height,
+        collisionGroup:Math.pow(2,id)
+    });
     chassisBody.addShape(boxShape);
     world.addBody(chassisBody);
 
@@ -90,11 +95,11 @@ function p2RaceCar(world, position, width, height, mass) {
 // Create p2 cars
 for (i = 0; i < numCars; i++) {
     position = [i/2, i/2];
-    raceCars.set (i, new RaceCar (world, position, carWidth, carHeight, carMass));
+    raceCars.set (i, new RaceCar (i,world, position, carWidth, carHeight, carMass));
 };
 
 function addClient(id){
-    var client = new RaceCar(world, [5,5], carWidth, carHeight, carMass);
+    var client = new RaceCar(raceCars.count()+1,world, [5,5], carWidth, carHeight, carMass);
     client.backWheel.engineForce = 0;
     client.frontWheel.steerValue = 0;
     raceCars.set(id, client);
