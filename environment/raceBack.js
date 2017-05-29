@@ -80,8 +80,8 @@ function p2RaceCar(world, position, width, height, mass) {
     });
     backWheel.setSideFriction(2.5); // Less side friction on back wheel makes it easier to drift
 
-    backWheel.engineForce = 0.5;
-    frontWheel.steerValue = 0.5;
+    backWheel.engineForce = 0;
+    frontWheel.steerValue = 0;
 
     vehicle.addToWorld(world);
     return [vehicle,frontWheel,backWheel];
@@ -107,6 +107,7 @@ function updateGraphics () {
         value.updateGraphics();
         rays.drawRay(value,world);
     });
+
 };
 
 function updateMovement(keys, id){

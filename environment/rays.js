@@ -13,13 +13,15 @@ function drawRay(car, world){
     let end = findRayEnd(car.vehicle.chassisBody.position,car.vehicle.chassisBody.angle,0 );
     p2.vec2.copy(car.rayClosest.to, end);
     car.rayClosest.update();
-    //drawRay(start, end);
     result.reset();
-    world.raycast(result, car.rayClosest);
 
-    //find collision, if any.
+    //find collision, if any
+    world.raycast(result, car.rayClosest);
     result.getHitPoint(hitPoint, car.rayClosest);
     car.rayEnd = end;
+    if(result.hasHit()){
+        p2.vec2.copy(car.rayEnd, hitPoint);
+    }
 }
 
 function findRayEnd(start, ori, angle){
