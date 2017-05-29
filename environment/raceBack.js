@@ -110,24 +110,24 @@ function updateGraphics () {
 };
 
 function updateMovement(keys, id){
-    var clientCar = raceCars.get(id);
-    if (clientCar != null){
-        // Steer value zero means straight forward. Positive is left and negative right.
-        clientCar.frontWheel.steerValue = maxSteer * (keys[37] - keys[39]);
-        // Engine force forward
-        clientCar.backWheel.engineForce = keys[38];
-        clientCar.backWheel.setBrakeForce(0);
-        if(keys[40]){
-            if(clientCar.backWheel.getSpeed() > 0.1){
-                // Moving forward - add some brake force to slow down
-                clientCar.backWheel.setBrakeForce(5);
-            } else {
-                // Moving backwards - reverse the engine force
-                clientCar.backWheel.setBrakeForce(0);
-                clientCar.backWheel.engineForce = -0.5;
-            }
-        }
-    }
+    let control = {};
+    control["steerValue"] = keys[37] - keys[39];
+    if (keys[38] && keys[40]) control["engineForce"] = 0;
+        else if (keys[38]) control["engineForce"] = 1;
+        else if (keys[40]) control["engineForce"] = -0.5;
+        else control["engineForce"] = 0;
+    applyMove(control, id);
+}
+
+function applyMove(control, id) {
+    let clientCar = raceCars.get(id);
+    if (clientCar === null) return;
+    // Steer value zero means straight forward. Positive is left and negative right.
+    clientCar.frontWheel.steerValue = maxSteer * Math.min(Math.max(control["steerValue"], -1), 1);
+    clientCar.backWheel.engineForce = Math.min(Math.max(control["engineForce"], -0.5), 1);
+    let breaking = (clientCar.backWheel.getSpeed() > 0.1 && control["engineForce"] < 0)
+        || (clientCar.backWheel.getSpeed() < -0.1 && control["engineForce"] > 0);
+    clientCar.backWheel.setBrakeForce(breaking ? 5 : 0);
 }
 
 function removeUser(id){
