@@ -18,8 +18,8 @@ print \"echo\", i\n\
 "
 }
 
-var children = new Hashmap.HashMap();
-var CHILD_ID_COUNT = 0;
+let children = new Hashmap.HashMap();
+let CHILD_ID_COUNT = 0;
 
 class Child {
     constructor(scriptId) {
