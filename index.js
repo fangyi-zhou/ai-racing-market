@@ -32,7 +32,6 @@ io.on('connection', function(socket){
 
     //iterate physics
     setInterval(function(){
-        raceBack.animate();
         socket.emit('updateClient',raceBack.packageGraphics());
     }, 1000/30);
 
