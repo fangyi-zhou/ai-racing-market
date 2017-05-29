@@ -54,7 +54,7 @@ function RaceCarGraphic (width, height, container) {
     this.height = height;
     this.carGraphic = new PIXI.Graphics ();
 
-    this.carGraphic.beginFill(0xfffff, 0.5);
+    this.carGraphic.beginFill(0xfffff, 0.3);
     this.carGraphic.lineStyle ( 0.01 , 0xffffff,  1);
     this.carGraphic.drawRect(-width/2, -height/2, width, height);
 
