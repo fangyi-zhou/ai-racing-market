@@ -6,8 +6,6 @@ var graphics = new PIXI.Graphics();
 var zoom = 40;
 var carList = [];
 var numCars;
-var carWidth;
-var carHeight;
 
 // Create the PIXI renderer
 // var renderer = PIXI.autoDetectRenderer(600, 400),
@@ -28,9 +26,10 @@ renderer.render(stage);
 function updateAllGraphics(info){
     for(i = 0;i < info.length ;i++){
         //console.log(info[i]);
-        carList[i].graphic.position.x = info[i].position[0];
-        carList[i].graphic.position.y = info[i].position[1];
-        carList[i].graphic.rotation = info[i].angle;
+        carList[i].carGraphic.position.x = info[i].position[0];
+        carList[i].carGraphic.position.y = info[i].position[1];
+        carList[i].carGraphic.rotation = info[i].angle;
+        carList[i].rayGraphic.currentPath.shape.points = [info[i].position[0], info[i].position[1], info[i].rayEnd[0], info[i].rayEnd[1]];
     }
     requestAnimationFrame(function(){
         renderer.render(stage);
@@ -53,10 +52,17 @@ function initCars(info){
 function RaceCarGraphic (width, height, container) {
     this.width = width;
     this.height = height;
-    this.graphic = new PIXI.Graphics ();
+    this.carGraphic = new PIXI.Graphics ();
 
-    this.graphic.beginFill(0xFF0000, 0.5);
-    this.graphic.lineStyle ( 0.01 , 0xFFFFFF,  1);
-    this.graphic.drawRect(-width/2, -height/2, width, height);
-    container.addChild(this.graphic);
+    this.carGraphic.beginFill(0xfffff, 0.5);
+    this.carGraphic.lineStyle ( 0.01 , 0xffffff,  1);
+    this.carGraphic.drawRect(-width/2, -height/2, width, height);
+
+    this.rayGraphic = new PIXI.Graphics();
+    this.rayGraphic.lineStyle(0.05, 0xfffff, 1);
+    this.rayGraphic.moveTo(0,0);
+    this.rayGraphic.lineTo(0,0);
+
+    container.addChild(this.carGraphic);
+    container.addChild(this.rayGraphic);
 }
