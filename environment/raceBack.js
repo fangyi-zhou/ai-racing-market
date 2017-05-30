@@ -69,11 +69,18 @@ for (let i = 1; i <= numCars; i++) {
     let position = [i/2, i/2];
     raceCars.set (i, new RaceCar.RaceCar (i,world, position, carWidth, carHeight, carMass));
 }
+
+function addRaceCar(id, position) {
+    let car = new RaceCar.RaceCar(raceCars.count()+1, world, position, carWidth, carHeight, carMass);
+    car.frontWheel.steerValue = 0;
+    car.backWheel.engineForce = 0;
+    raceCars.set(id, car);
+    return car;
+}
+
 function addClient(id){
-    let client = new RaceCar.RaceCar(raceCars.count()+1,world, [5,5], carWidth, carHeight, carMass);
-    client.backWheel.engineForce = 0;
-    client.frontWheel.steerValue = 0;
-    raceCars.set(id, client);
+    const initPosition = [5, 5];
+    addRaceCar(id, initPosition);
 }
 
 // Send details of p2 race car to its graphical counterpart
@@ -156,6 +163,7 @@ function initIO(){
 
 module.exports.packageGraphics = packageGraphics;
 module.exports.addClient = addClient;
+module.exports.addRaceCar = addRaceCar;
 module.exports.updateMovement = updateMovement;
 module.exports.applyMove = applyMove;
 module.exports.removeUser= removeUser;
