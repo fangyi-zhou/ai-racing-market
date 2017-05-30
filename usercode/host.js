@@ -34,9 +34,9 @@ function processUserOutput(childId, data) {
             break;
         case "get":
             if (splatInput.length < 2) return;
-            const car = raceBack.getCarById(carId);
+            const car = raceBack.getCarById(child.carId);
             if (car === undefined && car === null) {
-                console.error(`Cannot find car with carId ${carId}`);
+                console.error(`Cannot find car with carId ${child.carId}`);
             }
             switch (splatInput[1]) {
                 case "speed":
@@ -45,6 +45,7 @@ function processUserOutput(childId, data) {
                 default:
                     console.error(`Cannot get ${splatInput[1]} for Child ${childId}`)
             }
+            break;
         default:
             console.error(`Cannot decode ${data} from Child ${childId}`);
     }

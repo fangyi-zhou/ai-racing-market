@@ -66,9 +66,9 @@ function RaceCar (id, world, position, width, height, mass) {
         // Update backend's abstract graphics for message
         this.box_graphic.position = this.vehicle.chassisBody.position;
         this.box_graphic.angle = this.vehicle.chassisBody.angle;
-    }
+    };
 
-    this.getSpeed() = () => {
+    this.getSpeed = () => {
         return this.backWheel.getSpeed();
     }
 }
