@@ -7,7 +7,6 @@ const RaceCar = require('./RaceCar');
 const rays = require('./rays');
 
 // Hyperparameters
-var numCars = 5;
 const carMass = 1;
 const carWidth = 0.5;
 const carHeight = 1;
@@ -62,12 +61,6 @@ function packageGraphics () {
         })
     });
     return graphics_dict;
-}
-
-// Create p2 cars
-for (let i = 1; i <= numCars; i++) {
-    let position = [i/2, i/2];
-    raceCars.set (i, new RaceCar.RaceCar (i,world, position, carWidth, carHeight, carMass));
 }
 
 function addRaceCar(id, position) {
