@@ -134,11 +134,15 @@ function applyMove(control, id) {
     let clientCar = raceCars.get(id);
     if (clientCar === null || clientCar === undefined) return;
     // Steer value zero means straight forward. Positive is left and negative right.
-    clientCar.frontWheel.steerValue = maxSteer * Math.min(Math.max(control["steerValue"], -1), 1);
-    clientCar.backWheel.engineForce = Math.min(Math.max(control["engineForce"], -0.5), 1);
-    let breaking = (clientCar.backWheel.getSpeed() > 0.1 && control["engineForce"] < 0)
-        || (clientCar.backWheel.getSpeed() < -0.1 && control["engineForce"] > 0);
-    clientCar.backWheel.setBrakeForce(breaking ? 5 : 0);
+    if (control["steerValue"] !== undefined && control["steerValue"] !== null) {
+        clientCar.frontWheel.steerValue = maxSteer * Math.min(Math.max(control["steerValue"], -1), 1);
+    }
+    if (control["engineForce"] !== undefined && control["engineForce"] !== null) {
+        clientCar.backWheel.engineForce = Math.min(Math.max(control["engineForce"], -0.5), 1);
+        let breaking = (clientCar.backWheel.getSpeed() > 0.1 && control["engineForce"] < 0)
+            || (clientCar.backWheel.getSpeed() < -0.1 && control["engineForce"] > 0);
+        clientCar.backWheel.setBrakeForce(breaking ? 5 : 0);
+    }
 }
 
 function removeUser(id){
