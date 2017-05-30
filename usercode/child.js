@@ -38,10 +38,10 @@ class Child {
         process.on("exit", () => {
             console.log(`child ${this.carId} exited`);
             children.remove(this.carId);
-            raceBack.removeUser(`Child_${this.carId}`);
+            raceBack.removeUser(this.carId);
         });
-        process.child_out.on("data", (data) => {
-            host.processUserOutput(process.carId, data);
+        process.stdout.on("data", (data) => {
+            host.processUserOutput(this.carId, data);
         });
         this.car = car;
     }
