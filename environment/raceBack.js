@@ -1,18 +1,17 @@
 /**
  * Created by ruiaohu on 27/05/2017.
  */
-var p2 = require('p2');
-var hashMap = require('hashmap');
-var graphicsFormat = require('./graphicsFormat');
-var rays = require('./rays');
+const p2 = require('p2');
+const hashMap = require('hashmap');
+const RaceCar = require('./RaceCar');
+const rays = require('./rays');
 
 // Hyperparameters
 var numCars = 5;
 var carMass = 1;
 var carWidth = 0.5;
 var carHeight = 1;
-//fix numRays
-var numRays = 5;
+
 var fixedTimeStep = 0.06;
 var raceCars = new hashMap();
 var maxSteer = Math.PI / 5;
@@ -54,36 +53,6 @@ function getMap() {
 // In future may wish to have it vary between objects
 world.defaultContactMaterial.friction = 0.001;
 
-// Race Car
-function RaceCar (id, world, position, width, height, mass) {
-    var carComponets= p2RaceCar (id, world, position, width, height, mass);
-    this.vehicle = carComponets[0];
-    this.frontWheel = carComponets[1];
-    this.backWheel = carComponets[2];
-
-    this.rays = [];
-    for(let i = 0;i<numRays;i++){
-        this.rays.push(new p2.Ray({
-            mode: p2.Ray.CLOSEST,
-            collisionMask:Math.pow(2,id)^-1
-        }));
-    }
-
-    this.rayEnds = [null,null,null,null,null];
-
-    this.box_graphic = new graphicsFormat.RaceCarGraphic (position, 0, width, height);
-
-    this.updateGraphics = function () {
-        // Update backend's abstract graphics for message
-        this.box_graphic.position = this.vehicle.chassisBody.position;
-        this.box_graphic.angle = this.vehicle.chassisBody.angle;
-    };
-
-    this.getSpeed = () => {
-        return this.backWheel.getSpeed();
-    }
-}
-
 function packageGraphics () {
     var graphics_dict = [];
     raceCars.forEach(function (raceCar, key) {
@@ -96,51 +65,13 @@ function packageGraphics () {
     return graphics_dict;
 }
 
-// Create the p2 RaceCar
-function p2RaceCar(id,world, position, width, height, mass) {
-    // Create a dynamic body for the chassis
-    chassisBody = new p2.Body({
-        mass: mass,
-        position: position,
-    });
-    let boxShape = new p2.Box({
-        width: width,
-        height: height,
-        collisionGroup:Math.pow(2,id),
-        collisionMask: -1
-    });
-    chassisBody.addShape(boxShape);
-    world.addBody(chassisBody);
-
-    // Create the vehicle
-    let vehicle = new p2.TopDownVehicle(chassisBody);
-
-    // Add one front wheel and one back wheel
-    let frontWheel = vehicle.addWheel({
-        localPosition: [0, 0.5] // front
-    });
-    frontWheel.setSideFriction(4);
-
-    // Back wheel
-    let backWheel = vehicle.addWheel({
-        localPosition: [0, -0.5] // back
-    });
-    backWheel.setSideFriction(2.5); // Less side friction on back wheel makes it easier to drift
-
-    backWheel.engineForce = 0;
-    frontWheel.steerValue = 0;
-
-    vehicle.addToWorld(world);
-    return [vehicle,frontWheel,backWheel];
-}
-
 // Create p2 cars
 for (let i = 1; i <= numCars; i++) {
     position = [i/2, i/2];
-    raceCars.set (i, new RaceCar (i,world, position, carWidth, carHeight, carMass));
+    raceCars.set (i, new RaceCar.RaceCar (i,world, position, carWidth, carHeight, carMass));
 }
 function addClient(id){
-    var client = new RaceCar(raceCars.count()+1,world, [5,5], carWidth, carHeight, carMass);
+    var client = new RaceCar.RaceCar(raceCars.count()+1,world, [5,5], carWidth, carHeight, carMass);
     client.backWheel.engineForce = 0;
     client.frontWheel.steerValue = 0;
     raceCars.set(id, client);

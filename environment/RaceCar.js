@@ -1,61 +1,78 @@
-// Abstract information required for car drawing
-function RaceCarGraphic (position, width, height, container) {
-  this.position = position;
-  this.width = width;
-  this.height = height;
-  this.carGraphic = new PIXI.Graphics ();
+const p2 = require('p2');
+const graphicsFormat = require('./GraphicsFormat');
+//fix numRays
+const numRays = 5;
 
-  this.carGraphic.beginFill(0xFF0000);
-  this.carGraphic.lineStyle ( 0.01 , 0x000000,  1);
-  this.carGraphic.drawRect(-width/2, -height/2, width, height);
-  container.addChild(this.carGraphic);
-}
 
 // Race Car
-function RaceCar (id, world, position, width, height, mass, container) {
-  this.id = id;
-  this.vehicle = p2RaceCar (id, world, position, width, height, mass);
-  this.box_graphic = new RaceCarGraphic (position, width, height, container);
+class RaceCar {
+    constructor(id, world, position, width, height, mass) {
+        const carComponents = p2RaceCar(id, world, position, width, height, mass);
+        this.vehicle = carComponents[0];
+        this.frontWheel = carComponents[1];
+        this.backWheel = carComponents[2];
 
-  this.updateGraphics = function () {
-    this.box_graphic.position = this.vehicle.chassisBody.position;
+        this.rays = [];
+        for (let i = 0; i < numRays; i++) {
+            this.rays.push(new p2.Ray({
+                mode: p2.Ray.CLOSEST,
+                collisionMask: Math.pow(2, id) ^ -1
+            }));
+        }
 
-    // Here send the position to the front end
-    this.box_graphic.carGraphic.position.x = this.box_graphic.position[0];
-    this.box_graphic.carGraphic.position.y = this.box_graphic.position[1];
-    this.box_graphic.carGraphic.rotation = this.vehicle.chassisBody.angle;
-  }
+        this.rayEnds = [null, null, null, null, null];
+
+        this.box_graphic = new graphicsFormat.RaceCarGraphic(position, 0, width, height);
+
+        this.updateGraphics = function () {
+            // Update backend's abstract graphics for message
+            this.box_graphic.position = this.vehicle.chassisBody.position;
+            this.box_graphic.angle = this.vehicle.chassisBody.angle;
+        };
+
+        this.getSpeed = () => {
+            return this.backWheel.getSpeed();
+        }
+    }
 }
 
 // Create the p2 RaceCar
-function p2RaceCar(id, world, position, width, height, mass) {
-  // Create a dynamic body for the chassis
-  chassisBody = new p2.Body({
-      mass: mass,
-      position: position
-  });
-  var boxShape = new p2.Box({ width: width, height: height });
-  chassisBody.addShape(boxShape);
-  world.addBody(chassisBody);
+function p2RaceCar(id,world, position, width, height, mass) {
+    // Create a dynamic body for the chassis
+    chassisBody = new p2.Body({
+        mass: mass,
+        position: position,
+    });
+    let boxShape = new p2.Box({
+        width: width,
+        height: height,
+        collisionGroup:Math.pow(2,id),
+        collisionMask: -1
+    });
+    chassisBody.addShape(boxShape);
+    world.addBody(chassisBody);
 
-  // Create the vehicle
-  vehicle = new p2.TopDownVehicle(chassisBody);
+    // Create the vehicle
+    let vehicle = new p2.TopDownVehicle(chassisBody);
 
-  // Add one front wheel and one back wheel
-  frontWheel = vehicle.addWheel({
-      localPosition: [0, 0.5] // front
-  });
-  frontWheel.setSideFriction(4);
+    // Add one front wheel and one back wheel
+    let frontWheel = vehicle.addWheel({
+        localPosition: [0, 0.5] // front
+    });
+    frontWheel.setSideFriction(4);
 
-  // Back wheel
-  backWheel = vehicle.addWheel({
-      localPosition: [0, -0.5] // back
-  });
-  backWheel.setSideFriction(3); // Less side friction on back wheel makes it easier to drift
+    // Back wheel
+    let backWheel = vehicle.addWheel({
+        localPosition: [0, -0.5] // back
+    });
+    backWheel.setSideFriction(2.5); // Less side friction on back wheel makes it easier to drift
 
-  backWheel.engineForce = 0.5;
-  frontWheel.steerValue = 0.5;
+    backWheel.engineForce = 0;
+    frontWheel.steerValue = 0;
 
-  vehicle.addToWorld(world);
-  return vehicle;
+    vehicle.addToWorld(world);
+    return [vehicle,frontWheel,backWheel];
 }
+
+
+module.exports.RaceCar = RaceCar;
