@@ -3,7 +3,6 @@ const graphicsFormat = require('./GraphicsFormat');
 //fix numRays
 const numRays = 10;
 
-
 // Race Car
 class RaceCar {
     constructor(id, world, position, width, height, mass) {
@@ -37,16 +36,16 @@ class RaceCar {
 }
 
 // Create the p2 RaceCar
-function p2RaceCar(id,world, position, width, height, mass) {
+function p2RaceCar(id, world, position, width, height, mass) {
     // Create a dynamic body for the chassis
-    chassisBody = new p2.Body({
+    let chassisBody = new p2.Body({
         mass: mass,
         position: position,
     });
     let boxShape = new p2.Box({
         width: width,
         height: height,
-        collisionGroup:Math.pow(2,id),
+        collisionGroup: Math.pow(2, id),
         collisionMask: -1
     });
     chassisBody.addShape(boxShape);
@@ -71,9 +70,8 @@ function p2RaceCar(id,world, position, width, height, mass) {
     frontWheel.steerValue = 0;
 
     vehicle.addToWorld(world);
-    return [vehicle,frontWheel,backWheel];
+    return [vehicle, frontWheel, backWheel];
 }
-
 
 module.exports.RaceCar = RaceCar;
 module.exports.numRays = numRays;

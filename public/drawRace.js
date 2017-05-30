@@ -27,34 +27,34 @@ renderer.render(stage);
 
 // Prepare map format for drawing
 function flatten_map(map) {
-  flattened_map = []
-  for (let i = 0; i < map.length; i++) {
-    flattened_map.push(map[i][0])
-    flattened_map.push(map[i][1])
-  }
-  return flattened_map;
+    let flattened_map = []
+    for (let i = 0; i < map.length; i++) {
+        flattened_map.push(map[i][0])
+        flattened_map.push(map[i][1])
+    }
+    return flattened_map;
 }
 
 function drawMap(map) {
-  for (let i in map) {
-    segment = map[i];
-    pixi_map = flatten_map (segment);
+    for (let i in map) {
+        let segment = map[i];
+        let pixi_map = flatten_map(segment);
 
-    segment_graphic = new PIXI.Graphics ();
-    segment_graphic.beginFill(wall_colour, 0.15);
-    segment_graphic.lineStyle ( 0.01 , wall_colour,  1);
-    segment_graphic.drawPolygon(pixi_map);
-    container.addChild(segment_graphic);
-  }
+        let segment_graphic = new PIXI.Graphics();
+        segment_graphic.beginFill(wall_colour, 0.15);
+        segment_graphic.lineStyle(0.01, wall_colour, 1);
+        segment_graphic.drawPolygon(pixi_map);
+        container.addChild(segment_graphic);
+    }
 }
 
 function updateAllGraphics(info) {
     for (let i = 0; i < info.length; i++) {
-        if(carList[i]!=null){
+        if (carList[i] != null) {
             carList[i].carGraphic.position.x = info[i].position[0];
             carList[i].carGraphic.position.y = info[i].position[1];
             carList[i].carGraphic.rotation = info[i].angle;
-            for (let j = 0;j<numRays;j++) {
+            for (let j = 0; j < numRays; j++) {
                 var rayEnd = info[i].rayEnds[j];
                 carList[i].rayGraphics[j].currentPath.shape.points = [info[i].position[0], info[i].position[1], rayEnd[0], rayEnd[1]];
             }
@@ -80,7 +80,7 @@ function initWorld(info) {
 
 // Abstract information required for car drawing
 function RaceCarGraphic(width, height, numRays, container) {
-
+    console.log(container);
     this.width = width;
     this.height = height;
     this.carGraphic = new PIXI.Graphics();
@@ -101,14 +101,14 @@ function RaceCarGraphic(width, height, numRays, container) {
     container.addChild(this.carGraphic);
 }
 
-function removeUser(){
+function removeUser() {
     let car = carList.pop();
-    for(let ray_id in car.rayGraphics){
+    for (let ray_id in car.rayGraphics) {
         container.removeChild(car.rayGraphics[ray_id]);
     }
     container.removeChild(car.carGraphic);
 }
 
-function addUser(){
-    carList.push(new RaceCarGraphic(carWidth, carHeight, container))
+function addUser() {
+    carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container))
 }
