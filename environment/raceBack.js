@@ -132,7 +132,7 @@ function updateMovement(keys, id){
 
 function applyMove(control, id) {
     let clientCar = raceCars.get(id);
-    if (clientCar === null) return;
+    if (clientCar === null || clientCar === undefined) return;
     // Steer value zero means straight forward. Positive is left and negative right.
     clientCar.frontWheel.steerValue = maxSteer * Math.min(Math.max(control["steerValue"], -1), 1);
     clientCar.backWheel.engineForce = Math.min(Math.max(control["engineForce"], -0.5), 1);
