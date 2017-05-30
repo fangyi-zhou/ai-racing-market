@@ -6,11 +6,13 @@ function getScriptByScriptId(scriptId) {
     // TODO: Query the database for script
     return "import time\n\
 import sys\n\
+time.sleep(10)\n\
 print \"set engineForce 1.0\"\n\
 sys.stdout.flush()\n\
 time.sleep(1)\n\
 print \"set engineForce -0.5\"\n\
 sys.stdout.flush()\n\
+time.sleep(10)\n\
 "
 }
 
