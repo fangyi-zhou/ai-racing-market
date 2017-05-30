@@ -74,6 +74,7 @@ function addClient(id){
     client.backWheel.engineForce = 0;
     client.frontWheel.steerValue = 0;
     raceCars.set(id, client);
+    return client;
 }
 
 // Send details of p2 race car to its graphical counterpart

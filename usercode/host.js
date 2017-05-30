@@ -35,7 +35,7 @@ function processUserOutput(carId, data) {
         case "get":
             if (splatInput.length < 2) return;
             const car = child.car;
-            if (car === undefined && car === null) {
+            if (car === undefined || car === null) {
                 console.error(`Cannot find car with carId ${child.carId}`);
             }
             switch (splatInput[1]) {

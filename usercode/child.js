@@ -24,7 +24,6 @@ class Child {
     constructor(scriptId, carId) {
         this.scriptId = scriptId;
         this.carId = carId;
-        this.car = raceBack.getCarById(carId);
         // Get script
         this.script = getScriptByScriptId(scriptId);
         children.set(this.carId, this);
@@ -35,7 +34,7 @@ class Child {
         });
         this.child_in = process.stdin;
         this.child_out = process.stdout;
-        raceBack.addClient(`Child_${this.carId}`);
+        let car = raceBack.addClient(this.carId);
         process.on("exit", () => {
             console.log(`child ${this.carId} exited`);
             children.remove(this.carId);
@@ -44,6 +43,7 @@ class Child {
         process.child_out.on("data", (data) => {
             host.processUserOutput(process.carId, data);
         });
+        this.car = car;
     }
 }
 
