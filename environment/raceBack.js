@@ -164,5 +164,5 @@ module.exports.carWidth = carWidth;
 module.exports.carHeight = carHeight;
 module.exports.addClient = addClient;
 module.exports.updateMovement = updateMovement;
-module.experts.applyMove = applyMove;
+module.exports.applyMove = applyMove;
 module.exports.removeUser= removeUser;
