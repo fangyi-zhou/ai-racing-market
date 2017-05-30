@@ -6,15 +6,11 @@ function getScriptByScriptId(scriptId) {
     // TODO: Query the database for script
     return "import time\n\
 import sys\n\
-print \"out:1\"\n\
-print >> sys.stderr, \"err:1\"\n\
+print \"set engineForce 1.0\"\n\
 sys.stdout.flush()\n\
 time.sleep(1)\n\
-print \"out:2\"\n\
-print >> sys.stderr, \"err:2\"\n\
+print \"set engineForce -0.5\"\n\
 sys.stdout.flush()\n\
-i = raw_input()\n\
-print \"echo\", i\n\
 "
 }
 
