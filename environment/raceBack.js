@@ -21,6 +21,24 @@ var world = new p2.World({
     gravity : [0,0]
 });
 
+// Create a concave body
+map = new p2.Body({
+    mass : 1,
+    position:[0,0],
+    type: p2.Body.STATIC,
+});
+var map1 = require('./maps/map1.js')["map1"][0]
+console.log(map1)
+map.fromPolygon(map1);
+world.addBody(map);
+/*************Blame the p2 author for bad API design **************/
+for(let i = 0; i<map.shapes.length;i++){
+  map.shapes[i].collisionMask = -1;
+  map.shapes[i].collisionGroup = -1;
+}
+/*******************************************************************/
+console.log(map);
+
 // For now, set default friction between ALL objects
 // In future may wish to have it vary between objects
 world.defaultContactMaterial.friction = 0.001;
@@ -36,7 +54,7 @@ function RaceCar (id, world, position, width, height, mass) {
     for(let i = 0;i<numRays;i++){
         this.rays.push(new p2.Ray({
             mode: p2.Ray.CLOSEST,
-            collisionMask:-1^Math.pow(2,id)
+            collisionMask:Math.pow(2,id)^-1
         }));
     }
 
@@ -67,13 +85,13 @@ function p2RaceCar(id,world, position, width, height, mass) {
     // Create a dynamic body for the chassis
     chassisBody = new p2.Body({
         mass: mass,
-        position: position
+        position: position,
     });
     var boxShape = new p2.Box({
         width: width,
         height: height,
         collisionGroup:Math.pow(2,id),
-        collisionMask:-1
+        collisionMask: -1
     });
     chassisBody.addShape(boxShape);
     world.addBody(chassisBody);
@@ -99,8 +117,9 @@ function p2RaceCar(id,world, position, width, height, mass) {
     vehicle.addToWorld(world);
     return [vehicle,frontWheel,backWheel];
 }
+
 // Create p2 cars
-for (let i = 0; i < numCars; i++) {
+for (let i = 1; i <= numCars; i++) {
     position = [i/2, i/2];
     raceCars.set (i, new RaceCar (i,world, position, carWidth, carHeight, carMass));
 }
@@ -157,6 +176,7 @@ setInterval(function(){
     // Update graphics
     updateGraphics ();
 }, 1000/30);
+
 
 module.exports.packageGraphics = packageGraphics;
 module.exports.allCarNumber = carCount;
