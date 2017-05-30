@@ -4,8 +4,6 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 1024;
 
-var isFirst =1;
-
 var raceBack = require('./environment/raceBack.js');
 
 server.listen(port, function () {
@@ -22,10 +20,7 @@ setInterval(function(){
 }, 2000);
 
 io.on('connection', function(socket){
-    if(isFirst){
-        raceBack.addClient(socket.id);
-        isFirst = 0;
-    }
+    raceBack.addClient(socket.id);
     //send back the number of cars need to be rendered
     io.to(socket.id).emit('carNumber',{
         numCars:raceBack.allCarNumber(),
@@ -43,7 +38,9 @@ io.on('connection', function(socket){
     socket.on('disconnect', function(){
         console.log('user disconnected, socket id = '+socket.id);
         raceBack.removeUser(socket.id);
-        socket.emit('updateClient',raceBack.packageGraphics());
+        socket.broadcast.emit('dc',{
+            id:socket.id
+        });
     });
 
     socket.on('movement', function(info){

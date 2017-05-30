@@ -69,7 +69,7 @@ function p2RaceCar(id,world, position, width, height, mass) {
         mass: mass,
         position: position
     });
-    var boxShape = new p2.Box({
+    let boxShape = new p2.Box({
         width: width,
         height: height,
         collisionGroup:Math.pow(2,id),
@@ -79,16 +79,16 @@ function p2RaceCar(id,world, position, width, height, mass) {
     world.addBody(chassisBody);
 
     // Create the vehicle
-    var vehicle = new p2.TopDownVehicle(chassisBody);
+    let vehicle = new p2.TopDownVehicle(chassisBody);
 
     // Add one front wheel and one back wheel
-    var frontWheel = vehicle.addWheel({
+    let frontWheel = vehicle.addWheel({
         localPosition: [0, 0.5] // front
     });
     frontWheel.setSideFriction(4);
 
     // Back wheel
-    var backWheel = vehicle.addWheel({
+    let backWheel = vehicle.addWheel({
         localPosition: [0, -0.5] // back
     });
     backWheel.setSideFriction(2.5); // Less side friction on back wheel makes it easier to drift
@@ -141,7 +141,15 @@ function applyMove(control, id) {
     clientCar.backWheel.setBrakeForce(breaking ? 5 : 0);
 }
 
+// p2 implementation of vehicle.removeFromWorld is buggy; doesn't remove the chassis
+function removeVehicle(vehicle) {
+    world.removeBody(vehicle.chassisBody);
+    vehicle.removeFromWorld();
+}
+
 function removeUser(id){
+    let car = raceCars.get(id);
+    removeVehicle(car.vehicle);
     raceCars.remove(id);
 }
 
