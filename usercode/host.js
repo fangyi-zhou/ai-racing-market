@@ -2,7 +2,25 @@ const child_process = require('child_process');
 const Child = require("./child");
 
 function processUserOutput(childId, data) {
+    data = String(data);
     console.log(`Child ${childId} Output: ${data}`);
+    let splatInput = data.split(" ");
+    switch (splatInput[0]) {
+        case "set":
+            switch (splatInput[1]) {
+                case "engineForce":
+                    const newEngineForce = parseFloat(splatInput[2]);
+                    console.log(`Set engineForce of ${childId} to ${newEngineForce}`);
+                    break;
+                case "steerValue":
+                    const newSteerValue = parseFloat(splatInput[2]);
+                    console.log(`Set engineForce of ${childId} to ${newSteerValue}`);
+                    break;
+            }
+            break;
+        default:
+            console.log(`Cannot decode ${data} from Child ${childId}`);
+    }
 }
 
 function writeToUserInput(childId, message) {
