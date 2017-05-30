@@ -28,7 +28,6 @@ map = new p2.Body({
     type: p2.Body.STATIC,
 });
 var map1 = require('./maps/map1.js')["map1"][0]
-console.log(map1)
 map.fromPolygon(map1);
 world.addBody(map);
 /*************Blame the p2 author for bad API design **************/
@@ -37,7 +36,6 @@ for(let i = 0; i<map.shapes.length;i++){
   map.shapes[i].collisionGroup = -1;
 }
 /*******************************************************************/
-console.log(map);
 
 // For now, set default friction between ALL objects
 // In future may wish to have it vary between objects

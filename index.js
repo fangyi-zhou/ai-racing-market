@@ -29,6 +29,9 @@ io.on('connection', function(socket){
         carWidth: raceBack.carWidth,
         carHeight: raceBack.carHeight
     });
+    socket.broadcast.emit('newPlayer',{
+        id:socket.id
+    });
 
     console.log('user connection, socket id = '+socket.id);
 
