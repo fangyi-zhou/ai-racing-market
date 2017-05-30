@@ -8,6 +8,7 @@ var carList = [];
 var numCars;
 var carWidth;
 var carHeight;
+var numRays;
 var wall_colour = 0xCDFF00
 
 // Create the PIXI renderer
@@ -53,7 +54,7 @@ function updateAllGraphics(info) {
             carList[i].carGraphic.position.x = info[i].position[0];
             carList[i].carGraphic.position.y = info[i].position[1];
             carList[i].carGraphic.rotation = info[i].angle;
-            for (let j = 0;j<5;j++) {
+            for (let j = 0;j<numRays;j++) {
                 var rayEnd = info[i].rayEnds[j];
                 carList[i].rayGraphics[j].currentPath.shape.points = [info[i].position[0], info[i].position[1], rayEnd[0], rayEnd[1]];
             }
@@ -69,17 +70,16 @@ function initWorld(info) {
     numCars = info.numCars;
     carWidth = info.carWidth;
     carHeight = info.carHeight;
-    console.log(numCars);
+    numRays = info.numRays;
     for (let i = 0; i < info.numCars; i++) {
-        carList.push(new RaceCarGraphic(info.carWidth, info.carHeight, container));
+        carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container));
     }
-
     this.map = info.map;
     drawMap(map);
 }
 
 // Abstract information required for car drawing
-function RaceCarGraphic(width, height, container) {
+function RaceCarGraphic(width, height, numRays, container) {
 
     this.width = width;
     this.height = height;
@@ -90,7 +90,7 @@ function RaceCarGraphic(width, height, container) {
     this.carGraphic.drawRect(-width / 2, -height / 2, width, height);
 
     this.rayGraphics = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < numRays; i++) {
         let rayGraphic = new PIXI.Graphics();
         rayGraphic.lineStyle(0.01, 0xfffff, 1);
         rayGraphic.moveTo(0, 0);

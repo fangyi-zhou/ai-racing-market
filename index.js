@@ -24,13 +24,7 @@ setInterval(function(){
 io.on('connection', function(socket){
     raceBack.addClient(socket.id);
     //send back the number of cars need to be rendered
-    io.to(socket.id).emit('carNumber',{
-        numCars:raceBack.allCarNumber(),
-        carWidth: raceBack.carWidth,
-        carHeight: raceBack.carHeight,
-
-        map: raceBack.getMap()
-    });
+    io.to(socket.id).emit('carNumber', raceBack.initIO());
     socket.broadcast.emit('newPlayer',{
         id:socket.id
     });

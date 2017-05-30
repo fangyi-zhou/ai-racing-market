@@ -8,20 +8,20 @@ const rays = require('./rays');
 
 // Hyperparameters
 var numCars = 5;
-var carMass = 1;
-var carWidth = 0.5;
-var carHeight = 1;
+const carMass = 1;
+const carWidth = 0.5;
+const carHeight = 1;
 
-var fixedTimeStep = 0.06;
-var raceCars = new hashMap();
-var maxSteer = Math.PI / 5;
+const fixedTimeStep = 0.06;
+const raceCars = new hashMap();
+const maxSteer = Math.PI / 5;
 // Create the world
-var world = new p2.World({
+const world = new p2.World({
     gravity : [0,0]
 });
 
 function createMapSegment (segment) {
-  map = new p2.Body({
+  let map = new p2.Body({
       mass : 1,
       position:[0,0],
       type: p2.Body.STATIC,
@@ -45,7 +45,6 @@ for (let p = 0; p < current_map.length; p++) {
 
 // Gets map to send to users
 function getMap() {
-  console.log(current_map_save)
   return current_map_save;
 }
 
@@ -54,7 +53,7 @@ function getMap() {
 world.defaultContactMaterial.friction = 0.001;
 
 function packageGraphics () {
-    var graphics_dict = [];
+    let graphics_dict = [];
     raceCars.forEach(function (raceCar, key) {
         graphics_dict.push ({
             position: raceCar.box_graphic.position,
@@ -67,11 +66,11 @@ function packageGraphics () {
 
 // Create p2 cars
 for (let i = 1; i <= numCars; i++) {
-    position = [i/2, i/2];
+    let position = [i/2, i/2];
     raceCars.set (i, new RaceCar.RaceCar (i,world, position, carWidth, carHeight, carMass));
 }
 function addClient(id){
-    var client = new RaceCar.RaceCar(raceCars.count()+1,world, [5,5], carWidth, carHeight, carMass);
+    let client = new RaceCar.RaceCar(raceCars.count()+1,world, [5,5], carWidth, carHeight, carMass);
     client.backWheel.engineForce = 0;
     client.frontWheel.steerValue = 0;
     raceCars.set(id, client);
@@ -82,7 +81,7 @@ function updateGraphics () {
     raceCars.forEach(function (value, key) {
         //update information of each racer.
         value.updateGraphics();
-        rays.drawRay(value,world);
+        rays.constructRays(value,RaceCar.numRays,world);
     });
 
 }
@@ -129,7 +128,7 @@ function removeUser(id){
 }
 
 function carCount(){
-    var num = raceCars.count();
+    let num = raceCars.count();
     return num;
 }
 
@@ -145,14 +144,20 @@ setInterval(function(){
     updateGraphics ();
 }, 1000/30);
 
+function initIO(){
+    return {
+        numCars:carCount(),
+        carWidth: carWidth,
+        carHeight: carHeight,
+        numRays: RaceCar.numRays,
+        map: getMap()
+    }
+}
 
 module.exports.packageGraphics = packageGraphics;
-module.exports.allCarNumber = carCount;
-module.exports.carWidth = carWidth;
-module.exports.carHeight = carHeight;
 module.exports.addClient = addClient;
 module.exports.updateMovement = updateMovement;
 module.exports.applyMove = applyMove;
 module.exports.removeUser= removeUser;
 module.exports.getCarById = getCarById;
-module.exports.getMap = getMap;
+module.exports.initIO = initIO;

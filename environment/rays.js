@@ -1,20 +1,20 @@
 /**
  * Created by ruiaohu on 29/05/2017.
  */
-var p2 = require('p2');
-var result = new p2.RaycastResult();
-var hitPoint = p2.vec2.create();
-var rayLength = 5;
+const p2 = require('p2');
+const result = new p2.RaycastResult();
+const hitPoint = p2.vec2.create();
+const rayLength = 5;
 
 
-function drawRay(car, world){
+function constructRays(car,numRays, world){
     //Update ray for Car
     //**** hardcoded number 5 *****//
-    var angleBase = -Math.PI/2;
-    for(let i = 0; i < 5;i++){
-        var ray = car.rays[i];
+    let angleBase = -Math.PI/2;
+    for(let i = 0; i < numRays;i++){
+        let ray = car.rays[i];
         p2.vec2.copy(ray.from, car.vehicle.chassisBody.position);
-        let end = findRayEnd(car.vehicle.chassisBody.position,car.vehicle.chassisBody.angle,angleBase+i*Math.PI/4);
+        let end = findRayEnd(car.vehicle.chassisBody.position,car.vehicle.chassisBody.angle,angleBase+i*Math.PI/(numRays-1));
         p2.vec2.copy(ray.to, end);
         ray.update();
         result.reset();
@@ -32,10 +32,10 @@ function drawRay(car, world){
 
 function findRayEnd(start, ori, angle){
     let localAngle = -(ori - angle);
-    var end = [];
+    let end = [];
     end.push(start[0]+Math.sin(localAngle)*rayLength);
     end.push(start[1]+Math.cos(localAngle)*rayLength);
     return end;
 }
 
-module.exports.drawRay = drawRay;
+module.exports.constructRays = constructRays;

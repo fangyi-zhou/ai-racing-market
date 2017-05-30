@@ -1,7 +1,7 @@
 const p2 = require('p2');
 const graphicsFormat = require('./GraphicsFormat');
 //fix numRays
-const numRays = 5;
+const numRays = 10;
 
 
 // Race Car
@@ -76,3 +76,4 @@ function p2RaceCar(id,world, position, width, height, mass) {
 
 
 module.exports.RaceCar = RaceCar;
+module.exports.numRays = numRays;
