@@ -21,21 +21,34 @@ var world = new p2.World({
     gravity : [0,0]
 });
 
-// Create a concave body
-map = new p2.Body({
-    mass : 1,
-    position:[0,0],
-    type: p2.Body.STATIC,
-});
-var map1 = require('./maps/map1.js')["map1"][0]
-map.fromPolygon(map1);
-world.addBody(map);
-/*************Blame the p2 author for bad API design **************/
-for(let i = 0; i<map.shapes.length;i++){
-  map.shapes[i].collisionMask = -1;
-  map.shapes[i].collisionGroup = -1;
+function createMapSegment (segment) {
+  map = new p2.Body({
+      mass : 1,
+      position:[0,0],
+      type: p2.Body.STATIC,
+  });
+  map.fromPolygon(segment);
+  world.addBody(map);
+
+  /*************Blame the p2 author for bad API design **************/
+  for(let i = 0; i<map.shapes.length;i++){
+    map.shapes[i].collisionMask = -1;
+    map.shapes[i].collisionGroup = -1;
+  }
+  /*******************************************************************/
 }
-/*******************************************************************/
+
+var current_map = require('./maps/map1.js')["map1"]
+var current_map_save = JSON.parse(JSON.stringify(current_map)); // Required since p2 manipulates array
+for (let p = 0; p < current_map.length; p++) {
+  createMapSegment(current_map[p])
+}
+
+// Gets map to send to users
+function getMap() {
+  console.log(current_map_save)
+  return current_map_save;
+}
 
 // For now, set default friction between ALL objects
 // In future may wish to have it vary between objects
@@ -211,3 +224,4 @@ module.exports.updateMovement = updateMovement;
 module.exports.applyMove = applyMove;
 module.exports.removeUser= removeUser;
 module.exports.getCarById = getCarById;
+module.exports.getMap = getMap;

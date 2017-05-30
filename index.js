@@ -27,7 +27,9 @@ io.on('connection', function(socket){
     io.to(socket.id).emit('carNumber',{
         numCars:raceBack.allCarNumber(),
         carWidth: raceBack.carWidth,
-        carHeight: raceBack.carHeight
+        carHeight: raceBack.carHeight,
+
+        map: raceBack.getMap()
     });
     socket.broadcast.emit('newPlayer',{
         id:socket.id
@@ -52,5 +54,3 @@ io.on('connection', function(socket){
         raceBack.updateMovement(info, socket.id);
     });
 });
-
-

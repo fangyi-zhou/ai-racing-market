@@ -3,7 +3,8 @@
 <head>
   <title>Test demo - p2.js physics engine</title>
   <script src="../node_modules/p2/build/p2.js"></script>
-  <script src="../node_modules/p2/demos/js/pixi.js"></script>
+  <!-- <script src="../node_modules/p2/demos/js/pixi.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
   <script src="RaceCar.js"></script>
   <meta name="description" content="">
   <meta charset="utf-8">
@@ -15,7 +16,7 @@
     var num_cars = 5;
     var car_mass = 1;
     var car_width = 0.5;
-    var car_height = 1.3;
+    var car_height = 1;
     var raceCars = [];
     var fixedTimeStep = 0.01;
     graphics = new PIXI.Graphics();
@@ -23,7 +24,7 @@
 
     // Create the PIXI renderer
     // var renderer = PIXI.autoDetectRenderer(600, 400),
-    var renderer = PIXI.autoDetectRenderer(800, 450, null, false, true),
+    var renderer = PIXI.autoDetectRenderer(1000, 800, null, true, true),
     stage = new PIXI.Stage(0xFFFFAA);
     container = new PIXI.DisplayObjectContainer(),
     stage.addChild(container);
@@ -41,6 +42,33 @@
         raceCars[i].updateGraphics ();
       }
     }
+
+    // Test
+    x = new PIXI.Graphics ();
+    // x.drawPolygon ([1, 2, 3, 4])
+    x.beginFill(0x00FF00, 0.3);
+    x.lineStyle ( 0.01 , 0x00FF00,  1);
+
+    // x.drawEllipse(0s, 0, 10, 10)
+    function flatten_map (map) {
+      flattened_map = []
+      for (let i = 0; i < map.length; i++) {
+        flattened_map.push(map[i][0])
+        flattened_map.push(map[i][1])
+      }
+      return flattened_map;
+    }
+    path = [-11.5, 8.5, 11.5, 8.5, 11.5, 0.5, -7, 0.5, -7, -0.5, -7, -4.5, 11.5, -4.5, 11.5, -5.5, -8, -5.5, -8, 1.5, 10.5, 1.5, 10.5, 7.5, -11.5, 7.5]
+    x.drawPolygon(path);
+    container.addChild(x);
+
+    path2 = [-11.5, 5, 8, 5, 8, 4, -10.5, 4, -10.5, -8, 11.5, -8, 11.5, -9, -11.5, -9]
+    y = new PIXI.Graphics ();
+    y.beginFill(0x00FF00, 0.3);
+    y.lineStyle ( 0.01 , 0x00FF00,  1);
+    y.drawPolygon(path2);
+    container.addChild(y);
+
 
     // Create the world
     var world = new p2.World({

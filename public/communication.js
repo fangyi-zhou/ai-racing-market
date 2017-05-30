@@ -10,7 +10,7 @@ function serverCallBack(){
     });
 
     socket.on('carNumber', function (info) {
-        initCars(info);
+        initWorld(info);
     });
 
     socket.on('dc', function (info) {
