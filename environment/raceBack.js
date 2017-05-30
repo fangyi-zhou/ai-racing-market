@@ -12,7 +12,7 @@ const carWidth = 0.5;
 const carHeight = 1;
 
 const fixedTimeStep = 0.06;
-const raceCars = new hashMap();
+const raceCars = new hashMap.HashMap();
 const maxSteer = Math.PI / 5;
 // Create the world
 const world = new p2.World({
@@ -36,8 +36,8 @@ function createMapSegment (segment) {
   /*******************************************************************/
 }
 
-var current_map = require('./maps/map1.js')["map1"]
-var current_map_save = JSON.parse(JSON.stringify(current_map)); // Required since p2 manipulates array
+const current_map = require('./maps/map1.js')["map1"]
+const current_map_save = JSON.parse(JSON.stringify(current_map)); // Required since p2 manipulates array
 for (let p = 0; p < current_map.length; p++) {
   createMapSegment(current_map[p])
 }
