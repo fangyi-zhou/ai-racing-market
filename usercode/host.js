@@ -42,16 +42,15 @@ function writeToUserInput(childId, message) {
     child.child_in.write(message + "\n");
 }
 
-const processes = [];
-for (let i = 0; i < 5; i++) {
-    let process = new Child.Child(1);
-    process.child_out.on("data", (data) => {
-        processUserOutput(process.childId, data);
-    });
-    processes.push(process);
-    console.log(`Create child ${i}`);
+function addAiCar(numAi) {
+    for (let i = 0; i < numAi; i++) {
+        raceBack.addClient(`Child_${i}`);
+        let process = new Child.Child(1, `Child_${i}`);
+        process.child_out.on("data", (data) => {
+            processUserOutput(process.childId, data);
+        });
+        console.log(`Create child ${i}`);
+    }
 }
 
-processes.forEach((child, _) => {
-    writeToUserInput(child.childId, `I am child ${child.childId}`);
-});
+module.exports.addAiCar = addAiCar;
