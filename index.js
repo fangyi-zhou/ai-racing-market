@@ -4,12 +4,14 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 1024;
 
+const host = require('./usercode/host');
 var isFirst =1;
 
 var raceBack = require('./environment/raceBack.js');
 
 server.listen(port, function () {
     console.log('Server listening at port %d', port);
+    host.addAiCar(1);
 });
 
 // Routing
