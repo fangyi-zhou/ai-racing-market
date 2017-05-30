@@ -25,7 +25,7 @@ function processUserOutput(carId, data) {
                 case "steerValue":
                     const newSteerValue = parseFloat(splatInput[2]);
                     control["steerValue"] = newSteerValue;
-                    console.log(`Set engineForce of ${carId} to ${newSteerValue}`);
+                    console.log(`Set steerValue of ${carId} to ${newSteerValue}`);
                     break;
                 default:
                     console.error(`Cannot set ${splatInput[1]} for Child ${carId}`)
