@@ -18,8 +18,9 @@ let children = new Hashmap.HashMap();
 let CHILD_ID_COUNT = 0;
 
 class Child {
-    constructor(scriptId) {
+    constructor(scriptId, carId) {
         this.scriptId = scriptId;
+        this.carId = carId;
         // Get script
         this.script = getScriptByScriptId(scriptId);
         this.childId = CHILD_ID_COUNT++;
