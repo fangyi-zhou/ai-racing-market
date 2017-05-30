@@ -21,7 +21,7 @@ time.sleep(10)\n\
 let children = new Hashmap.HashMap();
 
 class Child {
-    constructor(scriptId, carId) {
+    constructor(scriptId, carId, initPosition) {
         this.scriptId = scriptId;
         this.carId = carId;
         // Get script
@@ -34,7 +34,7 @@ class Child {
         });
         this.child_in = process.stdin;
         this.child_out = process.stdout;
-        let car = raceBack.addClient(this.carId);
+        let car = raceBack.addRaceCar(this.carId, initPosition);
         process.on("exit", () => {
             console.log(`child ${this.carId} exited`);
             children.remove(this.carId);

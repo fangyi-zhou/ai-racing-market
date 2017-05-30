@@ -62,7 +62,7 @@ function writeToUserInput(carId, message) {
 
 function addAiCar(numAi) {
     for (let i = 0; i < numAi; i++) {
-        new Child.Child(1, `Child_${i}`);
+        new Child.Child(1, `Child_${i}`, [1, 1]);
         console.log(`Create child ${i}`);
     }
 }
