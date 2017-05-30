@@ -132,15 +132,20 @@ function updateMovement(keys, id){
 
 function applyMove(control, id) {
     let clientCar = raceCars.get(id);
-    if (clientCar === null || clientCar === undefined) return;
+    if (clientCar === null || clientCar === undefined) {
+        console.error(`Applying a move to null car ${id}`);
+        return;
+    }
     // Steer value zero means straight forward. Positive is left and negative right.
     if (control["steerValue"] !== undefined && control["steerValue"] !== null) {
-        clientCar.frontWheel.steerValue = maxSteer * Math.min(Math.max(control["steerValue"], -1), 1);
+        let steerValue = maxSteer * Math.min(Math.max(control["steerValue"], -1), 1);
+        clientCar.frontWheel.steerValue = steerValue;
     }
     if (control["engineForce"] !== undefined && control["engineForce"] !== null) {
-        clientCar.backWheel.engineForce = Math.min(Math.max(control["engineForce"], -0.5), 1);
-        let breaking = (clientCar.backWheel.getSpeed() > 0.1 && control["engineForce"] < 0)
-            || (clientCar.backWheel.getSpeed() < -0.1 && control["engineForce"] > 0);
+        let engineForce = Math.min(Math.max(control["engineForce"], -0.5), 1);
+        clientCar.backWheel.engineForce = engineForce;
+        let breaking = (clientCar.backWheel.getSpeed() > 0.1 && engineForce < 0)
+            || (clientCar.backWheel.getSpeed() < -0.1 && engineForce > 0);
         clientCar.backWheel.setBrakeForce(breaking ? 5 : 0);
     }
 }
