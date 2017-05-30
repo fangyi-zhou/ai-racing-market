@@ -4,6 +4,10 @@ const raceBack = require("../environment/raceBack");
 
 function processUserOutput(childId, data) {
     const child = Child.getChildByChildId(childId);
+    if (child === null || child === undefined) {
+        console.error(`Attempting to read input from child ${childId}`);
+        return;
+    }
     data = String(data);
     console.log(`Child ${childId} Output: ${data}`);
     let splatInput = data.split(" ");
@@ -25,18 +29,17 @@ function processUserOutput(childId, data) {
             raceBack.applyMove(control, child.carId);
             break;
         default:
-            console.log(`Cannot decode ${data} from Child ${childId}`);
+            console.error(`Cannot decode ${data} from Child ${childId}`);
     }
 }
 
 function writeToUserInput(childId, message) {
     const child = Child.getChildByChildId(childId);
-    if (child === null || child === undefined)
-        console.log(`Null child ${childId}`);
-    else {
-        child.child_in.write(message + "\n");
+    if (child === null || child === undefined) {
+        console.error(`Attempting to write to null child ${childId}`);
+        return;
     }
-
+    child.child_in.write(message + "\n");
 }
 
 const processes = [];
