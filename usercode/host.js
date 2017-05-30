@@ -1,22 +1,28 @@
 const child_process = require('child_process');
 const Child = require("./child");
+const raceBack = require("../environment/raceBack");
 
 function processUserOutput(childId, data) {
+    const child = Child.getChildByChildId(childId);
     data = String(data);
     console.log(`Child ${childId} Output: ${data}`);
     let splatInput = data.split(" ");
+    let control = {};
     switch (splatInput[0]) {
         case "set":
             switch (splatInput[1]) {
                 case "engineForce":
                     const newEngineForce = parseFloat(splatInput[2]);
+                    control["engineForce"] = newEngineForce;
                     console.log(`Set engineForce of ${childId} to ${newEngineForce}`);
                     break;
                 case "steerValue":
                     const newSteerValue = parseFloat(splatInput[2]);
+                    control["steerValue"] = newSteerValue;
                     console.log(`Set engineForce of ${childId} to ${newSteerValue}`);
                     break;
             }
+            raceBack.applyMove(control, child.carId);
             break;
         default:
             console.log(`Cannot decode ${data} from Child ${childId}`);
