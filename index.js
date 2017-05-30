@@ -48,3 +48,11 @@ io.on('connection', function (socket) {
         raceBack.updateMovement(info, socket.id);
     });
 });
+
+function aiDisconnect(aiName) {
+    io.local.emit('dc', {
+        id: aiName
+    });
+};
+
+module.exports.aiDisconnect = aiDisconnect;
