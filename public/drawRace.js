@@ -10,7 +10,6 @@ var numCars;
 // Create the PIXI renderer
 // var renderer = PIXI.autoDetectRenderer(600, 400),
 var renderer = PIXI.autoDetectRenderer(1000, 800, null, true);
-console.log(renderer);
 var stage = new PIXI.Stage(0xFFFFAA);
 var container = new PIXI.DisplayObjectContainer();
 stage.addChild(container);
@@ -48,7 +47,6 @@ function initCars(info) {
     console.log(numCars);
     for (let i = 0; i < info.numCars; i++) {
         carList.push(new RaceCarGraphic(info.carWidth, info.carHeight, container));
-        console.log('foo');
     }
 }
 
@@ -72,6 +70,13 @@ function RaceCarGraphic(width, height, container) {
         container.addChild(rayGraphic);
         this.rayGraphics.push(rayGraphic);
     }
-
     container.addChild(this.carGraphic);
+}
+
+function removeUser(){
+    let car = carList.pop();
+    for(let ray_id in car.rayGraphics){
+        container.removeChild(car.rayGraphics[ray_id]);
+    }
+    container.removeChild(car.carGraphic);
 }

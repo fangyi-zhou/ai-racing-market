@@ -12,6 +12,10 @@ function serverCallBack(){
     socket.on('carNumber', function (info) {
         initCars(info);
     });
+
+    socket.on('dc', function (info) {
+        removeUser();
+    })
 }
 // Key controls
 var keys = {

@@ -6,11 +6,13 @@ function getScriptByScriptId(scriptId) {
     // TODO: Query the database for script
     return "import time\n\
 import sys\n\
+time.sleep(10)\n\
 print \"set engineForce 1.0\"\n\
 sys.stdout.flush()\n\
 time.sleep(1)\n\
 print \"set engineForce -0.5\"\n\
 sys.stdout.flush()\n\
+time.sleep(10)\n\
 "
 }
 
@@ -18,8 +20,9 @@ let children = new Hashmap.HashMap();
 let CHILD_ID_COUNT = 0;
 
 class Child {
-    constructor(scriptId) {
+    constructor(scriptId, carId) {
         this.scriptId = scriptId;
+        this.carId = carId;
         // Get script
         this.script = getScriptByScriptId(scriptId);
         this.childId = CHILD_ID_COUNT++;

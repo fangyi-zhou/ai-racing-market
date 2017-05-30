@@ -87,7 +87,7 @@ function p2RaceCar(id,world, position, width, height, mass) {
         mass: mass,
         position: position,
     });
-    var boxShape = new p2.Box({
+    let boxShape = new p2.Box({
         width: width,
         height: height,
         collisionGroup:Math.pow(2,id),
@@ -97,16 +97,16 @@ function p2RaceCar(id,world, position, width, height, mass) {
     world.addBody(chassisBody);
 
     // Create the vehicle
-    var vehicle = new p2.TopDownVehicle(chassisBody);
+    let vehicle = new p2.TopDownVehicle(chassisBody);
 
     // Add one front wheel and one back wheel
-    var frontWheel = vehicle.addWheel({
+    let frontWheel = vehicle.addWheel({
         localPosition: [0, 0.5] // front
     });
     frontWheel.setSideFriction(4);
 
     // Back wheel
-    var backWheel = vehicle.addWheel({
+    let backWheel = vehicle.addWheel({
         localPosition: [0, -0.5] // back
     });
     backWheel.setSideFriction(2.5); // Less side friction on back wheel makes it easier to drift
@@ -151,16 +151,33 @@ function updateMovement(keys, id){
 
 function applyMove(control, id) {
     let clientCar = raceCars.get(id);
-    if (clientCar === null || clientCar === undefined) return;
+    if (clientCar === null || clientCar === undefined) {
+        console.error(`Applying a move to null car ${id}`);
+        return;
+    }
     // Steer value zero means straight forward. Positive is left and negative right.
-    clientCar.frontWheel.steerValue = maxSteer * Math.min(Math.max(control["steerValue"], -1), 1);
-    clientCar.backWheel.engineForce = Math.min(Math.max(control["engineForce"], -0.5), 1);
-    let breaking = (clientCar.backWheel.getSpeed() > 0.1 && control["engineForce"] < 0)
-        || (clientCar.backWheel.getSpeed() < -0.1 && control["engineForce"] > 0);
-    clientCar.backWheel.setBrakeForce(breaking ? 5 : 0);
+    if (control["steerValue"] !== undefined && control["steerValue"] !== null) {
+        let steerValue = maxSteer * Math.min(Math.max(control["steerValue"], -1), 1);
+        clientCar.frontWheel.steerValue = steerValue;
+    }
+    if (control["engineForce"] !== undefined && control["engineForce"] !== null) {
+        let engineForce = Math.min(Math.max(control["engineForce"], -0.5), 1);
+        clientCar.backWheel.engineForce = engineForce;
+        let breaking = (clientCar.backWheel.getSpeed() > 0.1 && engineForce < 0)
+            || (clientCar.backWheel.getSpeed() < -0.1 && engineForce > 0);
+        clientCar.backWheel.setBrakeForce(breaking ? 5 : 0);
+    }
+}
+
+// p2 implementation of vehicle.removeFromWorld is buggy; doesn't remove the chassis
+function removeVehicle(vehicle) {
+    world.removeBody(vehicle.chassisBody);
+    vehicle.removeFromWorld();
 }
 
 function removeUser(id){
+    let car = raceCars.get(id);
+    removeVehicle(car.vehicle);
     raceCars.remove(id);
 }
 
