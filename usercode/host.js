@@ -12,8 +12,10 @@ function processUserOutput(childId, data) {
     console.log(`Child ${childId} Output: ${data}`);
     let splatInput = data.split(" ");
     let control = {};
+    if (splatInput.length === 0) return;
     switch (splatInput[0]) {
         case "set":
+            if (splatInput.length < 3) return;
             switch (splatInput[1]) {
                 case "engineForce":
                     const newEngineForce = parseFloat(splatInput[2]);
@@ -25,6 +27,8 @@ function processUserOutput(childId, data) {
                     control["steerValue"] = newSteerValue;
                     console.log(`Set engineForce of ${childId} to ${newSteerValue}`);
                     break;
+                default:
+                    console.error(`Cannot set ${splatInput[1]} for Child ${childId}`)
             }
             raceBack.applyMove(control, child.carId);
             break;
