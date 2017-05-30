@@ -67,7 +67,12 @@ function RaceCar (id, world, position, width, height, mass) {
         this.box_graphic.position = this.vehicle.chassisBody.position;
         this.box_graphic.angle = this.vehicle.chassisBody.angle;
     }
+
+    this.getSpeed() = () => {
+        return this.backWheel.getSpeed();
+    }
 }
+
 function packageGraphics () {
     var graphics_dict = [];
     raceCars.forEach(function (raceCar, key) {
@@ -186,6 +191,10 @@ function carCount(){
     return num;
 }
 
+function getCarById(carId) {
+    return raceCars.get(carId);
+}
+
 // Loop the program
 setInterval(function(){
     world.step(fixedTimeStep);
@@ -203,3 +212,4 @@ module.exports.addClient = addClient;
 module.exports.updateMovement = updateMovement;
 module.exports.applyMove = applyMove;
 module.exports.removeUser= removeUser;
+module.exports.getCarById = getCarById;
