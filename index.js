@@ -1,11 +1,11 @@
-var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-var port = process.env.PORT || 1024;
+const express = require('express');
+const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+const port = process.env.PORT || 1024;
 
 const host = require('./usercode/host');
-var raceBack = require('./environment/raceBack.js');
+const raceBack = require('./environment/raceBack.js');
 
 server.listen(port, function () {
     console.log('Server listening at port %d', port);
