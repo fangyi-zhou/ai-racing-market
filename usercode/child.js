@@ -34,19 +34,24 @@ class Child {
         const process = child_process.spawn("python", [filePath], {
             stdio: ['pipe', 'pipe', 'pipe']
         });
-        this.child_in = process.stdin;
-        this.child_out = process.stdout;
+        this.writable = true;
+        this.write = function (data) {
+            if (this.writable) process.stdin.write(data + "\n");
+        };
         let car = raceBack.addRaceCar(this.carId, initPosition);
         process.on("exit", () => {
             console.log(`child ${this.carId} exited`);
             childExit(this.carId);
         });
         process.stdout.on("data", (data) => {
-            host.processUserOutput(this.carId, data);
+            host.processUserOutput(this, data);
         });
         process.stdout.on("error", (err) => {
             console.error(err);
             childExit(this.carId);
+        });
+        process.stdin.on("close", () => {
+            this.writable = false;
         });
         process.stdin.on("error", (err) => {
             console.error(err);

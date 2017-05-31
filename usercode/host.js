@@ -2,18 +2,19 @@ const child_process = require('child_process');
 const Child = require("./child");
 const raceBack = require("../environment/raceBack");
 
-function processGetCommand(carId, car, splatInput) {
+function processGetCommand(child, splatInput) {
+    const car = child.car;
     if (car === undefined || car === null) {
         console.error(`Cannot find car with carId ${child.carId}`);
     }
     switch (splatInput[1]) {
         case "speed":
-            writeToUserInput(carId, car.getSpeed());
+            child.write(car.getSpeed());
             break;
         case "rays":
             const rayDists = car.rayDists;
             rayDists.forEach((value, idx) => {
-                writeToUserInput(carId, `${idx} ${value}`);
+                child.write(`${idx} ${value}`);
             });
             break;
         default:
@@ -49,33 +50,18 @@ function processSingleCommand(child, data) {
             processSetCommand(child, splatInput);
             break;
         case "get":
-            const car = child.car;
-            processGetCommand(carId, car, splatInput);
+            processGetCommand(child, splatInput);
             break;
         default:
             console.error(`Cannot decode ${data} from Child ${carId}`);
     }
 }
 
-function processUserOutput(carId, data) {
-    const child = Child.getChildByCarId(carId);
-    if (child === null || child === undefined) {
-        console.error(`Attempting to read input from child ${carId}`);
-        return;
-    }
+function processUserOutput(child, data) {
     const lines = String(data).split(/\r?\n/);
     lines.forEach((line) => {
         processSingleCommand(child, line);
     })
-}
-
-function writeToUserInput(carId, message) {
-    const child = Child.getChildByCarId(carId);
-    if (child === null || child === undefined) {
-        console.error(`Attempting to write to null child ${carId}`);
-        return;
-    }
-    child.child_in.write(message + "\n");
 }
 
 function addAiCar(numAi) {
