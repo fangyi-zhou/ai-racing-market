@@ -7,14 +7,15 @@ const hitPoint = p2.vec2.create();
 const rayLength = 5;
 
 
-function constructRays(car,numRays, world){
+function constructRays(car, numRays, world){
     //Update ray for Car
-    //**** hardcoded number 5 *****//
-    let angleBase = -Math.PI/2;
-    for(let i = 0; i < numRays;i++){
+    let angleBase = -Math.PI / 2;
+    for(let i = 0; i < numRays; i++){
         let ray = car.rays[i];
-        p2.vec2.copy(ray.from, car.vehicle.chassisBody.position);
-        let end = findRayEnd(car.vehicle.chassisBody.position,car.vehicle.chassisBody.angle,angleBase+i*Math.PI/(numRays-1));
+        const carPosition = car.getPosition();
+        const carAngle = car.getAngle();
+        p2.vec2.copy(ray.from, carPosition);
+        const end = findRayEnd(carPosition, carAngle, angleBase + i * Math.PI / (numRays - 1));
         p2.vec2.copy(ray.to, end);
         ray.update();
         result.reset();
@@ -23,7 +24,7 @@ function constructRays(car,numRays, world){
         world.raycast(result, ray);
         result.getHitPoint(hitPoint, ray);
         car.rayEnds[i] = end;
-        if(result.hasHit()){
+        if (result.hasHit()) {
             p2.vec2.copy(car.rayEnds[i], hitPoint);
         }
     }
