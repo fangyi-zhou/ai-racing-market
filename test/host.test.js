@@ -46,5 +46,10 @@ describe("Host", function() {
             host.processUserOutput(0, "set engineForce 0.1");
             assert.equal(output[0].engineForce, 0.1, "engineForce");
         });
+        it("Should be able to process a series of commands separated by \\n", function() {
+            host.processUserOutput(0, "get speed\nget speed\n");
+            assert.equal(output[0], "0.5\n", "speed 1");
+            assert.equal(output[1], "0.5\n", "speed 2");
+        })
     })
 });
