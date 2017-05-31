@@ -11,6 +11,8 @@ function getScriptByScriptId(scriptId) {
 import sys\n\
 time.sleep(10)\n\
 print \"set engineForce 1.0\"\n\
+print \"get speed\"\n\
+print \"get rays\"\n\
 sys.stdout.flush()\n\
 time.sleep(1)\n\
 print \"set engineForce -0.5\"\n\
@@ -29,24 +31,41 @@ class Child {
         this.script = getScriptByScriptId(scriptId);
         children.set(this.carId, this);
         const filePath = tempWrite.sync(this.script);
-        console.log(filePath);
         const process = child_process.spawn("python", [filePath], {
             stdio: ['pipe', 'pipe', 'pipe']
         });
-        this.child_in = process.stdin;
-        this.child_out = process.stdout;
+        this.writable = true;
+        this.write = function (data) {
+            if (this.writable) process.stdin.write(data + "\n");
+        };
         let car = raceBack.addRaceCar(this.carId, initPosition);
         process.on("exit", () => {
             console.log(`child ${this.carId} exited`);
-            children.remove(this.carId);
-            raceBack.removeUser(this.carId);
-            serve.aiDisconnect(this.carId);
+            childExit(this.carId);
         });
         process.stdout.on("data", (data) => {
-            host.processUserOutput(this.carId, data);
+            host.processUserOutput(this, data);
+        });
+        process.stdout.on("error", (err) => {
+            console.error(err);
+            childExit(this.carId);
+        });
+        process.stdin.on("close", () => {
+            this.writable = false;
+        });
+        process.stdin.on("error", (err) => {
+            this.writable = false;
+            console.error(err);
+            childExit(this.carId);
         });
         this.car = car;
     }
+}
+
+function childExit(carId) {
+    children.remove(carId);
+    raceBack.removeUser(carId);
+    serve.aiDisconnect(carId);
 }
 
 function getChildByCarId(carId) {

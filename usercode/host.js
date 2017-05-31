@@ -2,62 +2,66 @@ const child_process = require('child_process');
 const Child = require("./child");
 const raceBack = require("../environment/raceBack");
 
-function processUserOutput(carId, data) {
-    const child = Child.getChildByCarId(carId);
-    if (child === null || child === undefined) {
-        console.error(`Attempting to read input from child ${carId}`);
-        return;
+function processGetCommand(child, splatInput) {
+    const car = child.car;
+    if (car === undefined || car === null) {
+        console.error(`Cannot find car with carId ${child.carId}`);
     }
-    data = String(data);
-    console.log(`Child ${carId} Output: ${data}`);
-    let splatInput = data.split(" ");
+    switch (splatInput[1]) {
+        case "speed":
+            child.write(car.getSpeed());
+            break;
+        case "rays":
+            const rayDists = car.rayDists;
+            rayDists.forEach((value, idx) => {
+                child.write(`${idx} ${value}`);
+            });
+            break;
+        default:
+            console.error(`Cannot get ${splatInput[1]} for Child ${carId}`)
+    }
+}
+
+function processSetCommand(child, splatInput) {
     let control = {};
-    if (splatInput.length === 0) return;
+    const carId = child.carId;
+    if (splatInput.length < 3) return;
+    switch (splatInput[1]) {
+        case "engineForce":
+            const newEngineForce = parseFloat(splatInput[2]);
+            control["engineForce"] = newEngineForce;
+            break;
+        case "steerValue":
+            const newSteerValue = parseFloat(splatInput[2]);
+            control["steerValue"] = newSteerValue;
+            break;
+        default:
+            console.error(`Cannot set ${splatInput[1]} for Child ${carId}`)
+    }
+    raceBack.applyMove(control, child.carId);
+}
+
+function processSingleCommand(child, data) {
+    const carId = child.carId;
+    let splatInput = data.split(/\s+/);
+    if (splatInput.length < 2) return;
     switch (splatInput[0]) {
         case "set":
-            if (splatInput.length < 3) return;
-            switch (splatInput[1]) {
-                case "engineForce":
-                    const newEngineForce = parseFloat(splatInput[2]);
-                    control["engineForce"] = newEngineForce;
-                    console.log(`Set engineForce of ${carId} to ${newEngineForce}`);
-                    break;
-                case "steerValue":
-                    const newSteerValue = parseFloat(splatInput[2]);
-                    control["steerValue"] = newSteerValue;
-                    console.log(`Set steerValue of ${carId} to ${newSteerValue}`);
-                    break;
-                default:
-                    console.error(`Cannot set ${splatInput[1]} for Child ${carId}`)
-            }
-            raceBack.applyMove(control, child.carId);
+            processSetCommand(child, splatInput);
             break;
         case "get":
-            if (splatInput.length < 2) return;
-            const car = child.car;
-            if (car === undefined || car === null) {
-                console.error(`Cannot find car with carId ${child.carId}`);
-            }
-            switch (splatInput[1]) {
-                case "speed":
-                    writeToUserInput(carId, car.getSpeed());
-                    break;
-                default:
-                    console.error(`Cannot get ${splatInput[1]} for Child ${carId}`)
-            }
+            processGetCommand(child, splatInput);
             break;
         default:
             console.error(`Cannot decode ${data} from Child ${carId}`);
     }
 }
 
-function writeToUserInput(carId, message) {
-    const child = Child.getChildByCarId(carId);
-    if (child === null || child === undefined) {
-        console.error(`Attempting to write to null child ${carId}`);
-        return;
-    }
-    child.child_in.write(message + "\n");
+function processUserOutput(child, data) {
+    const lines = String(data).split(/\r?\n/);
+    lines.forEach((line) => {
+        processSingleCommand(child, line);
+    })
 }
 
 function addAiCar(numAi) {

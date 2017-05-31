@@ -21,7 +21,8 @@ class RaceCar {
             }));
         }
 
-        this.rayEnds = [null, null, null, null, null];
+        this.rayEnds = [];
+        this.rayDists = [];
 
         this.box_graphic = new graphicsFormat.RaceCarGraphic(position, 0, width, height);
 
@@ -33,6 +34,14 @@ class RaceCar {
 
         this.getSpeed = () => {
             return this.backWheel.getSpeed();
+        };
+
+        this.getPosition = () => {
+            return this.vehicle.chassisBody.position;
+        };
+
+        this.getAngle = () => {
+            return this.vehicle.chassisBody.angle;
         }
     }
 }

@@ -126,7 +126,8 @@ function removeVehicle(vehicle) {
 
 function removeUser(id){
     let car = raceCars.get(id);
-    removeVehicle(car.vehicle);
+    if (car !== undefined && car !== null)
+        removeVehicle(car.vehicle);
     raceCars.remove(id);
 }
 
