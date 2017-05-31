@@ -54,6 +54,7 @@ class Child {
             this.writable = false;
         });
         process.stdin.on("error", (err) => {
+            this.writable = false;
             console.error(err);
             childExit(this.carId);
         });
