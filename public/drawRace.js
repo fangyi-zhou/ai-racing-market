@@ -59,7 +59,6 @@ function updateAllGraphics(info) {
             if (clientCarID == info[i].clientID) {
               container.position.x = -carList[i].carGraphic.position.x * zoom + renderer.width/2; // center at origin
               container.position.y = carList[i].carGraphic.position.y * zoom + renderer.height/2;
-              console.log(carList[i].carGraphic.position.y)
             }
 
             for (let j = 0; j < numRays; j++) {
