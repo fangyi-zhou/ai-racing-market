@@ -10,6 +10,12 @@ function processGetCommand(carId, car, splatInput) {
         case "speed":
             writeToUserInput(carId, car.getSpeed());
             break;
+        case "rays":
+            const rayDists = car.rayDists;
+            rayDists.forEach((value, idx) => {
+                writeToUserInput(carId, `${idx} ${value}`);
+            });
+            break;
         default:
             console.error(`Cannot get ${splatInput[1]} for Child ${carId}`)
     }
