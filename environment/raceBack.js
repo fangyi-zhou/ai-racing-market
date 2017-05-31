@@ -58,21 +58,23 @@ function packageGraphics () {
             position: raceCar.box_graphic.position,
             angle: raceCar.box_graphic.angle,
             rayEnds: raceCar.rayEnds,
-            colour: raceCar.colour
+            colour: raceCar.colour,
+            clientID: raceCar.clientID
         })
     });
     return graphics_dict;
 }
 
-function addRaceCar(id, position) {
-    let car = new RaceCar.RaceCar(raceCars.count()+1, world, position, carWidth, carHeight, carMass);
+function addRaceCar(clientID, position) {
+    let car = new RaceCar.RaceCar(raceCars.count()+1, clientID, world, position, carWidth, carHeight, carMass);
     car.frontWheel.steerValue = 0;
     car.backWheel.engineForce = 0;
-    raceCars.set(id, car);
+    raceCars.set(clientID, car);
     return car;
 }
 
 function addClient(id){
+    console.log('USER', id)
     const initPosition = [5, 5];
     addRaceCar(id, initPosition);
 }
@@ -145,13 +147,14 @@ setInterval(function(){
     updateGraphics ();
 }, 1000/30);
 
-function initIO(){
+function initIO(clientID){
     return {
         numCars:carCount(),
         carWidth: carWidth,
         carHeight: carHeight,
         numRays: RaceCar.numRays,
-        map: getMap()
+        map: getMap(),
+        id: clientID
     }
 }
 

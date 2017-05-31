@@ -25,7 +25,7 @@ function serve() {
     io.on('connection', function (socket) {
         raceBack.addClient(socket.id);
         //send back the number of cars need to be rendered
-        io.to(socket.id).emit('carNumber', raceBack.initIO());
+        io.to(socket.id).emit('carNumber', raceBack.initIO(socket.id));
         socket.broadcast.emit('newPlayer', {
             id: socket.id
         });

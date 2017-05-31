@@ -5,11 +5,13 @@ const numRays = 10;
 
 // Race Car
 class RaceCar {
-    constructor(id, world, position, width, height, mass) {
+    constructor(id, clientID, world, position, width, height, mass) {
         const carComponents = p2RaceCar(id, world, position, width, height, mass);
+        this.id = id;
         this.vehicle = carComponents[0];
         this.frontWheel = carComponents[1];
         this.backWheel = carComponents[2];
+        this.clientID = clientID;
 
         this.rays = [];
         for (let i = 0; i < numRays; i++) {

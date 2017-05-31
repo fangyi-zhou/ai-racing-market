@@ -10,6 +10,7 @@ var carWidth;
 var carHeight;
 var numRays;
 var wall_colour = 0xCDFF00
+var clientCarID = null
 
 // Create the PIXI renderer
 var renderer = PIXI.autoDetectRenderer(1000, 800, null, true);
@@ -54,6 +55,13 @@ function updateAllGraphics(info) {
             carList[i].carGraphic.position.x = info[i].position[0];
             carList[i].carGraphic.position.y = info[i].position[1];
             carList[i].carGraphic.rotation = info[i].angle;
+
+            if (clientCarID == info[i].clientID) {
+              container.position.x = -carList[i].carGraphic.position.x * zoom + renderer.width/2; // center at origin
+              container.position.y = carList[i].carGraphic.position.y * zoom + renderer.height/2;
+              console.log(carList[i].carGraphic.position.y)
+            }
+
             for (let j = 0; j < numRays; j++) {
                 var rayEnd = info[i].rayEnds[j];
                 carList[i].rayGraphics[j].currentPath.shape.points = [info[i].position[0], info[i].position[1], rayEnd[0], rayEnd[1]];
@@ -75,6 +83,7 @@ function initWorld(info) {
         carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container, Math.random() * 0xffffff));
     }
     this.map = info.map;
+    clientCarID = info.id
     drawMap(map);
 }
 
@@ -109,6 +118,11 @@ function removeUser() {
     container.removeChild(car.carGraphic);
 }
 
-function addUser() {
+function addUser(id) {
+    console.log(id)
+    console.log(clientCarID)
+    if (id == clientCarID) {
+      console.log('MATCH')
+    }
     carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container))
 }
