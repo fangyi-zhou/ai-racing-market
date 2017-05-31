@@ -11,6 +11,8 @@ function getScriptByScriptId(scriptId) {
 import sys\n\
 time.sleep(10)\n\
 print \"set engineForce 1.0\"\n\
+print \"get speed\"\n\
+print \"get rays\"\n\
 sys.stdout.flush()\n\
 time.sleep(1)\n\
 print \"set engineForce -0.5\"\n\
@@ -29,7 +31,6 @@ class Child {
         this.script = getScriptByScriptId(scriptId);
         children.set(this.carId, this);
         const filePath = tempWrite.sync(this.script);
-        console.log(filePath);
         const process = child_process.spawn("python", [filePath], {
             stdio: ['pipe', 'pipe', 'pipe']
         });

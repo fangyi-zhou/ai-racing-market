@@ -29,12 +29,10 @@ function processSetCommand(child, splatInput) {
         case "engineForce":
             const newEngineForce = parseFloat(splatInput[2]);
             control["engineForce"] = newEngineForce;
-            console.log(`Set engineForce of ${carId} to ${newEngineForce}`);
             break;
         case "steerValue":
             const newSteerValue = parseFloat(splatInput[2]);
             control["steerValue"] = newSteerValue;
-            console.log(`Set steerValue of ${carId} to ${newSteerValue}`);
             break;
         default:
             console.error(`Cannot set ${splatInput[1]} for Child ${carId}`)
@@ -44,7 +42,6 @@ function processSetCommand(child, splatInput) {
 
 function processSingleCommand(child, data) {
     const carId = child.carId;
-    console.log(`Child ${carId} Output: ${data}`);
     let splatInput = data.split(/\s+/);
     if (splatInput.length < 2) return;
     switch (splatInput[0]) {
