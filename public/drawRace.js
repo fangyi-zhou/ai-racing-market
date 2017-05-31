@@ -51,6 +51,7 @@ function drawMap(map) {
 
 function updateAllGraphics(info) {
     for (let i = 0; i < info.length; i++) {
+
         if (carList[i] != null) {
             carList[i].carGraphic.position.x = info[i].position[0];
             carList[i].carGraphic.position.y = info[i].position[1];
@@ -122,10 +123,5 @@ function removeUser() {
 }
 
 function addUser(id) {
-    console.log(id)
-    console.log(clientCarID)
-    if (id == clientCarID) {
-      console.log('MATCH')
-    }
     carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container, randomColour()))
 }

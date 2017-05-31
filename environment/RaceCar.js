@@ -5,9 +5,9 @@ const numRays = 10;
 
 // Race Car
 class RaceCar {
-    constructor(id, clientID, world, position, width, height, mass) {
-        const carComponents = p2RaceCar(id, world, position, width, height, mass);
-        this.id = id;
+    constructor(collision_id, clientID, world, position, width, height, mass) {
+        const carComponents = p2RaceCar(collision_id, world, position, width, height, mass);
+        this.collision_id = collision_id;
         this.vehicle = carComponents[0];
         this.frontWheel = carComponents[1];
         this.backWheel = carComponents[2];
@@ -17,7 +17,7 @@ class RaceCar {
         for (let i = 0; i < numRays; i++) {
             this.rays.push(new p2.Ray({
                 mode: p2.Ray.CLOSEST,
-                collisionMask: Math.pow(2, id) ^ -1
+                collisionMask: Math.pow(2, collision_id) ^ -1
             }));
         }
 
@@ -38,7 +38,7 @@ class RaceCar {
 }
 
 // Create the p2 RaceCar
-function p2RaceCar(id, world, position, width, height, mass) {
+function p2RaceCar(collision_id, world, position, width, height, mass) {
     // Create a dynamic body for the chassis
     let chassisBody = new p2.Body({
         mass: mass,
@@ -47,7 +47,7 @@ function p2RaceCar(id, world, position, width, height, mass) {
     let boxShape = new p2.Box({
         width: width,
         height: height,
-        collisionGroup: Math.pow(2, id),
+        collisionGroup: Math.pow(2, collision_id),
         collisionMask: -1
     });
     chassisBody.addShape(boxShape);
