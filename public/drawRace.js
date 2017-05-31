@@ -72,6 +72,10 @@ function updateAllGraphics(info) {
     });
 }
 
+function randomColour() {
+  return Math.random() * 0xffffff;
+}
+
 function initWorld(info) {
     carList = [];
     numCars = info.numCars;
@@ -79,7 +83,7 @@ function initWorld(info) {
     carHeight = info.carHeight;
     numRays = info.numRays;
     for (let i = 0; i < info.numCars; i++) {
-        carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container, Math.random() * 0xffffff));
+        carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container, randomColour()));
     }
     this.map = info.map;
     clientCarID = info.id
@@ -123,5 +127,5 @@ function addUser(id) {
     if (id == clientCarID) {
       console.log('MATCH')
     }
-    carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container))
+    carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container, randomColour()))
 }
