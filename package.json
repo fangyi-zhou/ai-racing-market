@@ -1,6 +1,9 @@
 {
   "name": "back",
   "version": "0.0.1",
+  "engines": {
+    "node": "7.x"
+  }
   "description": "AI RACING WITH STORIES",
   "main": "index.js",
   "dependencies": {
