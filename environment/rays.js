@@ -24,6 +24,7 @@ function constructRays(car, numRays, world){
         world.raycast(result, ray);
         result.getHitPoint(hitPoint, ray);
         car.rayEnds[i] = end;
+        car.rayDists[i] = Math.sqrt(p2.vec2.squaredDistance(ray.from, ray.to));
         if (result.hasHit()) {
             p2.vec2.copy(car.rayEnds[i], hitPoint);
         }

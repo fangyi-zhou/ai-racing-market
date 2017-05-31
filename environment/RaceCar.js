@@ -22,6 +22,7 @@ class RaceCar {
         }
 
         this.rayEnds = [];
+        this.rayDists = [];
 
         this.box_graphic = new graphicsFormat.RaceCarGraphic(position, 0, width, height);
 
