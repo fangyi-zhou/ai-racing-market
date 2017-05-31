@@ -57,7 +57,8 @@ function packageGraphics () {
         graphics_dict.push ({
             position: raceCar.box_graphic.position,
             angle: raceCar.box_graphic.angle,
-            rayEnds: raceCar.rayEnds
+            rayEnds: raceCar.rayEnds,
+            colour: raceCar.colour
         })
     });
     return graphics_dict;

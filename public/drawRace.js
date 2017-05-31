@@ -72,21 +72,21 @@ function initWorld(info) {
     carHeight = info.carHeight;
     numRays = info.numRays;
     for (let i = 0; i < info.numCars; i++) {
-        carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container));
+        carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container, Math.random() * 0xffffff));
     }
     this.map = info.map;
     drawMap(map);
 }
 
 // Abstract information required for car drawing
-function RaceCarGraphic(width, height, numRays, container) {
+function RaceCarGraphic(width, height, numRays, container, colour) {
     console.log(container);
     this.width = width;
     this.height = height;
     this.carGraphic = new PIXI.Graphics();
 
-    this.carGraphic.beginFill(0xfffff, 0.3);
-    this.carGraphic.lineStyle(0.01, 0xffffff, 1);
+    this.carGraphic.beginFill(colour, 0.3);
+    this.carGraphic.lineStyle(0.01, colour, 1);
     this.carGraphic.drawRect(-width / 2, -height / 2, width, height);
 
     this.rayGraphics = [];
