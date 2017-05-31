@@ -39,15 +39,23 @@ class Child {
         let car = raceBack.addRaceCar(this.carId, initPosition);
         process.on("exit", () => {
             console.log(`child ${this.carId} exited`);
-            children.remove(this.carId);
-            raceBack.removeUser(this.carId);
-            serve.aiDisconnect(this.carId);
+            childExit(this.carId);
         });
         process.stdout.on("data", (data) => {
             host.processUserOutput(this.carId, data);
         });
+        process.stdout.on("error", (err) => {
+            console.error(err);
+            childExit(this.carId);
+        });
         this.car = car;
     }
+}
+
+function childExit(carId) {
+    children.remove(carId);
+    raceBack.removeUser(carId);
+    serve.aiDisconnect(carId);
 }
 
 function getChildByCarId(carId) {
