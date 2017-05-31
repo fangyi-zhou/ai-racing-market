@@ -48,6 +48,10 @@ class Child {
             console.error(err);
             childExit(this.carId);
         });
+        process.stdin.on("error", (err) => {
+            console.error(err);
+            childExit(this.carId);
+        });
         this.car = car;
     }
 }
