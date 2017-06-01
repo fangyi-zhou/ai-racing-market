@@ -51,7 +51,7 @@ function serve() {
         });
 
         socket.on('saveMap', function (info) {
-
+          raceBack.saveMap(info.map);
         });
     });
 }

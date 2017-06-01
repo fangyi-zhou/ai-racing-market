@@ -16,3 +16,21 @@ function Segment(path) {
     container.addChild(this.segment_graphic);
   }
 }
+
+function Map(segments=[], gates=[], startGate=null) {
+  this.segments = segments;
+  this.gates = gates;
+  this.startGate = startGate;
+
+  this.addSegment = function(segment) {
+    this.segments.push(segment);
+  }
+
+  this.addGate = function(gate) {
+    this.gates.push(gate);
+  }
+
+  this.setStartGate = function(startGate) {
+    this.startGate = startGate;
+  }
+}

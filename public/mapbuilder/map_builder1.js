@@ -7,6 +7,16 @@ var wall_colour = 0x00FF00;
 // Overall map
 map = []
 
+// Modes of operation
+Mode = {
+    MapDraw : 0,
+    GateDraw : 1,
+    StartLineDraw : 2
+}
+function changeMode(mode) {
+  console.log(mode);
+}
+
 // Create the PIXI renderer
 // var renderer = PIXI.autoDetectRenderer(600, 400),
 var renderer = PIXI.autoDetectRenderer(1000, 800, null, true, true),
