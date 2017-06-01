@@ -52,11 +52,11 @@
   },
   "scripts": {
     "test": "npm run front-test & npm run back-test",
-    "front-test": "mocha",
+    "back-test": "mocha",
     "ng": "ng",
     "start": "node index.js",
     "build": "ng build",
-    "back-test": "ng test --single-run",
+    "front-test": "ng test --single-run",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
