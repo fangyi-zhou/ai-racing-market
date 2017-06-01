@@ -49,7 +49,7 @@ app.use('/users', users);
 //   //res.render('error');
 // });
 
-host.addAiCar(1);
+
 // Routing
 app.use("/dev", express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname + "/dist"));
@@ -61,6 +61,7 @@ setInterval(function () {
 }, 2000);
 
 io.on('connection', function (socket) {
+  host.addAiCar(1);
   raceBack.addClient(socket.id);
   //send back the number of cars need to be rendered
   io.to(socket.id).emit('carNumber', raceBack.initIO(socket.id));
