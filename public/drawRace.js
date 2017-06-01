@@ -26,16 +26,6 @@ container.scale.x = zoom;  // zoom in
 container.scale.y = -zoom; // Note: we flip the y axis to make "up" the physics "up"
 renderer.render(stage);
 
-// Prepare map format for drawing
-function flatten_map(map) {
-    let flattened_map = []
-    for (let i = 0; i < map.length; i++) {
-        flattened_map.push(map[i][0]);
-        flattened_map.push(map[i][1]);
-    }
-    return flattened_map;
-}
-
 function drawMap(map) {
     for (let i in map) {
         let segment = map[i];

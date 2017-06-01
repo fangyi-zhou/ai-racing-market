@@ -36,7 +36,7 @@
     x = new PIXI.Graphics();
     x.beginFill(colour, 0.3);
     x.lineStyle(0.01, colour, 1);
-    x.drawRect(0, 0, 10, 10);
+    x.drawRect(-5, -5, 10, 10);
     container.addChild(x);
 
     // Draw grid
@@ -72,13 +72,21 @@
                   break;
         case 189: dZoom = (1 - zoomSpeed); // Zoom out
                   break;
-        case 87:  moving[0] = true;
+        case 87:  moving[0] = true; // Up
                   break;
-        case 83:  moving[1] = true;
+        case 83:  moving[1] = true; // Down
                   break;
-        case 65:  moving[2] = true;
+        case 65:  moving[2] = true; // Left
                   break;
-        case 68:  moving[3] = true;
+        case 68:  moving[3] = true; // Right
+                  break;
+        case 13:  if (first_point != null) { // Enter (finish line)
+                    completeCurrentLine(currentLine, first_point);
+                    paths.push(path)
+                    path = []
+                    console.log(paths)
+                    first_point = null;
+                  }
                   break;
       }
     });
@@ -118,6 +126,11 @@
       };
     }
 
+    function completeCurrentLine(currentLine, point) {
+      currentLine.currentPath.shape.points[2] = point[0];
+      currentLine.currentPath.shape.points[3] = point[1];
+    }
+
     // Mouse pointer
     mouseHover = new PIXI.Graphics();
     mouseHover.beginFill(colour, 0.3);
@@ -132,9 +145,8 @@
       gridPoint = snap_point(mousePos, cell_size*zoom)
       mouseHover.position.x = (gridPoint[0]);
       mouseHover.position.y = (gridPoint[1]);
-      if (!first_point) {
-        currentLine.currentPath.shape.points[2] = gridPoint[0];
-        currentLine.currentPath.shape.points[3] = gridPoint[1];
+      if (first_point != null) {
+        completeCurrentLine(currentLine, gridPoint);
       }
     }
     renderer.context.canvas.addEventListener('mousemove', function(evt) {
@@ -143,19 +155,20 @@
     }, false);
 
     // Map drawing
-    first_point = true
-    path = []
+    first_point = null;
+    var paths = []
+    var path = []
     var currentLine = new PIXI.Graphics();
     renderer.context.canvas.addEventListener('mousedown', function(evt) {
       var mousePos = getMousePos(renderer.context.canvas, evt);
       gridPoint = snap_point(mousePos, cell_size*zoom)
 
-      if (first_point) {
-        first_point = false;
+      if (first_point == null) {
+        first_point = gridPoint;
       } else {
-        path.push(gridPoint)
         currentLine.lineTo(gridPoint[0], gridPoint[1]);
       }
+      path.push(gridPoint)
 
       currentLine = new PIXI.Graphics();
       container.addChild(currentLine);
@@ -181,9 +194,6 @@
 
     // Start animation loop
     requestAnimationFrame(animate);
-    console.log(renderer)
-
-    console.log(renderer.context.canvas)
   </script>
 </body>
 </html>
