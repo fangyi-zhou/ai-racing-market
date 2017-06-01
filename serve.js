@@ -47,7 +47,11 @@ function serve() {
         });
 
         socket.on('movement', function (info) {
-            raceBack.updateMovement(info, socket.id);
+          raceBack.updateMovement(info, socket.id);
+        });
+
+        socket.on('saveMap', function (info) {
+
         });
     });
 }

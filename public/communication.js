@@ -21,6 +21,7 @@ function serverCallBack(){
         addUser(info.id);
     })
 }
+
 // Key controls
 var keys = {
     '37': 0, // left
@@ -33,12 +34,20 @@ document.addEventListener('keydown', onKeyPress);
 function onKeyPress(evt){
     keys[evt.keyCode] = 1;
     syncServerWithMovement();
-
 }
+
 document.addEventListener('keyup', onKeyRelease);
 function onKeyRelease(evt){
     keys[evt.keyCode] = 0;
     syncServerWithMovement();
+}
+
+function saveMap(map) {
+  if(socket != null){
+      socket.emit('saveMap', {
+          'map': map
+      })
+  }
 }
 
 function syncServerWithMovement(){
