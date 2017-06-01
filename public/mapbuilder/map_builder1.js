@@ -25,11 +25,11 @@ container.scale.y = -zoom; // Note: we flip the y axis to make "up" the physics 
 
 // Reference Square
 var colour = 0xFFFF00
-x = new PIXI.Graphics();
-x.beginFill(colour, 0.3);
-x.lineStyle(0.01, colour, 1);
-x.drawRect(-5, -5, 10, 10);
-container.addChild(x);
+referenceSquare = new PIXI.Graphics();
+referenceSquare.beginFill(colour, 0.3);
+referenceSquare.lineStyle(0.01, colour, 1);
+referenceSquare.drawRect(-5, -5, 10, 10);
+container.addChild(referenceSquare);
 
 // Draw grid
 var lineColour = 0xBFBFBF;
@@ -43,82 +43,82 @@ panSpeed = 5;
 zoomSpeed = 0.01;
 
 function completePolygon() {
-completeCurrentLine(currentLine, first_point);
+  completeCurrentLine(currentLine, first_point);
 
-// Reset segment drawing
-first_point = null;
+  // Reset segment drawing
+  first_point = null;
 
-// Add polygon to list
-let segment = new Segment(currentPath);
-segment.drawSegment(container, wall_colour);
-polygons.push(segment);
+  // Add polygon to list
+  let segment = new Segment(currentPath);
+  segment.drawSegment(container, wall_colour);
+  polygons.push(segment);
 
-// Reset path
-map.push(currentPath);
-currentPath = []
+  // Reset path
+  map.push(currentPath);
+  currentPath = []
 }
 
 var moving = [false, false, false, false] // Up down left right
 var dZoom = 1
 document.addEventListener('keydown', function onKeyPress(evt){
-switch (evt.keyCode) {
-case 187: dZoom = (1 + zoomSpeed); // Zoom in
-          break;
-case 189: dZoom = (1 - zoomSpeed); // Zoom out
-          break;
-case 87:  moving[0] = true; // Up
-          break;
-case 83:  moving[1] = true; // Down
-          break;
-case 65:  moving[2] = true; // Left
-          break;
-case 68:  moving[3] = true; // Right
-          break;
-case 13:  if (first_point != null) { // Enter (finish line)
-            completePolygon();
-          }
-          break;
-}
+  switch (evt.keyCode) {
+  case 187: dZoom = (1 + zoomSpeed); // Zoom in
+            break;
+  case 189: dZoom = (1 - zoomSpeed); // Zoom out
+            break;
+  case 87:  moving[0] = true; // Up
+            break;
+  case 83:  moving[1] = true; // Down
+            break;
+  case 65:  moving[2] = true; // Left
+            break;
+  case 68:  moving[3] = true; // Right
+            break;
+  case 13:  if (first_point != null) { // Enter (finish line)
+              completePolygon();
+            }
+            break;
+  }
 });
 
 document.addEventListener('keyup', function onKeyPress(evt){
 switch (evt.keyCode) {
-case 187:
-case 189: dZoom = 1;
-          break;
-case 87:  moving[0] = false;
-          break;
-case 83:  moving[1] = false;
-          break;
-case 65:  moving[2] = false;
-          break;
-case 68:  moving[3] = false;
-          break;
-}
+  case 187:
+  case 189: dZoom = 1;
+            break;
+  case 87:  moving[0] = false;
+            break;
+  case 83:  moving[1] = false;
+            break;
+  case 65:  moving[2] = false;
+            break;
+  case 68:  moving[3] = false;
+            break;
+  }
 }, true);
 
 function snap(x, m) {
-// console.log(x, m)
-return Math.round(x / m) * m;
+  // console.log(x, m)
+  return Math.round(x / m) * m;
 }
 
 function snap_point(point, m) {
-point.x -= container.position.x
-point.y -= container.position.y
-return [snap(point.x, m)/zoom, snap(point.y, m)/zoom]
+  point.x -= container.position.x
+  point.y -= container.position.y
+  return [snap(point.x, m)/zoom, snap(point.y, m)/zoom]
 }
 
 function getMousePos(canvas, evt) {
-var rect = canvas.getBoundingClientRect();
-return {
-x: evt.clientX - rect.left,
-y: evt.clientY - rect.top
-};
+  var rect = canvas.getBoundingClientRect();
+  return {
+    x: evt.clientX - rect.left,
+    y: evt.clientY - rect.top
+  };
 }
 
 function completeCurrentLine(currentLine, point) {
-currentLine.currentPath.shape.points[2] = point[0];
-currentLine.currentPath.shape.points[3] = point[1];
+  currentLine.currentPath.shape.points[2] = point[0];
+  currentLine.currentPath.shape.points[3] = point[1];
 }
 
 // Mouse pointer
@@ -132,16 +132,16 @@ mouseHover.drawCircle(0, 0, ab[0], ab[1]);
 container.addChild(mouseHover);
 
 function updateMouseHover(mousePos) {
-gridPoint = snap_point(mousePos, cell_size*zoom)
-mouseHover.position.x = (gridPoint[0]);
-mouseHover.position.y = (gridPoint[1]);
-if (first_point != null) {
-completeCurrentLine(currentLine, gridPoint);
-}
+  gridPoint = snap_point(mousePos, cell_size*zoom)
+  mouseHover.position.x = (gridPoint[0]);
+  mouseHover.position.y = (gridPoint[1]);
+  if (first_point != null) {
+  completeCurrentLine(currentLine, gridPoint);
+  }
 }
 renderer.context.canvas.addEventListener('mousemove', function(evt) {
-var mousePos = getMousePos(renderer.context.canvas, evt);
-updateMouseHover(mousePos)
+  var mousePos = getMousePos(renderer.context.canvas, evt);
+  updateMouseHover(mousePos)
 }, false);
 
 // Map drawing
@@ -150,40 +150,37 @@ var polygons = []
 var currentPath = []
 var currentLine = new PIXI.Graphics();
 renderer.context.canvas.addEventListener('mousedown', function(evt) {
-var mousePos = getMousePos(renderer.context.canvas, evt);
-gridPoint = snap_point(mousePos, cell_size*zoom)
+  var mousePos = getMousePos(renderer.context.canvas, evt);
+  gridPoint = snap_point(mousePos, cell_size*zoom)
 
-if (first_point == null) {
-first_point = gridPoint;
-} else {
-currentLine.lineTo(gridPoint[0], gridPoint[1]);
-}
-currentPath.push(gridPoint)
+  if (first_point == null) {
+    first_point = gridPoint;
+  } else {
+    currentLine.lineTo(gridPoint[0], gridPoint[1]);
+  }
+  currentPath.push(gridPoint)
 
-currentLine = new PIXI.Graphics();
-container.addChild(currentLine);
-currentLine.lineStyle(0.01, 0xFF0000, 1);
-currentLine.moveTo(gridPoint[0], gridPoint[1])
-
-
+  currentLine = new PIXI.Graphics();
+  container.addChild(currentLine);
+  currentLine.lineStyle(0.01, 0xFF0000, 1);
+  currentLine.moveTo(gridPoint[0], gridPoint[1])
 }, false);
 
 function updateContainer() {
-container.position.x += (moving[2] - moving[3]) * panSpeed
-container.position.y += (moving[0] - moving[1]) * panSpeed
-zoom *= dZoom;
-container.scale.x =  zoom;
-container.scale.y =  zoom;
+  container.position.x += (moving[2] - moving[3]) * panSpeed
+  container.position.y += (moving[0] - moving[1]) * panSpeed
+  zoom *= dZoom;
+  container.scale.x =  zoom;
+  container.scale.y =  zoom;
 }
 
 // Loop the program
 function animate() {
-updateContainer();
+  updateContainer();
 
-// console.log(world.time)
-renderer.render(stage);
-
-requestAnimationFrame(animate);
+  // console.log(world.time)
+  renderer.render(stage);
+  requestAnimationFrame(animate);
 }
 
 // Start animation loop
@@ -192,5 +189,5 @@ requestAnimationFrame(animate);
 // Sends map segment paths to server to be saved
 var mapName = 'mapSave'
 function sendMapToServer() {
-saveMap(map);
+  saveMap(map);
 }
