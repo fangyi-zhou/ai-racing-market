@@ -5,6 +5,7 @@ const p2 = require('p2');
 const hashMap = require('hashmap');
 const RaceCar = require('./RaceCar');
 const rays = require('./rays');
+var fs = require("./mapSave.js")
 
 // Hyperparameters
 const carMass = 1;
@@ -36,15 +37,24 @@ function createMapSegment (segment) {
   /*******************************************************************/
 }
 
+function createMap(map) {
+  for (let p = 0; p < current_map.length; p++) {
+    createMapSegment(map[p])
+  }
+}
+
 const current_map = require('./maps/map1.js')["map1"]
 const current_map_save = JSON.parse(JSON.stringify(current_map)); // Required since p2 manipulates array
-for (let p = 0; p < current_map.length; p++) {
-  createMapSegment(current_map[p])
-}
+createMap(current_map);
 
 // Gets map to send to users
 function getMap() {
   return current_map_save;
+}
+
+function saveMap(map) {
+  // var map_path_w = 'environment/maps/map1.json';
+  // fs.writeMap(map_path, map);
 }
 
 // For now, set default friction between ALL objects
