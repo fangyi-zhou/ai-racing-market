@@ -58,7 +58,8 @@
     "build": "ng build",
     "front-test": "ng test --single-run",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "ng build"
   },
   "repository": {
     "type": "git",

@@ -14,7 +14,8 @@ function serve() {
     });
 
     // Routing
-    app.use(express.static(__dirname + '/public'));
+    app.use("/dev", express.static(__dirname + '/public'));
+    app.use(express.static(__dirname + "/dist"));
 
     let time = 0;
     setInterval(function () {
