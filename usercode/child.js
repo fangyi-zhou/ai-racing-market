@@ -3,7 +3,7 @@ const tempWrite = require('temp-write');
 const Hashmap = require('hashmap');
 const raceBack = require('../environment/raceBack');
 const host = require('./host');
-const serve = require('../serve');
+const app = require('../app');
 
 function getScriptByScriptId(scriptId) {
     // TODO: Query the database for script
@@ -65,7 +65,7 @@ class Child {
 function childExit(carId) {
     children.remove(carId);
     raceBack.removeUser(carId);
-    serve.aiDisconnect(carId);
+    app.aiDisconnect(carId);
 }
 
 function getChildByCarId(carId) {
