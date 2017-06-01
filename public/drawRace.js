@@ -28,14 +28,17 @@ renderer.render(stage);
 
 function drawMap(map) {
     for (let i in map) {
-        let segment = map[i];
-        let pixi_map = flatten_map(segment);
+        let segment = new Segment(map[i]);
+        segment.drawSegment(container, wall_colour);
+        // let segment = map[i];
+        // let pixi_map = flatten_map(segment);
+        //
+        // let segment_graphic = new PIXI.Graphics();
+        // segment_graphic.beginFill(wall_colour, 0.15);
+        // segment_graphic.lineStyle(0.01, wall_colour, 1);
+        // segment_graphic.drawPolygon(pixi_map);
+        // container.addChild(segment_graphic);
 
-        let segment_graphic = new PIXI.Graphics();
-        segment_graphic.beginFill(wall_colour, 0.15);
-        segment_graphic.lineStyle(0.01, wall_colour, 1);
-        segment_graphic.drawPolygon(pixi_map);
-        container.addChild(segment_graphic);
     }
 }
 

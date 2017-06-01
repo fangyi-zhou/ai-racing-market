@@ -2,18 +2,20 @@
 <html>
 <head>
   <title>Test demo - p2.js physics engine</title>
-  <!-- <script src="../node_modules/p2/demos/js/pixi.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
   <meta name="description" content="">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <script src="util.js"></script>
+  <script src="segment.js"></script>
 </head>
 <body>
   <script>
     // Parameters
     var car_width = 0.5;
     var car_height = 1;
-    zoom = 40;
+    var zoom = 40;
+    var wall_colour = 0x00FF00;
 
     // Create the PIXI renderer
     // var renderer = PIXI.autoDetectRenderer(600, 400),
@@ -31,7 +33,7 @@
     container.scale.x =  zoom;  // zoom in
     container.scale.y = -zoom; // Note: we flip the y axis to make "up" the physics "up"
 
-    // Drawing
+    // Reference Square
     var colour = 0xFFFF00
     x = new PIXI.Graphics();
     x.beginFill(colour, 0.3);
@@ -43,26 +45,27 @@
     var lineColour = 0xBFBFBF;
     var w = 100, h = 100;
     var cell_size = car_width;
-    for (var x = -w; x < w; x += cell_size) {
-      line = new PIXI.Graphics();
-      line.lineStyle(0.01, lineColour, 1);
-      line.moveTo(x, -h);
-      line.lineTo(x, h);
-      container.addChild(line);
-    }
-
-    for (var y = -h; y < h; y += cell_size) {
-      line = new PIXI.Graphics();
-      line.lineStyle(0.01, lineColour, 1);
-      line.moveTo(-w, y);
-      line.lineTo(w, y);
-      container.addChild(line);
-    }
+    drawGrid(container, w, h, cell_size);
 
     // User input
     position = [renderer.width/2, renderer.height/2]
     panSpeed = 5;
     zoomSpeed = 0.01;
+
+    function completePolygon() {
+      completeCurrentLine(currentLine, first_point);
+
+      // Reset segment drawing
+      first_point = null;
+
+      // Add polygon to list
+      let segment = new Segment(currentPath);
+      segment.drawSegment(container, wall_colour);
+      polygons.push(segment);
+
+      // Reset path
+      currentPath = []
+    }
 
     var moving = [false, false, false, false] // Up down left right
     var dZoom = 1
@@ -81,11 +84,7 @@
         case 68:  moving[3] = true; // Right
                   break;
         case 13:  if (first_point != null) { // Enter (finish line)
-                    completeCurrentLine(currentLine, first_point);
-                    paths.push(path)
-                    path = []
-                    console.log(paths)
-                    first_point = null;
+                    completePolygon();
                   }
                   break;
       }
@@ -156,8 +155,8 @@
 
     // Map drawing
     first_point = null;
-    var paths = []
-    var path = []
+    var polygons = []
+    var currentPath = []
     var currentLine = new PIXI.Graphics();
     renderer.context.canvas.addEventListener('mousedown', function(evt) {
       var mousePos = getMousePos(renderer.context.canvas, evt);
@@ -168,7 +167,7 @@
       } else {
         currentLine.lineTo(gridPoint[0], gridPoint[1]);
       }
-      path.push(gridPoint)
+      currentPath.push(gridPoint)
 
       currentLine = new PIXI.Graphics();
       container.addChild(currentLine);
@@ -178,18 +177,22 @@
 
     }, false);
 
-    // Loop the program
-    function animate() {
+    function updateContainer() {
       container.position.x += (moving[2] - moving[3]) * panSpeed
       container.position.y += (moving[0] - moving[1]) * panSpeed
       zoom *= dZoom;
       container.scale.x =  zoom;
       container.scale.y =  zoom;
+    }
 
-      requestAnimationFrame(animate);
+    // Loop the program
+    function animate() {
+      updateContainer();
 
       // console.log(world.time)
       renderer.render(stage);
+
+      requestAnimationFrame(animate);
     }
 
     // Start animation loop
