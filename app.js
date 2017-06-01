@@ -5,8 +5,9 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const routes = require('./routes/index');
-const users = require('./routes/users');
+const index = require('./routes/index');
+const races = require('./routes/races');
+const dev = require('./routes/dev');
 
 const app = express();
 const server = require('http').Server(app);
@@ -28,8 +29,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
-//app.use('/', index);
-app.use('/users', users);
+app.use(express.static(path.join(__dirname, 'dist')));
+app.use("/dev", express.static(path.join(__dirname, 'public')));
+app.use('/', index);
+app.use('/dev',dev);
+app.use('/races', races);
 
 // //catch 404 and forward to error handler
 // app.use(function (req, res, next) {
@@ -49,16 +53,11 @@ app.use('/users', users);
 //   //res.render('error');
 // });
 
-
-// Routing
-app.use("/dev", express.static(path.join(__dirname, 'public')));
-app.use(express.static(__dirname + "/dist"));
-
-let time = 0;
-setInterval(function () {
-  console.log('Server healthy...' + time);
-  time++;
-}, 2000);
+// let time = 0;
+// setInterval(function () {
+//   console.log('Server healthy...' + time);
+//   time++;
+// }, 2000);
 
 io.on('connection', function (socket) {
   // host.addAiCar(1);

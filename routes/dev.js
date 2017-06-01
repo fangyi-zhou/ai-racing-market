@@ -1,10 +1,12 @@
+/**
+ * Created by ruiaohu on 02/06/2017.
+ */
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+/* GET dev environment listing. */
 router.get('/', function(req, res, next) {
-  //res.send(express.static(__dirname + "../dist"));
-  //res.render('index', { title: 'Express' });
+  //res.send(express.static(__dirname + 'public'));
 });
 
 module.exports = router;
