@@ -9,8 +9,8 @@ var numCars;
 var carWidth;
 var carHeight;
 var numRays;
-var wall_colour = 0xCDFF00
-var clientCarID = null
+var wall_colour = 0xCDFF00;
+var clientCarID = null;
 
 // Create the PIXI renderer
 var renderer = PIXI.autoDetectRenderer(1000, 800, null, true);
@@ -30,8 +30,8 @@ renderer.render(stage);
 function flatten_map(map) {
     let flattened_map = []
     for (let i = 0; i < map.length; i++) {
-        flattened_map.push(map[i][0])
-        flattened_map.push(map[i][1])
+        flattened_map.push(map[i][0]);
+        flattened_map.push(map[i][1]);
     }
     return flattened_map;
 }
@@ -87,7 +87,7 @@ function initWorld(info) {
         carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container, randomColour()));
     }
     this.map = info.map;
-    clientCarID = info.id
+    clientCarID = info.id;
     drawMap(map);
 }
 
