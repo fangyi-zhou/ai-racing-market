@@ -30,15 +30,6 @@ function drawMap(map) {
     for (let i in map) {
         let segment = new Segment(map[i]);
         segment.drawSegment(container, wall_colour);
-        // let segment = map[i];
-        // let pixi_map = flatten_map(segment);
-        //
-        // let segment_graphic = new PIXI.Graphics();
-        // segment_graphic.beginFill(wall_colour, 0.15);
-        // segment_graphic.lineStyle(0.01, wall_colour, 1);
-        // segment_graphic.drawPolygon(pixi_map);
-        // container.addChild(segment_graphic);
-
     }
 }
 
@@ -86,7 +77,6 @@ function initWorld(info) {
 
 // Abstract information required for car drawing
 function RaceCarGraphic(width, height, numRays, container, colour) {
-    console.log(container);
     this.width = width;
     this.height = height;
     this.carGraphic = new PIXI.Graphics();
