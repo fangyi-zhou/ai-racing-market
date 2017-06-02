@@ -6,11 +6,6 @@ const hashMap = require('hashmap');
 const RaceCar = require('./RaceCar');
 const rays = require('./rays');
 
-// Hyperparameters
-const carMass = 1;
-const carWidth = 0.5;
-const carHeight = 1;
-
 const fixedTimeStep = 0.06;
 const raceCars = new hashMap.HashMap();
 const maxSteer = Math.PI / 5;
@@ -75,9 +70,7 @@ function packageGraphics () {
 }
 
 function addRaceCar(clientID, position) {
-    let car = new RaceCar.RaceCar(raceCars.count()+1, clientID, world, position, carWidth, carHeight, carMass);
-    car.frontWheel.steerValue = 0;
-    car.backWheel.engineForce = 0;
+    let car = new RaceCar.RaceCar(raceCars.count()+1, clientID, world, position);
     raceCars.set(clientID, car);
     return car;
 }
@@ -160,8 +153,8 @@ setInterval(function(){
 function initIO(clientID){
     return {
         numCars:carCount(),
-        carWidth: carWidth,
-        carHeight: carHeight,
+        carWidth: RaceCar.carWidth,
+        carHeight: RaceCar.carHeight,
         numRays: RaceCar.numRays,
         map: getMap(),
         id: clientID
