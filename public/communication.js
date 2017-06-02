@@ -14,6 +14,7 @@ function serverCallBack(){
     });
 
     socket.on('dc', function (info) {
+        console.log(`dc ${info}`);
         removeUser();
     });
 
