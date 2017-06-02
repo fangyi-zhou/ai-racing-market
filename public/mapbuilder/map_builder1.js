@@ -176,19 +176,27 @@ function drawNewVertex(mousePos) {
   currentLine = new PIXI.Graphics();
   container.addChild(currentLine);
   currentLine.lineStyle(0.01, 0xFF0000, 1);
-  currentLine.moveTo(gridPoint[0], gridPoint[1])
+  currentLine.moveTo(gridPoint[0], gridPoint[1]);
 }
 
 renderer.context.canvas.addEventListener('mousedown', function(evt) {
   var mousePos = getMousePos(renderer.context.canvas, evt);
+  var actualPoint = scalePoint(vectorfy(mousePos), 1/zoom);
+  if (map.contains(actualPoint)) {
+    return;
+  }
   switch (currentMode) {
     case Mode.MapDraw:        drawNewVertex(mousePos);
                               break;
     case Mode.GateDraw:       // Add new gate (currentGate) to map
-                              map.addGate(new Gate(gateStart, gateEnd))
+                              var newGate = new Gate(gateStart, gateEnd);
+                              newGate.drawGate(container, gateColour);
+                              map.addGate(new Gate(gateStart, gateEnd));
                               break;
     case Mode.StartLineDraw:  // Add start line (currentGate) to map
-                              map.setStartGate(new Gate(gateStart, gateEnd))
+                              var newGate = new Gate(gateStart, gateEnd);
+                              newGate.drawGate(container, gateColour);
+                              map.setStartGate(new Gate(gateStart, gateEnd));
                               break;
   }
 
@@ -228,9 +236,11 @@ Mode = {
   GateDraw : 1,
   StartLineDraw : 2
 }
+
 function gateMode() {
   return currentMode == Mode.GateDraw || currentMode == Mode.StartLineDraw;
 }
+
 function changeMode(mode) {
   currentMode = mode;
   currentGate.visible = gateMode();
