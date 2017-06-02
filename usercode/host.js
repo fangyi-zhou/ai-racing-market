@@ -18,7 +18,7 @@ function processGetCommand(child, splatInput) {
             });
             break;
         default:
-            console.error(`Cannot get ${splatInput[1]} for Child ${carId}`)
+            console.error(`Cannot get ${splatInput[1]} for Child ${child.carId}`)
     }
 }
 
@@ -66,8 +66,9 @@ function processUserOutput(child, data) {
 
 function addAiCar(numAi) {
     for (let i = 0; i < numAi; i++) {
-        new Child.Child(1, `Child_${i}`, [1, 1]);
-        console.log(`Create child ${i}`);
+        const carId = `Child_${Date.now()}`;
+        new Child.Child(1, carId, [1, 1]);
+        console.log(`Spawn child ${carId}`);
     }
 }
 

@@ -11,7 +11,10 @@ const dev = require('./routes/dev');
 
 const app = express();
 const server = require('http').Server(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+  pingInterval: 2000,
+  pingTimeout: 5000
+});
 
 const host = require('./usercode/host');
 const raceBack = require('./environment/raceBack.js');
@@ -49,7 +52,7 @@ app.use(function (req, res, next) {
 // });
 
 io.on('connection', function (socket) {
-  // host.addAiCar(1);
+  host.addAiCar(1);
   raceBack.addClient(socket.id);
   //send back the number of cars need to be rendered
   io.to(socket.id).emit('carNumber', raceBack.initIO(socket.id));
