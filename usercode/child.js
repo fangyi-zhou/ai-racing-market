@@ -50,6 +50,9 @@ class Child {
             console.error(err);
             childExit(this.carId);
         });
+        process.stderr.on("data", (data) => {
+            console.log(`Child ${this.carId} printed error ${data}`);
+        });
         process.stdin.on("close", () => {
             this.writable = false;
         });
