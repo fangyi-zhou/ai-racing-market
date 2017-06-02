@@ -9,9 +9,9 @@ map = []
 
 // Modes of operation
 Mode = {
-    MapDraw : 0,
-    GateDraw : 1,
-    StartLineDraw : 2
+  MapDraw : 0,
+  GateDraw : 1,
+  StartLineDraw : 2
 }
 currentMode = Mode.MapDraw;
 function changeMode(mode) {
@@ -31,10 +31,10 @@ console.log(PolyK.Raycast([0, 1, 1, 1, 1, 0], 0, 0, 1, 1))
 
 // Create the PIXI renderer
 var renderer = PIXI.autoDetectRenderer(1000, 800, null, true, true),
-stage = new PIXI.Stage(0xFFFFAA);
+  stage = new PIXI.Stage(0xFFFFAA);
 renderer.backgroundColor = 0xFFFFFF;
 container = new PIXI.DisplayObjectContainer(),
-stage.addChild(container);
+  stage.addChild(container);
 renderer.render(stage);
 document.body.appendChild(renderer.view);
 
@@ -88,39 +88,39 @@ document.addEventListener('keydown', function onKeyPress(evt){
   // console.log(evt.keyCode)
   switch (evt.keyCode) {
     case 187: dZoom = (1 + zoomSpeed); // Zoom in
-              break;
+      break;
     case 189: dZoom = (1 - zoomSpeed); // Zoom out
-              break;
+      break;
     case 87:  moving[0] = true; // Up
-              break;
+      break;
     case 83:  moving[1] = true; // Down
-              break;
+      break;
     case 65:  moving[2] = true; // Left
-              break;
+      break;
     case 68:  moving[3] = true; // Right
-              break;
+      break;
     case 13:  if (currentMode == Mode.MapDraw) {
-                if (first_point != null) { // Enter (finish line)
-                  completePolygon();
-                }
-              }
-              break;
+      if (first_point != null) { // Enter (finish line)
+        completePolygon();
+      }
+    }
+      break;
   }
 });
 
 document.addEventListener('keyup', function onKeyPress(evt){
-switch (evt.keyCode) {
-  case 187:
-  case 189: dZoom = 1;
-            break;
-  case 87:  moving[0] = false;
-            break;
-  case 83:  moving[1] = false;
-            break;
-  case 65:  moving[2] = false;
-            break;
-  case 68:  moving[3] = false;
-            break;
+  switch (evt.keyCode) {
+    case 187:
+    case 189: dZoom = 1;
+      break;
+    case 87:  moving[0] = false;
+      break;
+    case 83:  moving[1] = false;
+      break;
+    case 65:  moving[2] = false;
+      break;
+    case 68:  moving[3] = false;
+      break;
   }
 }, true);
 
@@ -176,10 +176,10 @@ renderer.context.canvas.addEventListener('mousemove', function(evt) {
 
   switch (currentMode) {
     case Mode.MapDraw:  updateMapHover(gridPoint);
-                        break;
+      break;
     case Mode.StartLineDraw:
     case Mode.GateDraw: updateGateHover(actualPoint);
-                        break;
+      break;
   }
 }, false);
 
@@ -209,7 +209,7 @@ renderer.context.canvas.addEventListener('mousedown', function(evt) {
   var mousePos = getMousePos(renderer.context.canvas, evt);
   switch (currentMode) {
     case Mode.MapDraw:  drawNewVertex(mousePos);
-                        break;
+      break;
   }
 
 }, false);
@@ -235,7 +235,7 @@ function animate() {
 requestAnimationFrame(animate);
 
 // Sends map segment paths to server to be saved
-var mapName = 'mapSave'
+var mapName = 'mapSave';
 function sendMapToServer() {
   saveMap(map);
 }
