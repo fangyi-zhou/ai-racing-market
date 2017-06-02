@@ -11,7 +11,10 @@ const dev = require('./routes/dev');
 
 const app = express();
 const server = require('http').Server(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+  pingInterval: 2000,
+  pingTimeout: 5000
+});
 
 const host = require('./usercode/host');
 const raceBack = require('./environment/raceBack.js');
