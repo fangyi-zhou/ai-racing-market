@@ -3,7 +3,7 @@ const tempWrite = require('temp-write');
 const Hashmap = require('hashmap');
 const raceBack = require('../environment/raceBack');
 const host = require('./host');
-const app = require('../app');
+const EventEmitter = require('events');
 
 function getScriptByScriptId(scriptId) {
     // TODO: Query the database for script
@@ -23,8 +23,9 @@ time.sleep(10)\n\
 
 let children = new Hashmap.HashMap();
 
-class Child {
+class Child extends EventEmitter {
     constructor(scriptId, carId, initPosition) {
+        super();
         this.scriptId = scriptId;
         this.carId = carId;
         // Get script
@@ -41,14 +42,14 @@ class Child {
         let car = raceBack.addRaceCar(this.carId, initPosition);
         process.on("exit", () => {
             console.log(`child ${this.carId} exited`);
-            childExit(this.carId);
+            this.emit("exit");
         });
         process.stdout.on("data", (data) => {
             host.processUserOutput(this, data);
         });
         process.stdout.on("error", (err) => {
             console.error(err);
-            childExit(this.carId);
+            this.emit("exit");
         });
         process.stderr.on("data", (data) => {
             console.log(`Child ${this.carId} printed error ${data}`);
@@ -59,16 +60,14 @@ class Child {
         process.stdin.on("error", (err) => {
             this.writable = false;
             console.error(err);
-            childExit(this.carId);
+            this.emit("exit");
         });
         this.car = car;
     }
 }
 
-function childExit(carId) {
+function removeChild(carId) {
     children.remove(carId);
-    raceBack.removeUser(carId);
-    app.aiDisconnect(carId);
 }
 
 function getChildByCarId(carId) {
@@ -76,4 +75,5 @@ function getChildByCarId(carId) {
 }
 
 module.exports.Child = Child;
+module.exports.removeChild = removeChild;
 module.exports.getChildByCarId = getChildByCarId;

@@ -54,7 +54,7 @@ app.use(function (req, res, next) {
 // });
 
 io.on('connection', function (socket) {
-  host.addAiCar(1);
+  host.addAiCar(1, io);
   raceBack.addClient(socket.id);
   //send back the number of cars need to be rendered
   io.to(socket.id).emit('carNumber', raceBack.initIO(socket.id));
@@ -88,11 +88,4 @@ io.on('connection', function (socket) {
 
 });
 
-function aiDisconnect(aiName) {
-  io.local.emit('dc', {
-    id: aiName
-  });
-};
-
-module.exports.aiDisconnect = aiDisconnect;
 module.exports = {app: app, server: server};
