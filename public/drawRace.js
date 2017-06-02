@@ -5,7 +5,6 @@
 var graphics = new PIXI.Graphics();
 var zoom = 40;
 var cars = {};
-var numCars;
 var carWidth;
 var carHeight;
 var numRays;
@@ -38,7 +37,7 @@ function updateAllGraphics(info) {
         if (!info.hasOwnProperty(id)) continue;
         var car = info[id];
         if (cars[id] === undefined) {
-            cars[id] = new RaceCarGraphic(carWidth, carHeight, numRays, container, car.colour);
+            cars[id] = new RaceCarGraphic(car.colour);
         }
         cars[id].carGraphic.position.x = car.position[0];
         cars[id].carGraphic.position.y = car.position[1];
@@ -61,7 +60,6 @@ function updateAllGraphics(info) {
 
 
 function initWorld(info) {
-    numCars = info.numCars;
     carWidth = info.carWidth;
     carHeight = info.carHeight;
     numRays = info.numRays;
@@ -72,14 +70,12 @@ function initWorld(info) {
 }
 
 // Abstract information required for car drawing
-function RaceCarGraphic(width, height, numRays, container, colour) {
-    this.width = width;
-    this.height = height;
+function RaceCarGraphic(colour) {
     this.carGraphic = new PIXI.Graphics();
 
     this.carGraphic.beginFill(colour, 0.3);
     this.carGraphic.lineStyle(0.01, colour, 1);
-    this.carGraphic.drawRect(-width / 2, -height / 2, width, height);
+    this.carGraphic.drawRect(-carWidth / 2, -carHeight / 2, carWidth, carHeight);
 
     this.rayGraphics = [];
     for (let i = 0; i < numRays; i++) {
