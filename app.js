@@ -52,7 +52,7 @@ app.use(function (req, res, next) {
 // });
 
 io.on('connection', function (socket) {
-  // host.addAiCar(1);
+  host.addAiCar(1);
   raceBack.addClient(socket.id);
   //send back the number of cars need to be rendered
   io.to(socket.id).emit('carNumber', raceBack.initIO(socket.id));
