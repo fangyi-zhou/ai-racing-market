@@ -7,6 +7,9 @@ const carMass = 1;
 const carWidth = 0.5;
 const carHeight = 1;
 
+function randomColour() {
+  return Math.random() * 0xffffff;
+}
 
 // Race Car
 class RaceCar {
@@ -19,6 +22,7 @@ class RaceCar {
         this.clientID = clientID;
         this.frontWheel.steerValue = 0;
         this.backWheel.engineForce = 0;
+        this.colour = randomColour();
 
         this.rays = [];
         for (let i = 0; i < numRays; i++) {
