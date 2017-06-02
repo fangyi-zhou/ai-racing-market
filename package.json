@@ -57,7 +57,7 @@
     "typescript": "~2.3.3"
   },
   "scripts": {
-    "test": "npm run front-test && npm run back-test",
+    "test": "npm run back-test",
     "back-test": "mocha",
     "ng": "ng",
     "start": "node ./bin/www",
