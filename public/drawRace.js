@@ -35,6 +35,7 @@ function drawMap(map) {
 
 function updateAllGraphics(info) {
     for (var id in info) {
+        if (!info.hasOwnProperty(id)) continue;
         var car = info[id];
         if (cars[id] === undefined) {
             cars[id] = new RaceCarGraphic(carWidth, carHeight, numRays, container, car.colour);
