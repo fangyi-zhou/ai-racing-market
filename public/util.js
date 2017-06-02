@@ -26,3 +26,18 @@ function drawGrid(container, w, h, cell_size) {
     container.addChild(line);
   }
 }
+
+// Updates end point of PIXI line
+function setStartLine(line, point) {
+  line.currentPath.shape.points[0] = point[0];
+  line.currentPath.shape.points[1] = point[1];
+}
+
+function setEndLine(line, point) {
+  line.currentPath.shape.points[2] = point[0];
+  line.currentPath.shape.points[3] = point[1];
+}
+
+function vectorfy(vec) {
+  return [vec.x, vec.y];
+}

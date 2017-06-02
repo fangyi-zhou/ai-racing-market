@@ -13,12 +13,23 @@ Mode = {
     GateDraw : 1,
     StartLineDraw : 2
 }
+currentMode = Mode.MapDraw;
 function changeMode(mode) {
-  console.log(mode);
+  currentMode = mode;
+
+  currentGate.visible = currentMode == Mode.GateDraw || currentMode == Mode.StartLineDraw;
 }
+changeMode(Mode.MapDraw); // Default mode
+
+// Test
+
+var centre = [0, 0]
+var direction = norm([-1, -1])
+var intersect = PolyK.Raycast([0, -1, -1, -1, -1, 0], centre[0], centre[1], direction[0], direction[1])
+var point = mul(direction, intersect.dist)
+console.log(PolyK.Raycast([0, 1, 1, 1, 1, 0], 0, 0, 1, 1))
 
 // Create the PIXI renderer
-// var renderer = PIXI.autoDetectRenderer(600, 400),
 var renderer = PIXI.autoDetectRenderer(1000, 800, null, true, true),
 stage = new PIXI.Stage(0xFFFFAA);
 renderer.backgroundColor = 0xFFFFFF;
@@ -40,6 +51,9 @@ referenceSquare.beginFill(colour, 0.3);
 referenceSquare.lineStyle(0.01, colour, 1);
 referenceSquare.drawRect(-5, -5, 10, 10);
 container.addChild(referenceSquare);
+
+// Gate drawing
+addGateLine(container);
 
 // Draw grid
 var lineColour = 0xBFBFBF;
@@ -71,23 +85,24 @@ function completePolygon() {
 var moving = [false, false, false, false] // Up down left right
 var dZoom = 1
 document.addEventListener('keydown', function onKeyPress(evt){
+  // console.log(evt.keyCode)
   switch (evt.keyCode) {
-  case 187: dZoom = (1 + zoomSpeed); // Zoom in
-            break;
-  case 189: dZoom = (1 - zoomSpeed); // Zoom out
-            break;
-  case 87:  moving[0] = true; // Up
-            break;
-  case 83:  moving[1] = true; // Down
-            break;
-  case 65:  moving[2] = true; // Left
-            break;
-  case 68:  moving[3] = true; // Right
-            break;
-  case 13:  if (first_point != null) { // Enter (finish line)
-              completePolygon();
-            }
-            break;
+    case 187: dZoom = (1 + zoomSpeed); // Zoom in
+              break;
+    case 189: dZoom = (1 - zoomSpeed); // Zoom out
+              break;
+    case 87:  moving[0] = true; // Up
+              break;
+    case 83:  moving[1] = true; // Down
+              break;
+    case 65:  moving[2] = true; // Left
+              break;
+    case 68:  moving[3] = true; // Right
+              break;
+    case 13:  if (first_point != null) { // Enter (finish line)
+                completePolygon();
+              }
+              break;
   }
 });
 
@@ -113,22 +128,25 @@ function snap(x, m) {
 }
 
 function snap_point(point, m) {
-  point.x -= container.position.x
-  point.y -= container.position.y
-  return [snap(point.x, m)/zoom, snap(point.y, m)/zoom]
+  // point.x -= container.position.x
+  // point.y -= container.position.y
+  return scalePoint([snap(point.x, m), snap(point.y, m)], 1/zoom)
+}
+
+function scalePoint(point, scale) {
+  return mul(point, scale);
 }
 
 function getMousePos(canvas, evt) {
   var rect = canvas.getBoundingClientRect();
   return {
-    x: evt.clientX - rect.left,
-    y: evt.clientY - rect.top
+    x: evt.clientX - rect.left - container.position.x,
+    y: evt.clientY - rect.top - container.position.y
   };
 }
 
 function completeCurrentLine(currentLine, point) {
-  currentLine.currentPath.shape.points[2] = point[0];
-  currentLine.currentPath.shape.points[3] = point[1];
+  setEndLine(currentLine, point)
 }
 
 // Mouse pointer
@@ -141,17 +159,26 @@ mouseHover.scale.y = ab[0] /// zoom
 mouseHover.drawCircle(0, 0, ab[0], ab[1]);
 container.addChild(mouseHover);
 
-function updateMouseHover(mousePos) {
-  gridPoint = snap_point(mousePos, cell_size*zoom)
+function updateMapHover(gridPoint) {
   mouseHover.position.x = (gridPoint[0]);
   mouseHover.position.y = (gridPoint[1]);
   if (first_point != null) {
-  completeCurrentLine(currentLine, gridPoint);
+    completeCurrentLine(currentLine, gridPoint);
   }
 }
+
 renderer.context.canvas.addEventListener('mousemove', function(evt) {
   var mousePos = getMousePos(renderer.context.canvas, evt);
-  updateMouseHover(mousePos)
+  gridPoint = snap_point(mousePos, cell_size*zoom);
+  actualPoint = scalePoint(vectorfy(mousePos), 1/zoom);
+
+  switch (currentMode) {
+    case Mode.MapDraw:  updateMapHover(gridPoint);
+                        break;
+    case Mode.StartLineDraw:
+    case Mode.GateDraw: updateGateHover(actualPoint);
+                        break;
+  }
 }, false);
 
 // Map drawing
