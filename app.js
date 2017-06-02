@@ -78,8 +78,12 @@ io.on('connection', function (socket) {
 
   // ************** TODO: Change this to POST ************* //
   socket.on('saveMap', function (info) {
-    console.log(info);
+    /******** TODO: replace to save to database ********/
+    socket.broadcast.emit('newMap', {
+      map: raceBack.changeMap(info)
+    });
   });
+
 });
 
 function aiDisconnect(aiName) {

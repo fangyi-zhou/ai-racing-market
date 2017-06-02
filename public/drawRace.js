@@ -69,6 +69,10 @@ function initWorld(info) {
     drawMap(map);
 }
 
+function updateMap(info) {
+    console.log(info);
+}
+
 // Abstract information required for car drawing
 function RaceCarGraphic(colour) {
     this.carGraphic = new PIXI.Graphics();
