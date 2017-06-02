@@ -18,7 +18,7 @@ const io = require('socket.io')(server, {
 
 const host = require('./usercode/host');
 const raceBack = require('./environment/raceBack.js');
-
+const mongodb = require('mongodb');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
