@@ -5,36 +5,14 @@ var zoom = 40;
 var wall_colour = 0x00FF00;
 
 // Overall map
-map = []
-
-// Modes of operation
-Mode = {
-  MapDraw : 0,
-  GateDraw : 1,
-  StartLineDraw : 2
-}
-currentMode = Mode.MapDraw;
-function changeMode(mode) {
-  currentMode = mode;
-
-  currentGate.visible = currentMode == Mode.GateDraw || currentMode == Mode.StartLineDraw;
-}
-changeMode(Mode.MapDraw); // Default mode
-
-// Test
-
-var centre = [0, 0]
-var direction = norm([-1, -1])
-var intersect = PolyK.Raycast([0, -1, -1, -1, -1, 0], centre[0], centre[1], direction[0], direction[1])
-var point = mul(direction, intersect.dist)
-console.log(PolyK.Raycast([0, 1, 1, 1, 1, 0], 0, 0, 1, 1))
+map = new Map();
 
 // Create the PIXI renderer
 var renderer = PIXI.autoDetectRenderer(1000, 800, null, true, true),
-  stage = new PIXI.Stage(0xFFFFAA);
+    stage = new PIXI.Stage(0xFFFFAA);
 renderer.backgroundColor = 0xFFFFFF;
 container = new PIXI.DisplayObjectContainer(),
-  stage.addChild(container);
+stage.addChild(container);
 renderer.render(stage);
 document.body.appendChild(renderer.view);
 
@@ -75,10 +53,9 @@ function completePolygon() {
   // Add polygon to list
   let segment = new Segment(currentPath);
   segment.drawSegment(container, wall_colour);
-  polygons.push(segment);
+  map.addSegment(segment);
 
   // Reset path
-  map.push(currentPath);
   currentPath = []
 }
 
@@ -126,13 +103,10 @@ document.addEventListener('keyup', function onKeyPress(evt){
 }, true);
 
 function snap(x, m) {
-  // console.log(x, m)
   return Math.round(x / m) * m;
 }
 
 function snap_point(point, m) {
-  // point.x -= container.position.x
-  // point.y -= container.position.y
   return scalePoint([snap(point.x, m), snap(point.y, m)], 1/zoom)
 }
 
@@ -179,14 +153,13 @@ renderer.context.canvas.addEventListener('mousemove', function(evt) {
     case Mode.MapDraw:  updateMapHover(gridPoint);
       break;
     case Mode.StartLineDraw:
-    case Mode.GateDraw: updateGateHover(actualPoint);
+    case Mode.GateDraw: updateGateHover(actualPoint, map.getAllPolygons());
       break;
   }
 }, false);
 
 // Map drawing
 first_point = null;
-var polygons = []
 var currentPath = []
 var currentLine = new PIXI.Graphics();
 
@@ -209,8 +182,14 @@ function drawNewVertex(mousePos) {
 renderer.context.canvas.addEventListener('mousedown', function(evt) {
   var mousePos = getMousePos(renderer.context.canvas, evt);
   switch (currentMode) {
-    case Mode.MapDraw:  drawNewVertex(mousePos);
-      break;
+    case Mode.MapDraw:        drawNewVertex(mousePos);
+                              break;
+    case Mode.GateDraw:       // Add new gate (currentGate) to map
+                              map.addGate(new Gate(gateStart, gateEnd))
+                              break;
+    case Mode.StartLineDraw:  // Add start line (currentGate) to map
+                              map.setStartGate(new Gate(gateStart, gateEnd))
+                              break;
   }
 
 }, false);
@@ -223,14 +202,13 @@ function updateContainer() {
   container.scale.y =  zoom;
 }
 
-
-
 // Loop the program
 function animate() {
   updateContainer();
-  updateGateRotation();
+  if (gateMode()) {
+    updateGateRotation(map.getAllPolygons());
+  }
 
-  // console.log(world.time)
   renderer.render(stage);
   requestAnimationFrame(animate);
 }
@@ -243,3 +221,19 @@ var mapName = 'mapSave';
 function sendMapToServer() {
   saveMap(map);
 }
+
+// Modes of operation
+Mode = {
+  MapDraw : 0,
+  GateDraw : 1,
+  StartLineDraw : 2
+}
+function gateMode() {
+  return currentMode == Mode.GateDraw || currentMode == Mode.StartLineDraw;
+}
+function changeMode(mode) {
+  currentMode = mode;
+  currentGate.visible = gateMode();
+  mouseHover.visible = currentMode == Mode.MapDraw;
+}
+changeMode(Mode.MapDraw); // Default mode

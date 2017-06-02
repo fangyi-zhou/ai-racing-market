@@ -3,11 +3,11 @@ var initialDirection = [1, 0]
 var currentDirection = initialDirection;
 var centre = [0, 0]
 var length = 100;
-var rotationSpeed = 0.01, currentRotationSpeed = 0;
+var rotationSpeed = 0.02, currentRotationSpeed = 0;
+var gateStart, gateEnd;
 
 var currentGate = new PIXI.Graphics();
 var gateColour = 0x0000FF;
-
 
 function add(vec1, vec2) {
   return [vec1[0] + vec2[0], vec1[1] + vec2[1]]
@@ -28,20 +28,31 @@ function updateRotation(a) {
                       Math.cos(a) * p[1] - Math.sin(a) * p[0]]
 }
 
-function endPoint(centre, currentDirection, length) {
-  return add(centre, mul(currentDirection, length));
+function endPoint(centre, currentDirection, length, polygons) {
+  // Find intersection with polygons
+  var smallestDist = length/2;
+  for (var i in polygons) {
+    p = polygons[i];
+    var intersect = PolyK.Raycast(p, centre[0], centre[1], currentDirection[0], currentDirection[1])
+    if (intersect != null && intersect.dist < smallestDist) {
+      smallestDist = intersect.dist;
+    }
+  }
+  return add(centre, mul(currentDirection, smallestDist));
 }
 
-function updateGateHover(mousePoint) {
+function updateGateHover(mousePoint, polygons) {
+  updateRotation(currentRotation);
+
   centre = mousePoint;
-  var newEndPoint = endPoint(centre, currentDirection, length/2);
-  var newStartPoint = endPoint(centre, currentDirection, -length/2)
+  gateEnd = endPoint(centre, currentDirection, length/2, polygons);
+  gateStart = endPoint(centre, mul(currentDirection, -1), length/2, polygons);
 
-  setStartLine(currentGate, newStartPoint);
-  setEndLine(currentGate, newEndPoint);
+  setStartLine(currentGate, gateStart);
+  setEndLine(currentGate, gateEnd);
 }
 
-currentGate.lineStyle(0.1, gateColour, 1);
+currentGate.lineStyle(0.07, gateColour, 0.8);
 currentGate.moveTo(centre[0], centre[1]);
 var initialEndPoint = endPoint(centre, currentDirection, length);
 currentGate.lineTo(initialEndPoint[0], initialEndPoint[1])
@@ -70,8 +81,7 @@ document.addEventListener('keyup', function onKeyPress(evt){
 });
 
 // Update rotation each draw step
-function updateGateRotation() {
+function updateGateRotation(polygons) {
   currentRotation += currentRotationSpeed;
-  updateRotation(currentRotation);
-  updateGateHover(centre);
+  updateGateHover(centre, polygons);
 }

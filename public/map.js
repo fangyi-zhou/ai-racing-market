@@ -17,6 +17,11 @@ function Segment(path) {
   }
 }
 
+function Gate(start, end) {
+  this.startPoint = start;
+  this.endPoint = end;
+}
+
 function Map(segments=[], gates=[], startGate=null) {
   this.segments = segments;
   this.gates = gates;
@@ -32,5 +37,14 @@ function Map(segments=[], gates=[], startGate=null) {
 
   this.setStartGate = function(startGate) {
     this.startGate = startGate;
+  }
+
+  // Return all polygons in PIXI format
+  this.getAllPolygons = function() {
+    polygons = []
+    for (var i = 0; i < this.segments.length; i++) {
+      polygons.push(this.segments[i].pixiPath);
+    }
+    return polygons;
   }
 }
