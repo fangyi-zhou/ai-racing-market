@@ -4,7 +4,7 @@
 
 var graphics = new PIXI.Graphics();
 var zoom = 40;
-var carList = [];
+var cars = {};
 var numCars;
 var carWidth;
 var carHeight;
@@ -34,22 +34,23 @@ function drawMap(map) {
 }
 
 function updateAllGraphics(info) {
-    for (let i = 0; i < info.length; i++) {
+    for (var id in info) {
+        var car = info[id];
+        if (cars[id] === undefined) {
+            cars[id] = new RaceCarGraphic(carWidth, carHeight, numRays, container, car.colour);
+        }
+        cars[id].carGraphic.position.x = car.position[0];
+        cars[id].carGraphic.position.y = car.position[1];
+        cars[id].carGraphic.rotation = car.angle;
 
-        if (carList[i] != null) {
-            carList[i].carGraphic.position.x = info[i].position[0];
-            carList[i].carGraphic.position.y = info[i].position[1];
-            carList[i].carGraphic.rotation = info[i].angle;
+        if (clientCarID === car.clientID) {
+          container.position.x = -cars[id].carGraphic.position.x * zoom + renderer.width/2; // center at origin
+          container.position.y = cars[id].carGraphic.position.y * zoom + renderer.height/2;
+        }
 
-            if (clientCarID == info[i].clientID) {
-              container.position.x = -carList[i].carGraphic.position.x * zoom + renderer.width/2; // center at origin
-              container.position.y = carList[i].carGraphic.position.y * zoom + renderer.height/2;
-            }
-
-            for (let j = 0; j < numRays; j++) {
-                var rayEnd = info[i].rayEnds[j];
-                carList[i].rayGraphics[j].currentPath.shape.points = [info[i].position[0], info[i].position[1], rayEnd[0], rayEnd[1]];
-            }
+        for (let j = 0; j < car.rayEnds.length; j++) {
+          var rayEnd = car.rayEnds[j];
+          cars[id].rayGraphics[j].currentPath.shape.points = [car.position[0], car.position[1], rayEnd[0], rayEnd[1]];
         }
     }
     requestAnimationFrame(function () {
@@ -57,21 +58,15 @@ function updateAllGraphics(info) {
     });
 }
 
-function randomColour() {
-  return Math.random() * 0xffffff;
-}
 
 function initWorld(info) {
-    carList = [];
     numCars = info.numCars;
     carWidth = info.carWidth;
     carHeight = info.carHeight;
     numRays = info.numRays;
-    for (let i = 0; i < info.numCars; i++) {
-        carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container, randomColour()));
-    }
     this.map = info.map;
     clientCarID = info.id;
+    updateAllGraphics(info.cars);
     drawMap(map);
 }
 
@@ -97,14 +92,17 @@ function RaceCarGraphic(width, height, numRays, container, colour) {
     container.addChild(this.carGraphic);
 }
 
-function removeUser() {
-    let car = carList.pop();
+function removeUser(id) {
+    let car = cars[id];
+    if (car === undefined) return;
     for (let ray_id in car.rayGraphics) {
         container.removeChild(car.rayGraphics[ray_id]);
     }
     container.removeChild(car.carGraphic);
+    cars[id] = undefined;
 }
 
 function addUser(id) {
-    carList.push(new RaceCarGraphic(carWidth, carHeight, numRays, container, randomColour()))
+    if (cars[id] === undefined)
+      cars[id] = new RaceCarGraphic(carWidth, carHeight, numRays, container, car.colour);
 }

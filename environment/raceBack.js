@@ -56,15 +56,15 @@ function saveMap(map) {
 world.defaultContactMaterial.friction = 0.001;
 
 function packageGraphics () {
-    let graphics_dict = [];
+    let graphics_dict = {};
     raceCars.forEach(function (raceCar, key) {
-        graphics_dict.push ({
+        graphics_dict[raceCar.clientID] = {
             position: raceCar.box_graphic.position,
             angle: raceCar.box_graphic.angle,
             rayEnds: raceCar.rayEnds,
             colour: raceCar.colour,
             clientID: raceCar.clientID
-        })
+        }
     });
     return graphics_dict;
 }
@@ -157,7 +157,8 @@ function initIO(clientID){
         carHeight: RaceCar.carHeight,
         numRays: RaceCar.numRays,
         map: getMap(),
-        id: clientID
+        id: clientID,
+        cars: packageGraphics()
     }
 }
 
