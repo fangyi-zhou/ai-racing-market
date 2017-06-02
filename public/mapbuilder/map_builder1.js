@@ -227,7 +227,11 @@ requestAnimationFrame(animate);
 // Sends map segment paths to server to be saved
 var mapName = 'mapSave';
 function sendMapToServer() {
-  saveMap(map.createJSON());
+  if (map.complete()) {
+    saveMap(map.createJSON());
+  } else {
+    alert("Your race track needs a start gate.");
+  }
 }
 
 // Modes of operation

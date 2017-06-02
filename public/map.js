@@ -86,6 +86,10 @@ function Map(segments=[], gates=[], startGate=null) {
     return [this.startGate.startPoint, this.startGate.endPoint];
   }
 
+  this.complete = function() {
+    return this.startGate != null;
+  }
+
   this.createJSON = function() {
     return {
       segments: this.getAllPolygons(),
