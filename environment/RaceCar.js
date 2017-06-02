@@ -2,16 +2,27 @@ const p2 = require('p2');
 const graphicsFormat = require('./GraphicsFormat');
 //fix numRays
 const numRays = 10;
+// Hyperparameters
+const carMass = 1;
+const carWidth = 0.5;
+const carHeight = 1;
+
+function randomColour() {
+  return Math.random() * 0xffffff;
+}
 
 // Race Car
 class RaceCar {
-    constructor(collision_id, clientID, world, position, width, height, mass) {
-        const carComponents = p2RaceCar(collision_id, world, position, width, height, mass);
+    constructor(collision_id, clientID, world, position) {
+        const carComponents = p2RaceCar(collision_id, world, position, carWidth, carHeight, carMass);
         this.collision_id = collision_id;
         this.vehicle = carComponents[0];
         this.frontWheel = carComponents[1];
         this.backWheel = carComponents[2];
         this.clientID = clientID;
+        this.frontWheel.steerValue = 0;
+        this.backWheel.engineForce = 0;
+        this.colour = randomColour();
 
         this.rays = [];
         for (let i = 0; i < numRays; i++) {
@@ -24,7 +35,7 @@ class RaceCar {
         this.rayEnds = [];
         this.rayDists = [];
 
-        this.box_graphic = new graphicsFormat.RaceCarGraphic(position, 0, width, height);
+        this.box_graphic = new graphicsFormat.RaceCarGraphic(position, 0, carWidth, carHeight);
 
         this.updateGraphics = function () {
             // Update backend's abstract graphics for message
@@ -86,3 +97,5 @@ function p2RaceCar(collision_id, world, position, width, height, mass) {
 
 module.exports.RaceCar = RaceCar;
 module.exports.numRays = numRays;
+module.exports.carWidth = carWidth;
+module.exports.carHeight = carHeight;
