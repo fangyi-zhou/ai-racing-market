@@ -108,19 +108,20 @@ document.addEventListener('keydown', function onKeyPress(evt){
   }
 });
 
+// 187: Zoom in, 189: Zoom out, 87: Up, 83: Down, 65: Left, 68: Right
 document.addEventListener('keyup', function onKeyPress(evt){
-switch (evt.keyCode) {
-  case 187:
-  case 189: dZoom = 1;
-            break;
-  case 87:  moving[0] = false;
-            break;
-  case 83:  moving[1] = false;
-            break;
-  case 65:  moving[2] = false;
-            break;
-  case 68:  moving[3] = false;
-            break;
+  switch(evt.keyCode) {
+    case 187:
+    case 189: dZoom = 1;
+              break;
+    case 87:  moving[0] = false;
+              break;
+    case 83:  moving[1] = false;
+              break;
+    case 65:  moving[2] = false;
+              break;
+    case 68:  moving[3] = false;
+              break;
   }
 }, true);
 
@@ -222,9 +223,12 @@ function updateContainer() {
   container.scale.y =  zoom;
 }
 
+
+
 // Loop the program
 function animate() {
   updateContainer();
+  updateGateRotation();
 
   // console.log(world.time)
   renderer.render(stage);
