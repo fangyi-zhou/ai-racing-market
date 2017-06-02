@@ -43,14 +43,6 @@ function onKeyRelease(evt){
     syncServerWithMovement();
 }
 
-function saveMap(map) {
-  if(socket != null){
-      socket.emit('saveMap', {
-          'map': map
-      })
-  }
-}
-
 function syncServerWithMovement(){
     if(socket != null){
         socket.emit('movement', {

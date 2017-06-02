@@ -79,8 +79,9 @@ io.on('connection', function (socket) {
     raceBack.updateMovement(info, socket.id);
   });
 
+  // ************** TODO: Change this to POST ************* //
   socket.on('saveMap', function (info) {
-
+    console.log(info);
   });
 });
 

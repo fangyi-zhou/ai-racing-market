@@ -153,7 +153,7 @@ renderer.context.canvas.addEventListener('mousemove', function(evt) {
     case Mode.MapDraw:  updateMapHover(gridPoint);
       break;
     case Mode.StartLineDraw:
-    case Mode.GateDraw: updateGateHover(actualPoint, map.getAllPolygons());
+    case Mode.GateDraw: updateGateHover(actualPoint, map.getAllPolygonsPIXI());
       break;
   }
 }, false);
@@ -195,7 +195,7 @@ renderer.context.canvas.addEventListener('mousedown', function(evt) {
                               break;
     case Mode.StartLineDraw:  // Add start line (currentGate) to map
                               var newGate = new Gate(gateStart, gateEnd);
-                              newGate.drawGate(container, gateColour);
+                              newGate.drawGate(container, startGateColour);
                               map.setStartGate(new Gate(gateStart, gateEnd));
                               break;
   }
@@ -214,7 +214,7 @@ function updateContainer() {
 function animate() {
   updateContainer();
   if (gateMode()) {
-    updateGateRotation(map.getAllPolygons());
+    updateGateRotation(map.getAllPolygonsPIXI());
   }
 
   renderer.render(stage);
@@ -227,7 +227,7 @@ requestAnimationFrame(animate);
 // Sends map segment paths to server to be saved
 var mapName = 'mapSave';
 function sendMapToServer() {
-  saveMap(map);
+  saveMap(map.createJSON());
 }
 
 // Modes of operation

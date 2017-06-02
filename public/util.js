@@ -1,4 +1,4 @@
-// Prepare map format for drawing
+// Prepare segment format for drawing
 function flatten_map(map) {
     let flattened_map = []
     for (let i = 0; i < map.length; i++) {

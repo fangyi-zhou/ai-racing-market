@@ -49,16 +49,19 @@ function Map(segments=[], gates=[], startGate=null) {
   }
 
   // Return all polygons in PIXI format
+  this.getAllPolygonsPIXI = function() {
+    return this.getAllPolygons().map(flatten_map);
+  }
+
   this.getAllPolygons = function() {
     polygons = []
     for (var i = 0; i < this.segments.length; i++) {
-      polygons.push(this.segments[i].pixiPath);
+      polygons.push(this.segments[i].path);
     }
     return polygons;
   }
 
   this.contains = function(point) {
-
     for (var i in this.segments) {
       if (this.segments[i].contains(point)) {
         return true;
@@ -69,5 +72,25 @@ function Map(segments=[], gates=[], startGate=null) {
 
   this.getSegments = function() {
     return this.segments;
+  }
+
+  this.getGates = function() {
+    gates = [];
+    for (var i in this.gates) {
+      gates.push([this.gates[i].startPoint, this.gates[i].endPoint])
+    }
+    return gates;
+  }
+
+  this.getStartGate = function() {
+    return [this.startGate.startPoint, this.startGate.endPoint];
+  }
+
+  this.createJSON = function() {
+    return {
+      segments: this.getAllPolygons(),
+      gates: this.getGates(),
+      startGate: this.getStartGate()
+    }
   }
 }
