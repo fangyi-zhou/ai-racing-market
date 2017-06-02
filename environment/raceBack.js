@@ -5,7 +5,6 @@ const p2 = require('p2');
 const hashMap = require('hashmap');
 const RaceCar = require('./RaceCar');
 const rays = require('./rays');
-var fs = require("./mapSave.js")
 
 // Hyperparameters
 const carMass = 1;
