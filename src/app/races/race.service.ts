@@ -10,7 +10,7 @@ export class RaceService {
     constructor (private http: Http) {}
 
     // get("/races")
-    getContacts(): Promise<Race[]> {
+    getRaces(): Promise<Race[]> {
       return this.http.get(this.raceUrl)
                  .toPromise()
                  .then(response => response.json() as Race[])
@@ -18,7 +18,7 @@ export class RaceService {
     }
 
     // post("/races")
-    createContact(newRace: Race): Promise<Race> {
+    createRaces(newRace: Race): Promise<Race> {
       return this.http.post(this.raceUrl, newRace)
                  .toPromise()
                  .then(response => response.json() as Race)
@@ -27,16 +27,8 @@ export class RaceService {
 
     // TODO get("/api/:id")
 
-    // delete("/api/:id")
-    deleteContact(delRace: String): Promise<String> {
-      return this.http.delete(this.raceUrl + '/' + delRace)
-                 .toPromise()
-                 .then(response => response.json() as String)
-                 .catch(this.handleError);
-    }
-
     // put("/api/:id")
-    updateContact(putRace: Race): Promise<Race> {
+    updateRaces(putRace: Race): Promise<Race> {
       var putUrl = this.raceUrl + '/' + putRace._id;
       return this.http.put(putUrl, putRace)
                  .toPromise()
