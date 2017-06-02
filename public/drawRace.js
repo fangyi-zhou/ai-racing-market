@@ -103,7 +103,3 @@ function removeUser(id) {
     cars[id] = undefined;
 }
 
-function addUser(id) {
-    if (cars[id] === undefined)
-      cars[id] = new RaceCarGraphic(carWidth, carHeight, numRays, container, car.colour);
-}

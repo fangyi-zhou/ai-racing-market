@@ -18,9 +18,6 @@ function serverCallBack(){
         removeUser(info.id);
     });
 
-    socket.on('newPlayer', function(info){
-        addUser(info.id);
-    })
 }
 
 // Key controls
