@@ -1,20 +1,10 @@
 <!--The whole content below can be removed with the new code.-->
 <div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!!
-  </h1>
+  <h1>Welcome to {{title}}!!</h1>
+  <nav>
+    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/rooms" routerLinkActive="active">All rooms</a>
+  </nav>
 </div>
-<ul class="rooms">
-  <li *ngFor="let room of rooms"
-      [class.selected]="room === selectedRoom"
-      (click)="onSelect(room)">
-    <span class="badge">{{room.id}}</span> {{room.name}}
-  </li>
-</ul>
-<div *ngIf="selectedRoom">
 
-</div>
-<div style="text-align: center">
-  <a href="/dev">Play against an AI</a> <br>
-  <a href="/dev/mapbuilder">Build your own map</a>
-</div>
+<router-outlet></router-outlet>
