@@ -5,7 +5,6 @@ export class Room {
   name: string;
 }
 
-
 const ROOMS: Room[] = [
   { id: 0, name: 'Room-0' },
   { id: 1, name: 'Room-1' },
