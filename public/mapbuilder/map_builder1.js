@@ -99,8 +99,10 @@ document.addEventListener('keydown', function onKeyPress(evt){
               break;
     case 68:  moving[3] = true; // Right
               break;
-    case 13:  if (first_point != null) { // Enter (finish line)
-                completePolygon();
+    case 13:  if (currentMode == Mode.MapDraw) {
+                if (first_point != null) { // Enter (finish line)
+                  completePolygon();
+                }
               }
               break;
   }
@@ -186,8 +188,8 @@ first_point = null;
 var polygons = []
 var currentPath = []
 var currentLine = new PIXI.Graphics();
-renderer.context.canvas.addEventListener('mousedown', function(evt) {
-  var mousePos = getMousePos(renderer.context.canvas, evt);
+
+function drawNewVertex(mousePos) {
   gridPoint = snap_point(mousePos, cell_size*zoom)
 
   if (first_point == null) {
@@ -201,6 +203,15 @@ renderer.context.canvas.addEventListener('mousedown', function(evt) {
   container.addChild(currentLine);
   currentLine.lineStyle(0.01, 0xFF0000, 1);
   currentLine.moveTo(gridPoint[0], gridPoint[1])
+}
+
+renderer.context.canvas.addEventListener('mousedown', function(evt) {
+  var mousePos = getMousePos(renderer.context.canvas, evt);
+  switch (currentMode) {
+    case Mode.MapDraw:  drawNewVertex(mousePos);
+                        break;
+  }
+
 }, false);
 
 function updateContainer() {
