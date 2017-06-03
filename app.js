@@ -36,7 +36,6 @@ app.route('/*')
   });
 app.use("/dev", express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
 app.use('/rooms',rooms);
 app.use('/dev',dev);
 app.use('/races', races);
