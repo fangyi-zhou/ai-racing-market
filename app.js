@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const index = require('./routes/index');
 const races = require('./routes/races');
 const dev = require('./routes/dev');
+const api = require('./routes/api');
 
 const app = express();
 const server = require('http').Server(app);
@@ -32,6 +33,7 @@ app.use("/dev", express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/dev',dev);
 app.use('/races', races);
+app.use('/api', api);
 
 //catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -52,7 +54,7 @@ app.use(function (req, res, next) {
 // });
 
 io.on('connection', function (socket) {
-  host.addAiCar(1);
+  host.addAiCar(1, io);
   raceBack.addClient(socket.id);
   //send back the number of cars need to be rendered
   io.to(socket.id).emit('carNumber', raceBack.initIO(socket.id));
@@ -78,15 +80,12 @@ io.on('connection', function (socket) {
 
   // ************** TODO: Change this to POST ************* //
   socket.on('saveMap', function (info) {
-    console.log(info);
+    /******** TODO: replace to save to database ********/
+    socket.broadcast.emit('newMap', {
+      map: raceBack.changeMap(info)
+    });
   });
+
 });
 
-function aiDisconnect(aiName) {
-  io.local.emit('dc', {
-    id: aiName
-  });
-};
-
-module.exports.aiDisconnect = aiDisconnect;
 module.exports = {app: app, server: server};

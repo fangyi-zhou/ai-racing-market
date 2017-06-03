@@ -14,6 +14,25 @@ const world = new p2.World({
     gravity : [0,0]
 });
 
+class map{
+  constructor (segments) {
+    this.segments = segments;
+    this.save = JSON.parse(JSON.stringify(segments));// Required since p2 manipulates array
+    this.mapPolys = [];
+    this.removeMap = function () {
+      for (let i in this.mapPolys) {
+        world.removeBody(this.mapPolys[i]);
+      }
+    }
+
+    this.createMap = function () {
+      for (let p = 0; p < this.segments.length; p++) {
+        this.mapPolys.push(createMapSegment(this.segments[p]));
+      }
+    }
+  }
+}
+
 function createMapSegment (segment) {
   let map = new p2.Body({
       mass : 1,
@@ -29,26 +48,15 @@ function createMapSegment (segment) {
     map.shapes[i].collisionGroup = -1;
   }
   /*******************************************************************/
+  return map
 }
 
-function createMap(map) {
-  for (let p = 0; p < current_map.length; p++) {
-    createMapSegment(map[p])
-  }
-}
-
-const current_map = require('./maps/map1.js')["map1"]
-const current_map_save = JSON.parse(JSON.stringify(current_map)); // Required since p2 manipulates array
-createMap(current_map);
+let current_map = new map(require('./maps/map1.js')["map1"]);
+current_map.createMap();
 
 // Gets map to send to users
 function getMap() {
-  return current_map_save;
-}
-
-function saveMap(map) {
-  // var map_path_w = 'environment/maps/map1.json';
-  // fs.writeMap(map_path, map);
+  return current_map.save;
 }
 
 // For now, set default friction between ALL objects
@@ -162,6 +170,14 @@ function initIO(clientID){
     }
 }
 
+function changeMap(info) {
+    let segments = info.map.segments;
+    current_map.removeMap();
+    current_map = new map(segments);
+    current_map.createMap();
+    return getMap();
+}
+
 module.exports.packageGraphics = packageGraphics;
 module.exports.addClient = addClient;
 module.exports.addRaceCar = addRaceCar;
@@ -170,3 +186,4 @@ module.exports.applyMove = applyMove;
 module.exports.removeUser= removeUser;
 module.exports.getCarById = getCarById;
 module.exports.initIO = initIO;
+module.exports.changeMap = changeMap;

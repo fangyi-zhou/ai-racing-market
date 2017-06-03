@@ -64,10 +64,21 @@ function processUserOutput(child, data) {
     })
 }
 
-function addAiCar(numAi) {
+function childExit(child, io) {
+    return function () {
+        raceBack.removeUser(child.carId);
+        io.local.emit("dc", {
+            id: child.carId
+        });
+        Child.removeChild(child.carId);
+    }
+}
+
+function addAiCar(numAi, io) {
     for (let i = 0; i < numAi; i++) {
         const carId = `Child_${Date.now()}`;
-        new Child.Child(1, carId, [1, 1]);
+        const child = new Child.Child(1, carId, [1, 1]);
+        child.on("exit", childExit(child, io));
         console.log(`Spawn child ${carId}`);
     }
 }
