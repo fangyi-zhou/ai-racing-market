@@ -51,8 +51,10 @@ class map{
 }
 
 function checkpointResult(result, ray){
-  result.getHitPoint(hitPoint, ray);
+    result.getHitPoint(hitPoint, ray);
+    let car = raceCars.get(result.body.id);
 
+  // TODO: send checkpoint to AI;
 }
 
 
