@@ -14,8 +14,7 @@ function randomColour() {
 // Race Car
 class RaceCar {
     constructor(collision_id, clientID, world, position) {
-        const carComponents = p2RaceCar(collision_id, world, position, carWidth, carHeight, carMass);
-        this.collision_id = collision_id;
+        const carComponents = p2RaceCar(collision_id,clientID,world, position, carWidth, carHeight, carMass);
         this.vehicle = carComponents[0];
         this.frontWheel = carComponents[1];
         this.backWheel = carComponents[2];
@@ -58,11 +57,12 @@ class RaceCar {
 }
 
 // Create the p2 RaceCar
-function p2RaceCar(collision_id, world, position, width, height, mass) {
+function p2RaceCar(collision_id,clientID, world, position, width, height, mass) {
     // Create a dynamic body for the chassis
     let chassisBody = new p2.Body({
         mass: mass,
         position: position,
+        id: clientID
     });
     let boxShape = new p2.Box({
         width: width,

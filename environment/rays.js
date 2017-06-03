@@ -40,4 +40,7 @@ function findRayEnd(start, ori, angle){
     return end;
 }
 
+
+
+
 module.exports.constructRays = constructRays;

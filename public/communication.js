@@ -9,7 +9,7 @@ function serverCallBack(){
 				updateAllGraphics(info);
 		});
 
-		socket.on('carNumber', function (info) {
+		socket.on('init', function (info) {
 				initWorld(info);
 		});
 

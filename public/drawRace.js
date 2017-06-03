@@ -1,8 +1,6 @@
 /**
  * Created by ruiaohu on 27/05/2017.
  */
-
-var graphics = new PIXI.Graphics();
 var zoom = 40;
 var cars = {};
 var carWidth;
@@ -25,10 +23,18 @@ container.scale.x = zoom;  // zoom in
 container.scale.y = -zoom; // Note: we flip the y axis to make "up" the physics "up"
 renderer.render(stage);
 
-function drawMap(map) {
+function drawMap(map, checkpoints) {
     for (let i in map) {
         let segment = new Segment(map[i]);
         segment.drawSegment(container, wall_colour);
+    }
+    for(let i in checkpoints){
+      let rayGraphic = new PIXI.Graphics();
+      console.log(checkpoints[i]);
+      rayGraphic.lineStyle(0.05, 0xffffff, 1);
+      rayGraphic.moveTo(checkpoints[i][0][0],checkpoints[i][0][1]);
+      rayGraphic.lineTo(checkpoints[i][1][0],checkpoints[i][1][1]);
+      container.addChild(rayGraphic);
     }
 }
 
@@ -63,10 +69,9 @@ function initWorld(info) {
     carWidth = info.carWidth;
     carHeight = info.carHeight;
     numRays = info.numRays;
-    this.map = info.map;
     clientCarID = info.id;
     updateAllGraphics(info.cars);
-    drawMap(map);
+    drawMap(info.map, info.checkpoints);
 }
 
 function updateMap(info) {

@@ -57,7 +57,7 @@ io.on('connection', function (socket) {
   host.addAiCar(1, io);
   raceBack.addClient(socket.id);
   //send back the number of cars need to be rendered
-  io.to(socket.id).emit('carNumber', raceBack.initIO(socket.id));
+  io.to(socket.id).emit('init', raceBack.initIO(socket.id));
 
   console.log('user connection, socket id = ' + socket.id);
 

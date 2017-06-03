@@ -6,6 +6,9 @@ const hashMap = require('hashmap');
 const RaceCar = require('./RaceCar');
 const rays = require('./rays');
 
+const result = new p2.RaycastResult();
+const hitPoint = p2.vec2.create();
+
 const fixedTimeStep = 0.06;
 const raceCars = new hashMap.HashMap();
 const maxSteer = Math.PI / 5;
@@ -15,23 +18,54 @@ const world = new p2.World({
 });
 
 class map{
-  constructor (segments) {
+  constructor (segments, checkpoints) {
     this.segments = segments;
+    this.checkpoints = checkpoints;
     this.save = JSON.parse(JSON.stringify(segments));// Required since p2 manipulates array
     this.mapPolys = [];
+    this.mapCheckpoints = new hashMap.HashMap();
     this.removeMap = function () {
       for (let i in this.mapPolys) {
         world.removeBody(this.mapPolys[i]);
       }
+      console.log(checkpoints);
+      this.mapCheckpoints.clear();
     }
 
     this.createMap = function () {
       for (let p = 0; p < this.segments.length; p++) {
         this.mapPolys.push(createMapSegment(this.segments[p]));
       }
+      for (let i = 0; i < this.checkpoints.length;i++){
+        let checkpoint = new p2.Ray({
+          mode: p2.Ray.ALL,
+          collisionMask:-1^Math.pow(2,31),
+          callback: function(result){
+            checkpointResult(result, this);
+          }
+        });
+        this.mapCheckpoints.set(checkpoint, [i,checkpoints[i][0], checkpoints[i][1]]);
+      }
     }
   }
 }
+
+function checkpointResult(result, ray){
+  result.getHitPoint(hitPoint, ray);
+
+}
+
+
+function drawCheckpoints(){
+  current_map.mapCheckpoints.forEach(function(value, ray){
+    p2.vec2.copy(ray.from, value[1]);
+    p2.vec2.copy(ray.to, value[2]);
+    ray.update();
+    result.reset();
+    world.raycast(result, ray);
+  });
+}
+
 
 function createMapSegment (segment) {
   let map = new p2.Body({
@@ -45,13 +79,13 @@ function createMapSegment (segment) {
   /*************Blame the p2 author for bad API design **************/
   for(let i = 0; i<map.shapes.length;i++){
     map.shapes[i].collisionMask = -1;
-    map.shapes[i].collisionGroup = -1;
+    map.shapes[i].collisionGroup = Math.pow(2,31);
   }
   /*******************************************************************/
   return map
 }
 
-let current_map = new map(require('./maps/map1.js')["map1"]);
+let current_map = new map(require('./maps/map1.js')["map1"], [[[0,0],[0,0]]]);
 current_map.createMap();
 
 // Gets map to send to users
@@ -84,7 +118,7 @@ function addRaceCar(clientID, position) {
 }
 
 function addClient(id){
-    console.log('USER', id)
+    console.log('USER', id);
     const initPosition = [5, 5];
     addRaceCar(id, initPosition);
 }
@@ -153,7 +187,7 @@ function getCarById(carId) {
 // Loop the program
 setInterval(function(){
     world.step(fixedTimeStep);
-
+    drawCheckpoints();
     // Update graphics
     updateGraphics ();
 }, 1000/30);
@@ -166,14 +200,16 @@ function initIO(clientID){
         numRays: RaceCar.numRays,
         map: getMap(),
         id: clientID,
-        cars: packageGraphics()
+        cars: packageGraphics(),
+        checkpoints:current_map.checkpoints
     }
 }
 
 function changeMap(info) {
     let segments = info.map.segments;
+    let checkpoints = info.map.gates;
     current_map.removeMap();
-    current_map = new map(segments);
+    current_map = new map(segments, checkpoints);
     current_map.createMap();
     return getMap();
 }
