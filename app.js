@@ -9,6 +9,7 @@ const index = require('./routes/index');
 const races = require('./routes/races');
 const dev = require('./routes/dev');
 const api = require('./routes/api');
+const rooms = require('./routes/rooms');
 
 const app = express();
 const server = require('http').Server(app);
@@ -25,12 +26,18 @@ const mongodb = require('mongodb');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'dist')));
+app.route('/*')
+  .get(function (req, res) {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  });
 app.use("/dev", express.static(path.join(__dirname, 'public')));
+
 app.use('/', index);
+app.use('/rooms',rooms);
 app.use('/dev',dev);
 app.use('/races', races);
 app.use('/api', api);
