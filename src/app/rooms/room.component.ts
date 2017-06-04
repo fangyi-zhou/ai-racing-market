@@ -31,6 +31,8 @@ export class RoomComponent {
   onSelect(room: Room): void {
     this.selectedRoom = room;
   }
+
+
 }
 
 
