@@ -6,12 +6,13 @@ var cars = {};
 var carWidth;
 var carHeight;
 var numRays;
-var wall_colour = 0xCDFF00;
+var wall_colour = 0xD7D7D7;
 var clientCarID = null;
 
 // Create the PIXI renderer
 var renderer = PIXI.autoDetectRenderer(1000, 800, null, true);
 var stage = new PIXI.Stage(0xFFFFAA);
+renderer.backgroundColor = 0x181818;
 var container = new PIXI.DisplayObjectContainer();
 stage.addChild(container);
 document.body.appendChild(renderer.view);
@@ -21,20 +22,21 @@ container.position.x = renderer.width / 2; // center at origin
 container.position.y = renderer.height / 2;
 container.scale.x = zoom;  // zoom in
 container.scale.y = -zoom; // Note: we flip the y axis to make "up" the physics "up"
-renderer.render(stage);
+renderer.render(stage); // Initial render
+
+// Map
+var currentMap = new Map();
 
 function drawMap(map, checkpoints) {
     for (let i in map) {
         let segment = new Segment(map[i]);
+        currentMap.addSegment(segment);
         segment.drawSegment(container, wall_colour);
     }
     for(let i in checkpoints){
-      let rayGraphic = new PIXI.Graphics();
-      console.log(checkpoints[i]);
-      rayGraphic.lineStyle(0.05, 0xffffff, 1);
-      rayGraphic.moveTo(checkpoints[i][0][0],checkpoints[i][0][1]);
-      rayGraphic.lineTo(checkpoints[i][1][0],checkpoints[i][1][1]);
-      container.addChild(rayGraphic);
+        let gate = new Gate(checkpoints[i][0], checkpoints[i][1], 0xFFFFFF);
+        currentMap.addGate(gate);
+        gate.drawGate(container, 0.02);
     }
 }
 
@@ -72,10 +74,11 @@ function initWorld(info) {
     clientCarID = info.id;
     updateAllGraphics(info.cars);
     drawMap(info.map, info.checkpoints);
+    console.log(info.map)
 }
 
 function updateMap(info) {
-    console.log(info);
+    // console.log(info);
 }
 
 // Abstract information required for car drawing

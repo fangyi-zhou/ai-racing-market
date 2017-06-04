@@ -24,6 +24,7 @@ class map{
     this.save = JSON.parse(JSON.stringify(segments));// Required since p2 manipulates array
     this.mapPolys = [];
     this.mapCheckpoints = new hashMap.HashMap();
+
     this.removeMap = function () {
       for (let i in this.mapPolys) {
         world.removeBody(this.mapPolys[i]);
