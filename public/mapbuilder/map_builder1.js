@@ -118,7 +118,7 @@ function getMousePos(canvas, evt) {
   var rect = canvas.getBoundingClientRect();
   return {
     x: evt.clientX - rect.left - container.position.x,
-    y: evt.clientY - rect.top - container.position.y
+    y: -(evt.clientY - rect.top - container.position.y)
   };
 }
 
@@ -189,14 +189,14 @@ renderer.context.canvas.addEventListener('mousedown', function(evt) {
     case Mode.MapDraw:        drawNewVertex(mousePos);
                               break;
     case Mode.GateDraw:       // Add new gate (currentGate) to map
-                              var newGate = new Gate(gateStart, gateEnd);
-                              newGate.drawGate(container, gateColour);
-                              map.addGate(new Gate(gateStart, gateEnd));
+                              var newGate = new Gate(gateStart, gateEnd, gateColour);
+                              newGate.drawGate(container, gateThickness);
+                              map.addGate(newGate);
                               break;
     case Mode.StartLineDraw:  // Add start line (currentGate) to map
-                              var newGate = new Gate(gateStart, gateEnd);
-                              newGate.drawGate(container, startGateColour);
-                              map.setStartGate(new Gate(gateStart, gateEnd));
+                              var newGate = new Gate(gateStart, gateEnd, startGateColour);
+                              newGate.drawGate(container, gateThickness);
+                              map.setStartGate(newGate);
                               break;
   }
 
@@ -207,7 +207,7 @@ function updateContainer() {
   container.position.y += (moving[0] - moving[1]) * panSpeed
   zoom *= dZoom;
   container.scale.x =  zoom;
-  container.scale.y =  zoom;
+  container.scale.y =  -zoom;
 }
 
 // Loop the program

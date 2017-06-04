@@ -10,21 +10,22 @@ function Segment(path) {
 
   // Draw this segment of the map onto the container
   this.drawSegment = function(container, wall_colour) {
-    this.segment_graphic.beginFill(wall_colour, 0.15);
-    this.segment_graphic.lineStyle(0.01, wall_colour, 1);
+    this.segment_graphic.beginFill(wall_colour, 0.3);
+    this.segment_graphic.lineStyle(0.01, 0xFFFFFF, 1);
     this.segment_graphic.drawPolygon(this.pixiPath);
     container.addChild(this.segment_graphic);
   }
 }
 
-function Gate(start, end) {
+function Gate(start, end, colour) {
   this.startPoint = start;
   this.endPoint = end;
+  this.colour = colour;
 
   this.gateGraphic = new PIXI.Graphics();
 
-  this.drawGate = function(container, gateColour) {
-    this.gateGraphic.lineStyle(0.07, gateColour, 0.8);
+  this.drawGate = function(container, thickness) {
+    this.gateGraphic.lineStyle(thickness, this.colour, 0.8);
     this.gateGraphic.moveTo(this.startPoint[0], this.startPoint[1]);
     this.gateGraphic.lineTo(this.endPoint[0], this.endPoint[1]);
     container.addChild(this.gateGraphic);

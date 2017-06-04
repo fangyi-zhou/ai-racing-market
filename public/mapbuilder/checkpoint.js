@@ -1,4 +1,4 @@
-var currentRotation = 0;
+var currentRotation = 0.01;
 var initialDirection = [1, 0]
 var currentDirection = initialDirection;
 var centre = [0, 0]
@@ -8,6 +8,7 @@ var gateStart, gateEnd;
 
 var currentGate = new PIXI.Graphics();
 var gateColour = 0x0000FF;
+var gateThickness = 0.05;
 var startGateColour = 0x000000;
 
 function add(vec1, vec2) {
@@ -53,7 +54,7 @@ function updateGateHover(mousePoint, polygons) {
   setEndLine(currentGate, gateEnd);
 }
 
-currentGate.lineStyle(0.07, gateColour, 0.8);
+currentGate.lineStyle(0.035, gateColour, 0.8);
 currentGate.moveTo(centre[0], centre[1]);
 var initialEndPoint = endPoint(centre, currentDirection, length);
 currentGate.lineTo(initialEndPoint[0], initialEndPoint[1])
