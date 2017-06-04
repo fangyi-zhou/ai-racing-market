@@ -3,7 +3,7 @@
   <li *ngFor="let room of rooms"
       [class.selected]="room === selectedRoom"
       (click)="onSelect(room)">
-    <a href = "/dev">
+    <a href = "/dev={{room.id}}">
       <span class="badge">{{room.id}}</span> {{room.name}}
     </a>
   </li>

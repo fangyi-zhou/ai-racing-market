@@ -30,12 +30,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'dist')));
+
 app.use("/dev", express.static(path.join(__dirname, 'public')));
 
 app.route('/*')
   .get(function (req, res) {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
   });
+
 
 app.use('/rooms',rooms);
 app.use('/dev',dev);
