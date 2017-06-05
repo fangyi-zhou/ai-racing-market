@@ -23,7 +23,6 @@
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
-        "assets/js/tether.min.js",
         "../node_modules/bootstrap/dist/js/bootstrap.js",
         "assets/js/hero-slider-main.js",
         "assets/js/jquery.magnific-popup.min.js"

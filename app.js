@@ -38,7 +38,6 @@ app.route('/*')
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
   });
 
-
 app.use('/rooms',rooms);
 app.use('/dev',dev);
 app.use('/races', races);
