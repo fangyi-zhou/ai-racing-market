@@ -12,13 +12,15 @@ var clientCarID = null;
 // Create the PIXI renderer
 var canvas = document.getElementById('PIXIcanvas');
 var renderer = new PIXI.CanvasRenderer(canvas.width, canvas.height, canvas);
+// Make the canvas focusable
+renderer.view.tabIndex = 0;
 var stage = new PIXI.Stage(0xFFFFAA);
 renderer.backgroundColor = 0x181818;
 var container = new PIXI.DisplayObjectContainer();
 stage.addChild(container);
 document.body.appendChild(renderer.view);
 // PIXI appears to create a copy of the canvas element, so we remove the old one
-document.body.removeChild(document.getElementById('PIXIcanvas'));
+document.body.removeChild(canvas);
 
 // Add transform to the container
 container.position.x = renderer.width / 2; // center at origin
@@ -114,4 +116,17 @@ function removeUser(id) {
     }
     container.removeChild(car.carGraphic);
     cars[id] = undefined;
+}
+
+// User control
+renderer.view.addEventListener('keydown', onKeyPress);
+function onKeyPress(evt){
+  keys[evt.keyCode] = 1;
+  syncServerWithMovement();
+}
+
+renderer.view.addEventListener('keyup', onKeyRelease);
+function onKeyRelease(evt){
+  keys[evt.keyCode] = 0;
+  syncServerWithMovement();
 }

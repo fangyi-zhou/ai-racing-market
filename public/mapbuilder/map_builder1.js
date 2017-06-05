@@ -8,13 +8,17 @@ var wall_colour = 0x00FF00;
 map = new Map();
 
 // Create the PIXI renderer
-var renderer = PIXI.autoDetectRenderer(1000, 800, null, true, true),
+var canvas = document.getElementById('PIXIcanvas');
+var renderer = new PIXI.CanvasRenderer(canvas.width, canvas.height, canvas),
     stage = new PIXI.Stage(0xFFFFAA);
+// Make the canvas focussable
+renderer.view.tabIndex = 0;
 renderer.backgroundColor = 0xFFFFFF;
 container = new PIXI.DisplayObjectContainer(),
 stage.addChild(container);
 renderer.render(stage);
 document.body.appendChild(renderer.view);
+document.body.removeChild(canvas);
 
 // Add transform to the container
 container.position.x =  renderer.width/2; // center at origin
@@ -61,7 +65,7 @@ function completePolygon() {
 
 var moving = [false, false, false, false]; // Up down left right
 var dZoom = 1;
-document.addEventListener('keydown', function onKeyPress(evt){
+renderer.view.addEventListener('keydown', function onKeyPress(evt){
   // console.log(evt.keyCode)
   switch (evt.keyCode) {
     case 187: dZoom = (1 + zoomSpeed); // Zoom in
@@ -86,7 +90,7 @@ document.addEventListener('keydown', function onKeyPress(evt){
 });
 
 // 187: Zoom in, 189: Zoom out, 87: Up, 83: Down, 65: Left, 68: Right
-document.addEventListener('keyup', function onKeyPress(evt){
+renderer.view.addEventListener('keyup', function onKeyPress(evt){
   switch(evt.keyCode) {
     case 187:
     case 189: dZoom = 1;
@@ -145,8 +149,8 @@ function updateMapHover(gridPoint) {
   }
 }
 
-renderer.context.canvas.addEventListener('mousemove', function(evt) {
-  var mousePos = getMousePos(renderer.context.canvas, evt);
+renderer.view.addEventListener('mousemove', function(evt) {
+  var mousePos = getMousePos(renderer.view, evt);
   gridPoint = snap_point(mousePos, cell_size*zoom);
   actualPoint = scalePoint(vectorfy(mousePos), 1/zoom);
 
@@ -180,8 +184,8 @@ function drawNewVertex(mousePos) {
   currentLine.moveTo(gridPoint[0], gridPoint[1]);
 }
 
-renderer.context.canvas.addEventListener('mousedown', function(evt) {
-  var mousePos = getMousePos(renderer.context.canvas, evt);
+renderer.view.addEventListener('mousedown', function(evt) {
+  var mousePos = getMousePos(renderer.view, evt);
   var actualPoint = scalePoint(vectorfy(mousePos), 1/zoom);
   if (map.contains(actualPoint)) {
     return;

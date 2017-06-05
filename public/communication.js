@@ -30,18 +30,6 @@ var keys = {
 		'40': 0 // down
 };
 
-document.addEventListener('keydown', onKeyPress);
-function onKeyPress(evt){
-		keys[evt.keyCode] = 1;
-		syncServerWithMovement();
-}
-
-document.addEventListener('keyup', onKeyRelease);
-function onKeyRelease(evt){
-		keys[evt.keyCode] = 0;
-		syncServerWithMovement();
-}
-
 function syncServerWithMovement(){
 		if(socket != null){
 				socket.emit('movement', {
