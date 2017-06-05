@@ -19,6 +19,7 @@ renderer.backgroundColor = 0x181818;
 var container = new PIXI.DisplayObjectContainer();
 stage.addChild(container);
 document.body.appendChild(renderer.view);
+renderer.view.focus();
 // PIXI appears to create a copy of the canvas element, so we remove the old one
 document.body.removeChild(canvas);
 
@@ -32,7 +33,7 @@ renderer.render(stage); // Initial render
 // Map
 var currentMap = new Map();
 
-function drawMap(map, checkpoints) {
+function drawMap(map, checkpoints, startGate) {
     for (let i in map) {
         let segment = new Segment(map[i]);
         currentMap.addSegment(segment);
@@ -43,6 +44,10 @@ function drawMap(map, checkpoints) {
         currentMap.addGate(gate);
         gate.drawGate(container, 0.02);
     }
+
+    var startGate = new Gate(startGate[0], startGate[1], 0xFF0000);
+    currentMap.setStartGate(startGate);
+    startGate.drawGate(container, 0.06);
 }
 
 function updateAllGraphics(info) {
@@ -80,7 +85,7 @@ function initWorld(info) {
     numRays = info.numRays;
     clientCarID = info.id;
     updateAllGraphics(info.cars);
-    drawMap(info.map, info.checkpoints);
+    drawMap(info.map, info.checkpoints, info.startGate);
     console.log(info.map)
 }
 

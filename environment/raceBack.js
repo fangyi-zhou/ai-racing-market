@@ -26,6 +26,7 @@ class map{
     this.save = JSON.parse(JSON.stringify(segments));// Required since p2 manipulates array
     this.mapPolys = [];
     this.mapCheckpoints = new hashMap.HashMap();
+    this.mapStartGate;
 
     this.removeMap = function () {
       for (let i in this.mapPolys) {
@@ -34,7 +35,7 @@ class map{
       this.mapCheckpoints.clear();
     };
 
-    this.drawCheckpoints = function() {
+    this.checkCheckpoints = function() {
       this.mapCheckpoints.forEach(function(value, ray){
         p2.vec2.copy(ray.from, value[1]);
         p2.vec2.copy(ray.to, value[2]);
@@ -42,13 +43,15 @@ class map{
         result.reset();
         world.raycast(result, ray);
       });
-    }
-
+    };
 
     this.createMap = function () {
+      // Create physical polygons
       for (let p = 0; p < this.segments.length; p++) {
         this.mapPolys.push(createMapSegment(this.segments[p]));
       }
+
+      // Create checkpoint rays
       for (let i = 0; i < this.checkpoints.length;i++){
         let checkpoint = new p2.Ray({
           mode: p2.Ray.ALL,
@@ -59,6 +62,15 @@ class map{
         });
         this.mapCheckpoints.set(checkpoint, [i,checkpoints[i][0], checkpoints[i][1]]);
       }
+
+      // Create start point ray
+      this.mapStartGate = new p2.Ray({
+        mode: p2.Ray.ALL,
+        collisionMask:-1^Math.pow(2,31),
+        callback: function(result){
+          checkpointResult(result, this);
+        }
+      })
     }
   }
 }
@@ -88,7 +100,8 @@ function createMapSegment (segment) {
   return map
 }
 
-let current_map = new map(require('./maps/map1.js')["map1"], [[[0,0],[0,0]]]);
+// Default map
+let current_map = new map(require('./maps/map1.js')["map1"], [[[0,0],[0,0]]], [[0, 0], [0, 1]]);
 current_map.createMap();
 
 // Gets map to send to users
@@ -190,7 +203,8 @@ function getCarById(carId) {
 // Loop the program
 setInterval(function(){
     world.step(fixedTimeStep);
-    current_map.drawCheckpoints();
+    current_map.checkCheckpoints();
+
     // Update graphics
     updateGraphics ();
 }, 1000/30);
@@ -204,7 +218,8 @@ function initIO(clientID){
         id: clientID,
         cars: packageGraphics(),
         map: getMap(),
-        checkpoints:current_map.checkpoints
+        checkpoints: current_map.checkpoints,
+        startGate: current_map.startGate
     }
 }
 

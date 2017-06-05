@@ -18,6 +18,7 @@ container = new PIXI.DisplayObjectContainer(),
 stage.addChild(container);
 renderer.render(stage);
 document.body.appendChild(renderer.view);
+renderer.view.focus();
 document.body.removeChild(canvas);
 
 // Add transform to the container
