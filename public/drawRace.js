@@ -51,21 +51,23 @@ function updateAllGraphics(info) {
         cars[id].carGraphic.position.y = car.position[1];
         cars[id].carGraphic.rotation = car.angle;
 
+        // Centre client view on the car they control
         if (clientCarID === car.clientID) {
           container.position.x = -cars[id].carGraphic.position.x * zoom + renderer.width/2; // center at origin
           container.position.y = cars[id].carGraphic.position.y * zoom + renderer.height/2;
         }
 
+        // Draw the cars detection rays
         for (let j = 0; j < car.rayEnds.length; j++) {
           var rayEnd = car.rayEnds[j];
           cars[id].rayGraphics[j].currentPath.shape.points = [car.position[0], car.position[1], rayEnd[0], rayEnd[1]];
         }
     }
+
     requestAnimationFrame(function () {
         renderer.render(stage);
     });
 }
-
 
 function initWorld(info) {
     carWidth = info.carWidth;
@@ -78,7 +80,7 @@ function initWorld(info) {
 }
 
 function updateMap(info) {
-    // console.log(info);
+    console.log(info);
 }
 
 // Abstract information required for car drawing
@@ -110,4 +112,3 @@ function removeUser(id) {
     container.removeChild(car.carGraphic);
     cars[id] = undefined;
 }
-

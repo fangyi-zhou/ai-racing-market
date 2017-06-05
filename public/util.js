@@ -38,6 +38,15 @@ function setEndLine(line, point) {
   line.currentPath.shape.points[3] = point[1];
 }
 
+// Vector operations
 function vectorfy(vec) {
   return [vec.x, vec.y];
+}
+
+function add(vec1, vec2) {
+  return [vec1[0] + vec2[0], vec1[1] + vec2[1]]
+}
+
+function mul(vec, m) {
+  return [vec[0] * m, vec[1] * m];
 }

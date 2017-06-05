@@ -18,9 +18,11 @@ const world = new p2.World({
 });
 
 class map{
-  constructor (segments, checkpoints) {
+  constructor (segments, checkpoints, startGate) {
     this.segments = segments;
     this.checkpoints = checkpoints;
+    this.startGate = startGate;
+
     this.save = JSON.parse(JSON.stringify(segments));// Required since p2 manipulates array
     this.mapPolys = [];
     this.mapCheckpoints = new hashMap.HashMap();
@@ -29,9 +31,19 @@ class map{
       for (let i in this.mapPolys) {
         world.removeBody(this.mapPolys[i]);
       }
-      console.log(checkpoints);
       this.mapCheckpoints.clear();
+    };
+
+    this.drawCheckpoints = function() {
+      this.mapCheckpoints.forEach(function(value, ray){
+        p2.vec2.copy(ray.from, value[1]);
+        p2.vec2.copy(ray.to, value[2]);
+        ray.update();
+        result.reset();
+        world.raycast(result, ray);
+      });
     }
+
 
     this.createMap = function () {
       for (let p = 0; p < this.segments.length; p++) {
@@ -55,20 +67,8 @@ function checkpointResult(result, ray){
     result.getHitPoint(hitPoint, ray);
     let car = raceCars.get(result.body.id);
 
-  // TODO: send checkpoint to AI;
+  // TODO: send checkpoint to AI (reward signal);
 }
-
-
-function drawCheckpoints(){
-  current_map.mapCheckpoints.forEach(function(value, ray){
-    p2.vec2.copy(ray.from, value[1]);
-    p2.vec2.copy(ray.to, value[2]);
-    ray.update();
-    result.reset();
-    world.raycast(result, ray);
-  });
-}
-
 
 function createMapSegment (segment) {
   let map = new p2.Body({
@@ -190,7 +190,7 @@ function getCarById(carId) {
 // Loop the program
 setInterval(function(){
     world.step(fixedTimeStep);
-    drawCheckpoints();
+    current_map.drawCheckpoints();
     // Update graphics
     updateGraphics ();
 }, 1000/30);
@@ -201,9 +201,9 @@ function initIO(clientID){
         carWidth: RaceCar.carWidth,
         carHeight: RaceCar.carHeight,
         numRays: RaceCar.numRays,
-        map: getMap(),
         id: clientID,
         cars: packageGraphics(),
+        map: getMap(),
         checkpoints:current_map.checkpoints
     }
 }
@@ -211,8 +211,9 @@ function initIO(clientID){
 function changeMap(info) {
     let segments = info.map.segments;
     let checkpoints = info.map.gates;
+    let startGate = info.map.startGate;
     current_map.removeMap();
-    current_map = new map(segments, checkpoints);
+    current_map = new map(segments, checkpoints, startGate);
     current_map.createMap();
     return getMap();
 }

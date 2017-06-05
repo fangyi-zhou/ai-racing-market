@@ -23,7 +23,7 @@ container.scale.x =  zoom;  // zoom in
 container.scale.y = -zoom; // Note: we flip the y axis to make "up" the physics "up"
 
 // Reference Square
-var colour = 0xFFFF00
+var colour = 0xFFFF00;
 referenceSquare = new PIXI.Graphics();
 referenceSquare.beginFill(colour, 0.3);
 referenceSquare.lineStyle(0.01, colour, 1);
@@ -39,7 +39,7 @@ var w = 100, h = 100;
 var cell_size = car_width;
 drawGrid(container, w, h, cell_size);
 
-// User input
+// User control variables
 position = [renderer.width/2, renderer.height/2]
 panSpeed = 5;
 zoomSpeed = 0.01;
@@ -59,8 +59,8 @@ function completePolygon() {
   currentPath = []
 }
 
-var moving = [false, false, false, false] // Up down left right
-var dZoom = 1
+var moving = [false, false, false, false]; // Up down left right
+var dZoom = 1;
 document.addEventListener('keydown', function onKeyPress(evt){
   // console.log(evt.keyCode)
   switch (evt.keyCode) {
@@ -102,6 +102,7 @@ document.addEventListener('keyup', function onKeyPress(evt){
   }
 }, true);
 
+// Snapping mouse position to drawing grid
 function snap(x, m) {
   return Math.round(x / m) * m;
 }
@@ -130,9 +131,9 @@ function completeCurrentLine(currentLine, point) {
 mouseHover = new PIXI.Graphics();
 mouseHover.beginFill(colour, 0.3);
 mouseHover.lineStyle(0.1, 0xFF0000, 1);
-ab = [0.5, 0.5]
-mouseHover.scale.x = ab[0] /// zoom
-mouseHover.scale.y = ab[0] /// zoom
+ab = [0.5, 0.5];
+mouseHover.scale.x = ab[0];
+mouseHover.scale.y = ab[0];
 mouseHover.drawCircle(0, 0, ab[0], ab[1]);
 container.addChild(mouseHover);
 
@@ -202,6 +203,7 @@ renderer.context.canvas.addEventListener('mousedown', function(evt) {
 
 }, false);
 
+// User control updates
 function updateContainer() {
   container.position.x += (moving[2] - moving[3]) * panSpeed
   container.position.y += (moving[0] - moving[1]) * panSpeed
