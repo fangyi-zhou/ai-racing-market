@@ -1,16 +1,29 @@
 <!--The whole content below can be removed with the new code.-->
-<ul class="rooms">
-  <li *ngFor="let room of rooms"
-      [class.selected]="room === selectedRoom"
-      (click)="onSelect(room)">
-    <a href = "/dev={{room.id}}">
-      <span class="badge">{{room.id}}</span> {{room.name}}
-    </a>
-  </li>
-</ul>
+
 <div *ngIf="selectedRoom">
 
 </div>
+
+
+<div id = "container" style = "width:100%">
+  <div style = "float:left; width: 50%;">
+    <ul class="rooms">
+      <li *ngFor="let room of rooms"
+          [class.selected]="room === selectedRoom"
+          (click)="onSelect(room)">
+        <a href = "/dev={{room.id}}">
+          <span class="badge">{{room.id}}</span> {{room.name}}
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div style = "float:left; width: 50%;">
+    <canvas id="PIXIcanvas" width="500" height="400" style="border:1px solid #000000;"></canvas>
+    <style>#PIXIcanvas { background-color: rgba(158, 167, 184, 0.5); }</style>
+  </div>
+</div>
+
 <div style="text-align: center">
   <a href="/dev">Play against an AI</a> <br>
   <a href="/dev/mapbuilder">Build your own map</a>
