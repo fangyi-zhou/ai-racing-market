@@ -10,12 +10,15 @@ var wall_colour = 0xD7D7D7;
 var clientCarID = null;
 
 // Create the PIXI renderer
-var renderer = PIXI.autoDetectRenderer(1000, 800, null, true);
+var canvas = document.getElementById('PIXIcanvas');
+var renderer = new PIXI.CanvasRenderer(canvas.width, canvas.height, canvas);
 var stage = new PIXI.Stage(0xFFFFAA);
 renderer.backgroundColor = 0x181818;
 var container = new PIXI.DisplayObjectContainer();
 stage.addChild(container);
 document.body.appendChild(renderer.view);
+// PIXI appears to create a copy of the canvas element, so we remove the old one
+document.body.removeChild(document.getElementById('PIXIcanvas'));
 
 // Add transform to the container
 container.position.x = renderer.width / 2; // center at origin
