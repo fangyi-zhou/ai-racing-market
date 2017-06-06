@@ -4,6 +4,16 @@
 const hashMap = require('hashmap');
 const p2 = require('p2');
 const result = new p2.RaycastResult();
+const util = require('../util');
+
+const hitPoint = p2.vec2.create();
+function checkpointResult(result, ray, raceCars){
+    // console.log(raceCars.count());
+    result.getHitPoint(hitPoint, ray);
+    // let car = raceCars.get(result.body.id);
+
+    // TODO: send checkpoint to AI (reward signal);
+}
 
 class Map{
   constructor (segments, checkpoints, startGate) {
@@ -11,7 +21,7 @@ class Map{
     this.checkpoints = checkpoints;
     this.startGate = startGate;
 
-    this.save = JSON.parse(JSON.stringify(segments));// Required since p2 manipulates array
+    this.save = util.arrayCopy(segments); // Required since p2 manipulates array
     this.mapPolys = [];
     this.mapCheckpoints = new hashMap.HashMap();
     this.mapStartGate;
@@ -39,6 +49,8 @@ class Map{
         position:[0,0],
         type: p2.Body.STATIC,
       });
+      // console.log('one time');
+      // console.log(segment);
       p2map.fromPolygon(segment);
       world.addBody(p2map);
 
@@ -51,7 +63,8 @@ class Map{
       return p2map
     }
 
-    this.createMap = function (world) {
+    this.createMap = function (world, raceCars) {
+        console.log(raceCars.count());
       // Create physical polygons
       for (let p = 0; p < this.segments.length; p++) {
         this.mapPolys.push(this._createp2MapSegment(world, this.segments[p]));
@@ -63,7 +76,7 @@ class Map{
           mode: p2.Ray.ALL,
           collisionMask:-1^Math.pow(2,31),
           callback: function(result){
-            checkpointResult(result, this);
+            checkpointResult(result, this, raceCars);
           }
         });
         this.mapCheckpoints.set(checkpoint, [i,checkpoints[i][0], checkpoints[i][1]]);
@@ -74,7 +87,7 @@ class Map{
         mode: p2.Ray.ALL,
         collisionMask:-1^Math.pow(2,31),
         callback: function(result){
-          checkpointResult(result, this);
+          checkpointResult(result, this, raceCars);
         }
       })
     }
