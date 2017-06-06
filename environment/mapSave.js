@@ -1,7 +1,7 @@
-var fs = require("fs");
+const fs = require("fs");
 
 function readMap(map_path) {
-  var map = require(map_path)
+  let map = require(map_path);
   return (map);
 }
 

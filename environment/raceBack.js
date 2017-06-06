@@ -2,9 +2,7 @@
  * Created by ruiaohu on 27/05/2017.
  */
 // Requires
-const p2 = require('p2');
 const util = require('./util');
-const hashMap = require('hashmap');
 const RaceCar = require('./RaceCar');
 const rays = require('./rays');
 const Map = require('./maps/Map');
@@ -21,9 +19,9 @@ let current_map = [require('./maps/map1.js')["map1"], [[[0,0],[0,0]]], [[0, 0], 
 // Create the simulations
 // var simulations = [];
 const numSimulations = 10;
-var simulations = new Simulation.Simulations();
+let simulations = new Simulation.Simulations();
 for (let i = 0; i < numSimulations; i++) {
-    var mapCopy = util.arrayCopy(current_map);
+    let mapCopy = util.arrayCopy(current_map);
     simulations.addSimulation(i, mapCopy);
 }
 
