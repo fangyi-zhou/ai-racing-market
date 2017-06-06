@@ -3,66 +3,34 @@
  */
 // Requires
 const p2 = require('p2');
+const util = require('./util');
 const hashMap = require('hashmap');
 const RaceCar = require('./RaceCar');
 const rays = require('./rays');
-const Map = require('./maps/Map')
+const Map = require('./maps/Map');
+const Simulation = require('./Simulation');
 
 // Globals
-const hitPoint = p2.vec2.create();
-const numSimulations = 10;
-
 const fixedTimeStep = 0.06;
-const raceCars = new hashMap.HashMap();
 const maxSteer = Math.PI / 5;
 
-class Simulation{
-  constructor (id, map) {
-    this.world =  new p2.World({
-                    gravity : [0,0]
-                  });;
-    this.world.defaultContactMaterial.friction = 0.001;
-
-    // THIS IS VERY BROKEN
-    this.map = map;// this.map = map.createMap(this.world);
-
-    this.id = id;
-
-    this.step = function(timeStep) {
-      this.world.step(timeStep);
-    }
-
-    this.checkCheckpoints = function () {
-      return this.map.checkCheckpoints(this.world);
-    }
-  }
-}
-
-function checkpointResult(result, ray){
-    result.getHitPoint(hitPoint, ray);
-    let car = raceCars.get(result.body.id);
-
-  // TODO: send checkpoint to AI (reward signal);
-}
 
 // Default map
-let current_map = new Map.Map(require('./maps/map1.js')["map1"], [[[0,0],[0,0]]], [[0, 0], [0, 1]]);
+let current_map = [require('./maps/map1.js')["map1"], [[[0,0],[0,0]]], [[0, 0], [0, 1]]];
 
 // Create the simulations
-var simulations = [];
+// var simulations = [];
+const numSimulations = 10;
+var simulations = new Simulation.Simulations();
 for (let i = 0; i < numSimulations; i++) {
-  simulations.push(new Simulation(i, current_map));
-}
-current_map.createMap(simulations[0].world);
-
-// Gets map to send to users
-function getMap() {
-  return current_map.save;
+    var mapCopy = util.arrayCopy(current_map);
+    simulations.addSimulation(i, mapCopy);
 }
 
+// TODO: Change the 0 to be the chosen simulation
 function packageGraphics () {
     let graphics_dict = {};
-    raceCars.forEach(function (raceCar, key) {
+    simulations.get(0).raceCars.forEach(function (raceCar, key) {
         graphics_dict[raceCar.clientID] = {
             position: raceCar.box_graphic.position,
             angle: raceCar.box_graphic.angle,
@@ -74,9 +42,10 @@ function packageGraphics () {
     return graphics_dict;
 }
 
+// TODO: Change the 0 to be the chosen simulation
 function addRaceCar(clientID, position) {
-    let car = new RaceCar.RaceCar(raceCars.count()+1, clientID, simulations[0].world, position);
-    raceCars.set(clientID, car);
+    let car = new RaceCar.RaceCar(simulations.get(0).raceCars.count()+1, clientID, simulations.get(0).world, position);
+    simulations.get(0).raceCars.set(clientID, car);
     return car;
 }
 
@@ -87,14 +56,16 @@ function addClient(id){
 }
 
 // Send details of p2 race car to its graphical counterpart
+// TODO: Change the 0 to be the chosen simulation
 function updateGraphics () {
-    raceCars.forEach(function (value, key) {
+    simulations.get(0).raceCars.forEach(function (value, key) {
         //update information of each racer.
         value.updateGraphics();
-        rays.constructRays(value,RaceCar.numRays,simulations[0].world);
+        rays.constructRays(value,RaceCar.numRays,simulations.get(0).world);
     });
 }
 
+// TODO: Change the 0 to be the chosen simulation
 function updateMovement(keys, id){
     let control = {};
     control["steerValue"] = keys[37] - keys[39];
@@ -105,8 +76,9 @@ function updateMovement(keys, id){
     applyMove(control, id);
 }
 
+// TODO: Change the 0 to be the chosen simulation
 function applyMove(control, id) {
-    let clientCar = raceCars.get(id);
+    let clientCar = simulations.get(0).raceCars.get(id);
     if (clientCar === null || clientCar === undefined) {
         console.error(`Applying a move to null car ${id}`);
         return;
@@ -126,31 +98,35 @@ function applyMove(control, id) {
 }
 
 // p2 implementation of vehicle.removeFromWorld is buggy; doesn't remove the chassis
+// TODO: Change the 0 to be the chosen simulation
 function removeVehicle(vehicle) {
-  simulations[0].world.removeBody(vehicle.chassisBody);
+  simulations.get(0).world.removeBody(vehicle.chassisBody);
   vehicle.removeFromWorld();
 }
 
+// TODO: Change the 0 to be the chosen simulation
 function removeUser(id){
-    let car = raceCars.get(id);
+    let car = simulations.get(0).raceCars.get(id);
     if (car !== undefined && car !== null)
         removeVehicle(car.vehicle);
-    raceCars.remove(id);
+    simulations.get(0).raceCars.remove(id);
 }
 
+// TODO: Change the 0 to be the chosen simulation
 function carCount(){
-    let num = raceCars.count();
+    let num = simulations.get(0).raceCars.count();
     return num;
 }
 
+// TODO: Change the 0 to be the chosen simulation
 function getCarById(carId) {
-    return raceCars.get(carId);
+    return simulations.get(0).raceCars.get(carId);
 }
 
 // Loop the program
-setInterval(function(){
-    simulations[0].world.step(fixedTimeStep);
-    simulations[0].checkCheckpoints();
+setInterval(function() {
+    simulations.stepAll(fixedTimeStep);
+    simulations.get(0).checkCheckpoints();
     // current_map.checkCheckpoints();
 
     // Update graphics
@@ -165,20 +141,21 @@ function initIO(clientID){
         numRays: RaceCar.numRays,
         id: clientID,
         cars: packageGraphics(),
-        map: getMap(),
-        checkpoints: current_map.checkpoints,
-        startGate: current_map.startGate
+        map: simulations.get(0).map.save,
+        checkpoints: simulations.get(0).map.checkpoints,
+        startGate: simulations.get(0).map.startGate
     }
 }
 
+// TODO: Change the 0 to be the chosen simulation
 function changeMap(info) {
   let segments = info.map.segments;
   let checkpoints = info.map.gates;
   let startGate = info.map.startGate;
-  current_map.removeMap(simulations[0].world);
-  current_map = new Map.Map(segments, checkpoints, startGate);
-  current_map.createMap(simulations[0].world);
-  return getMap();
+    simulations.get(0).map.removeMap(simulations.get(0).world);
+    simulations.get(0).map = new Map.Map(segments, checkpoints, startGate);
+    simulations.get(0).map.createMap(simulations.get(0).world);
+  return simulations.get(0).save;
 }
 
 module.exports.packageGraphics = packageGraphics;
