@@ -31,15 +31,7 @@
     socket.on('newMap', function (info) {
       updateMap(info);
     })
-  };
-
-// Key controls
-  var keys = {
-    '37': 0, // left
-    '39': 0, // right
-    '38': 0, // up
-    '40': 0 // down
-  };
+  }
 
   function syncServerWithMovement() {
     if (socket != null) {

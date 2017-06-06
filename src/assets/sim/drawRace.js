@@ -49,17 +49,17 @@ function initDraw() {
     renderer.render(stage); // Initial render
 
     // User control
-    // renderer.view.addEventListener('keydown', onKeyPress);
-    // function onKeyPress(evt) {
-    //   keys[evt.keyCode] = 1;
-    //   syncServerWithMovement();
-    // }
-    //
-    // renderer.view.addEventListener('keyup', onKeyRelease);
-    // function onKeyRelease(evt) {
-    //   keys[evt.keyCode] = 0;
-    //   syncServerWithMovement();
-    // }
+    renderer.view.addEventListener('keydown', onKeyPress);
+    function onKeyPress(evt) {
+      keys[evt.keyCode] = 1;
+      communication.syncServerWithMovement();
+    }
+
+    renderer.view.addEventListener('keyup', onKeyRelease);
+    function onKeyRelease(evt) {
+      keys[evt.keyCode] = 0;
+      communication.syncServerWithMovement();
+    }
 
 }
 
@@ -151,3 +151,10 @@ function removeUser(id) {
     cars[id] = undefined;
 }
 
+// Key controls
+var keys = {
+    '37': 0, // left
+    '39': 0, // right
+    '38': 0, // up
+    '40': 0 // down
+};
