@@ -17,10 +17,13 @@
 
   function init() {
 
-// Create the PIXI renderer
+    // Create the PIXI renderer
+    console.log(document.body.childElementCount);
+
     canvas = document.getElementById('PIXIcanvas');
-    renderer = new PIXI.CanvasRenderer(canvas.width, canvas.height, canvas);
-// Make the canvas focusable
+    // renderer = new PIXI.CanvasRenderer(canvas.width, canvas.height, canvas, false);
+    var renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
+    // Make the canvas focusable
     renderer.view.tabIndex = 0;
     stage = new PIXI.Stage(0xFFFFAA);
     renderer.backgroundColor = 0x181818;
@@ -28,32 +31,39 @@
     stage.addChild(container);
     document.body.appendChild(renderer.view);
     renderer.view.focus();
-// PIXI appears to create a copy of the canvas element, so we remove the old one
-    document.body.removeChild(canvas);
 
-// Add transform to the container
+    // document.body.removeChild(canvas);
+      // Reference Square
+      var colour = 0xFFFF00;
+      referenceSquare = new PIXI.Graphics();
+      referenceSquare.beginFill(colour, 0.3);
+      referenceSquare.lineStyle(0.01, colour, 1);
+      referenceSquare.drawRect(-5, -5, 10, 10);
+      container.addChild(referenceSquare);
+
+    // Add transform to the container
     container.position.x = renderer.width / 2; // center at origin
     container.position.y = renderer.height / 2;
     container.scale.x = zoom;  // zoom in
     container.scale.y = -zoom; // Note: we flip the y axis to make "up" the physics "up"
     renderer.render(stage); // Initial render
 
-// Map
+    // Map
     currentMap = new Map();
 
 
-// User control
-    renderer.view.addEventListener('keydown', onKeyPress);
-    function onKeyPress(evt) {
-      keys[evt.keyCode] = 1;
-      syncServerWithMovement();
-    }
-
-    renderer.view.addEventListener('keyup', onKeyRelease);
-    function onKeyRelease(evt) {
-      keys[evt.keyCode] = 0;
-      syncServerWithMovement();
-    }
+    // User control
+    // renderer.view.addEventListener('keydown', onKeyPress);
+    // function onKeyPress(evt) {
+    //   keys[evt.keyCode] = 1;
+    //   syncServerWithMovement();
+    // }
+    //
+    // renderer.view.addEventListener('keyup', onKeyRelease);
+    // function onKeyRelease(evt) {
+    //   keys[evt.keyCode] = 0;
+    //   syncServerWithMovement();
+    // }
 
   }
 
@@ -117,7 +127,7 @@
     console.log(info);
   }
 
-// Abstract information required for car drawing
+    // Abstract information required for car drawing
   function RaceCarGraphic(colour) {
     this.carGraphic = new PIXI.Graphics();
 
