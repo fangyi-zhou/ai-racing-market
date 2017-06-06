@@ -18,6 +18,9 @@ const ROOMS: Room[] = [
   { id: 9, name: 'Room-9' }
 ];
 
+declare var communication: any;
+declare var drawRace: any;
+
 @Component({
   selector: 'rooms',
   templateUrl: './room.component.html',
@@ -30,9 +33,11 @@ export class RoomComponent {
 
   onSelect(room: Room): void {
     this.selectedRoom = room;
+      // console.log(communication);
+      // console.log(drawRace);
+      communication.init();
+      drawRace.init();
   }
-
-
 }
 
 

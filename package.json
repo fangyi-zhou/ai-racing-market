@@ -73,5 +73,12 @@
   },
   "author": "",
   "keywords": [],
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thomasfangyi/ai-racing-market/issues"
+  },
+  "homepage": "https://github.com/thomasfangyi/ai-racing-market#readme",
+  "directories": {
+    "test": "test"
+  }
 }
