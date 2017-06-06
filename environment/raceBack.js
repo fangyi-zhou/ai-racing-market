@@ -12,10 +12,8 @@ const hitPoint = p2.vec2.create();
 const fixedTimeStep = 0.06;
 const raceCars = new hashMap.HashMap();
 const maxSteer = Math.PI / 5;
-// Create the world
-const world = new p2.World({
-    gravity : [0,0]
-});
+
+const numSimulations = 10;
 
 class map{
   constructor (segments, checkpoints, startGate) {
@@ -28,14 +26,14 @@ class map{
     this.mapCheckpoints = new hashMap.HashMap();
     this.mapStartGate;
 
-    this.removeMap = function () {
+    this.removeMap = function (world) {
       for (let i in this.mapPolys) {
         world.removeBody(this.mapPolys[i]);
       }
       this.mapCheckpoints.clear();
     };
 
-    this.checkCheckpoints = function() {
+    this.checkCheckpoints = function(world) {
       this.mapCheckpoints.forEach(function(value, ray){
         p2.vec2.copy(ray.from, value[1]);
         p2.vec2.copy(ray.to, value[2]);
@@ -45,10 +43,28 @@ class map{
       });
     };
 
-    this.createMap = function () {
+    this._createp2MapSegment = function (world, segment) {
+      let p2map = new p2.Body({
+        mass : 1,
+        position:[0,0],
+        type: p2.Body.STATIC,
+      });
+      p2map.fromPolygon(segment);
+      world.addBody(p2map);
+
+      /*************Blame the p2 author for bad API design **************/
+      for(let i = 0; i < p2map.shapes.length; i++){
+        p2map.shapes[i].collisionMask = -1;
+        p2map.shapes[i].collisionGroup = Math.pow(2,31);
+      }
+      /*******************************************************************/
+      return p2map
+    }
+
+    this.createMap = function (world) {
       // Create physical polygons
       for (let p = 0; p < this.segments.length; p++) {
-        this.mapPolys.push(createMapSegment(this.segments[p]));
+        this.mapPolys.push(this._createp2MapSegment(world, this.segments[p]));
       }
 
       // Create checkpoint rays
@@ -75,6 +91,28 @@ class map{
   }
 }
 
+class Simulation{
+  constructor (id, map) {
+    this.world =  new p2.World({
+                    gravity : [0,0]
+                  });;
+    this.world.defaultContactMaterial.friction = 0.001;
+
+    // THIS IS VERY BROKEN
+    this.map = map;// this.map = map.createMap(this.world);
+
+    this.id = id;
+
+    this.step = function(timeStep) {
+      this.world.step(timeStep);
+    }
+
+    this.checkCheckpoints = function () {
+      return this.map.checkCheckpoints(this.world);
+    }
+  }
+}
+
 function checkpointResult(result, ray){
     result.getHitPoint(hitPoint, ray);
     let car = raceCars.get(result.body.id);
@@ -82,36 +120,20 @@ function checkpointResult(result, ray){
   // TODO: send checkpoint to AI (reward signal);
 }
 
-function createMapSegment (segment) {
-  let map = new p2.Body({
-      mass : 1,
-      position:[0,0],
-      type: p2.Body.STATIC,
-  });
-  map.fromPolygon(segment);
-  world.addBody(map);
-
-  /*************Blame the p2 author for bad API design **************/
-  for(let i = 0; i<map.shapes.length;i++){
-    map.shapes[i].collisionMask = -1;
-    map.shapes[i].collisionGroup = Math.pow(2,31);
-  }
-  /*******************************************************************/
-  return map
-}
-
 // Default map
 let current_map = new map(require('./maps/map1.js')["map1"], [[[0,0],[0,0]]], [[0, 0], [0, 1]]);
-current_map.createMap();
+
+// Create the simulations
+var simulations = [];
+for (let i = 0; i < numSimulations; i++) {
+  simulations.push(new Simulation(i, current_map));
+}
+current_map.createMap(simulations[0].world);
 
 // Gets map to send to users
 function getMap() {
   return current_map.save;
 }
-
-// For now, set default friction between ALL objects
-// In future may wish to have it vary between objects
-world.defaultContactMaterial.friction = 0.001;
 
 function packageGraphics () {
     let graphics_dict = {};
@@ -128,7 +150,7 @@ function packageGraphics () {
 }
 
 function addRaceCar(clientID, position) {
-    let car = new RaceCar.RaceCar(raceCars.count()+1, clientID, world, position);
+    let car = new RaceCar.RaceCar(raceCars.count()+1, clientID, simulations[0].world, position);
     raceCars.set(clientID, car);
     return car;
 }
@@ -144,10 +166,10 @@ function updateGraphics () {
     raceCars.forEach(function (value, key) {
         //update information of each racer.
         value.updateGraphics();
-        rays.constructRays(value,RaceCar.numRays,world);
+        rays.constructRays(value,RaceCar.numRays,simulations[0].world);
     });
-
 }
+
 function updateMovement(keys, id){
     let control = {};
     control["steerValue"] = keys[37] - keys[39];
@@ -180,8 +202,8 @@ function applyMove(control, id) {
 
 // p2 implementation of vehicle.removeFromWorld is buggy; doesn't remove the chassis
 function removeVehicle(vehicle) {
-    world.removeBody(vehicle.chassisBody);
-    vehicle.removeFromWorld();
+  simulations[0].world.removeBody(vehicle.chassisBody);
+  vehicle.removeFromWorld();
 }
 
 function removeUser(id){
@@ -202,8 +224,9 @@ function getCarById(carId) {
 
 // Loop the program
 setInterval(function(){
-    world.step(fixedTimeStep);
-    current_map.checkCheckpoints();
+    simulations[0].world.step(fixedTimeStep);
+    simulations[0].checkCheckpoints();
+    // current_map.checkCheckpoints();
 
     // Update graphics
     updateGraphics ();
@@ -224,13 +247,13 @@ function initIO(clientID){
 }
 
 function changeMap(info) {
-    let segments = info.map.segments;
-    let checkpoints = info.map.gates;
-    let startGate = info.map.startGate;
-    current_map.removeMap();
-    current_map = new map(segments, checkpoints, startGate);
-    current_map.createMap();
-    return getMap();
+  let segments = info.map.segments;
+  let checkpoints = info.map.gates;
+  let startGate = info.map.startGate;
+  current_map.removeMap(simulations[0].world);
+  current_map = new map(segments, checkpoints, startGate);
+  current_map.createMap();
+  return getMap();
 }
 
 module.exports.packageGraphics = packageGraphics;
