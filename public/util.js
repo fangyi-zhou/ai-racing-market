@@ -10,16 +10,16 @@ function flatten_map(map) {
 
 // Draw a grid on the container
 function drawGrid(container, w, h, cell_size) {
-  for (var x = -w; x < w; x += cell_size) {
-    line = new PIXI.Graphics();
+  for (let x = -w; x < w; x += cell_size) {
+    let line = new PIXI.Graphics();
     line.lineStyle(0.01, lineColour, 1);
     line.moveTo(x, -h);
     line.lineTo(x, h);
     container.addChild(line);
   }
 
-  for (var y = -h; y < h; y += cell_size) {
-    line = new PIXI.Graphics();
+  for (let y = -h; y < h; y += cell_size) {
+    let line = new PIXI.Graphics();
     line.lineStyle(0.01, lineColour, 1);
     line.moveTo(-w, y);
     line.lineTo(w, y);

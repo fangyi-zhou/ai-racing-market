@@ -4,39 +4,39 @@
 var socket = io();
 serverCallBack();
 
-function serverCallBack(){
-		socket.on('updateClient', function(info){
-				updateAllGraphics(info);
-		});
+function serverCallBack() {
+    socket.on('updateClient', function (info) {
+        updateAllGraphics(info);
+    });
 
-		socket.on('init', function (info) {
-				initWorld(info);
-		});
+    socket.on('init', function (info) {
+        initWorld(info);
+    });
 
-		socket.on('dc', function (info) {
-				console.log(`dc ${info.id}`);
-				removeUser(info.id);
-		});
-		socket.on('newMap', function (info) {
-				updateMap(info);
-		})
+    socket.on('dc', function (info) {
+        console.log(`dc ${info.id}`);
+        removeUser(info.id);
+    });
+    socket.on('newMap', function (info) {
+        updateMap(info);
+    })
 }
 
 // Key controls
 var keys = {
-		'37': 0, // left
-		'39': 0, // right
-		'38': 0, // up
-		'40': 0 // down
+    '37': 0, // left
+    '39': 0, // right
+    '38': 0, // up
+    '40': 0 // down
 };
 
-function syncServerWithMovement(){
-		if(socket != null){
-				socket.emit('movement', {
-						'37':keys[37],
-						'38':keys[38],
-						'39':keys[39],
-						'40':keys[40]
-				})
-		}
+function syncServerWithMovement() {
+    if (socket != null) {
+        socket.emit('movement', {
+            '37': keys[37],
+            '38': keys[38],
+            '39': keys[39],
+            '40': keys[40]
+        })
+    }
 }

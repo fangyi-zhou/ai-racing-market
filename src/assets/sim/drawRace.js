@@ -1,7 +1,7 @@
 /**
  * Created by ruiaohu on 27/05/2017.
  */
-var zoom = 40;
+var zoom = 20;
 var cars = {};
 var carWidth;
 var carHeight;
@@ -22,8 +22,7 @@ function initDraw() {
     console.log(document.body.childElementCount);
 
     canvas = document.getElementById('PIXIcanvas');
-    // renderer = new PIXI.CanvasRenderer(canvas.width, canvas.height, canvas, false);
-    renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
+    renderer = new PIXI.CanvasRenderer(canvas.width, canvas.height, canvas, false);
     // Make the canvas focusable
     renderer.view.tabIndex = 0;
     stage = new PIXI.Stage(0xFFFFAA);
@@ -114,8 +113,8 @@ function initWorld(info) {
     carHeight = info.carHeight;
     numRays = info.numRays;
     clientCarID = info.id;
-    updateAllGraphics(info.cars);
     drawMap(info.map, info.checkpoints, info.startGate);
+    updateAllGraphics(info.cars);
 }
 
 function updateMap(info) {

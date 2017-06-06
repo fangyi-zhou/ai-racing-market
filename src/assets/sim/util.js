@@ -11,7 +11,7 @@ function flatten_map(map) {
 // Draw a grid on the container
 function drawGrid(container, w, h, cell_size) {
     for (let x = -w; x < w; x += cell_size) {
-        line = new PIXI.Graphics();
+        let line = new PIXI.Graphics();
         line.lineStyle(0.01, lineColour, 1);
         line.moveTo(x, -h);
         line.lineTo(x, h);
@@ -19,7 +19,7 @@ function drawGrid(container, w, h, cell_size) {
     }
 
     for (let y = -h; y < h; y += cell_size) {
-        line = new PIXI.Graphics();
+        let line = new PIXI.Graphics();
         line.lineStyle(0.01, lineColour, 1);
         line.moveTo(-w, y);
         line.lineTo(w, y);
