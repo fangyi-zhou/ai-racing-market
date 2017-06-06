@@ -11,7 +11,7 @@ function writeMap(map_path, map) {
         return console.log(err);
     }
 
-    console.log("Map saved");
+    console.log("_Map saved");
   });
 }
 

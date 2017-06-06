@@ -19,7 +19,6 @@ const ROOMS: Room[] = [
 ];
 
 declare var communication: any;
-declare var drawRace: any;
 
 @Component({
   selector: 'rooms',
@@ -33,10 +32,8 @@ export class RoomComponent {
 
   onSelect(room: Room): void {
     this.selectedRoom = room;
-      // console.log(communication);
-      // console.log(drawRace);
+
       communication.init();
-      drawRace.init();
   }
 }
 

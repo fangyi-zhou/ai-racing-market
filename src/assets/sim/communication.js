@@ -8,10 +8,11 @@
 
   function init() {
     socket = io();
-    socket.on('connected', function () {
-      serverCallBack();
-    })
-    //serverCallBack();
+    initDraw();
+    // socket.on('connected', function () {
+    //   serverCallBack();
+    // })
+    serverCallBack();
   };
 
   function serverCallBack() {
@@ -52,7 +53,8 @@
   }
 
   var communication = {
-      'init':init
+      'init':init,
+      'syncServerWithMovement':syncServerWithMovement
   }
 
   root.communication = communication;

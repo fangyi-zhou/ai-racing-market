@@ -30,7 +30,7 @@ container.scale.x = zoom;  // zoom in
 container.scale.y = -zoom; // Note: we flip the y axis to make "up" the physics "up"
 renderer.render(stage); // Initial render
 
-// Map
+// _Map
 var currentMap = new Map();
 
 function drawMap(map, checkpoints, startGate) {

@@ -5,7 +5,7 @@ var zoom = 40;
 var wall_colour = 0x00FF00;
 
 // Overall map
-map = new Map();
+map = new _Map();
 
 // Create the PIXI renderer
 var canvas = document.getElementById('PIXIcanvas');
@@ -164,7 +164,7 @@ renderer.view.addEventListener('mousemove', function(evt) {
   }
 }, false);
 
-// Map drawing
+// _Map drawing
 first_point = null;
 var currentPath = []
 var currentLine = new PIXI.Graphics();
