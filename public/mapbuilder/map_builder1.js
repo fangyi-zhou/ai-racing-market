@@ -9,7 +9,7 @@ map = new _Map();
 
 // Create the PIXI renderer
 var canvas = document.getElementById('PIXIcanvas');
-var renderer = new PIXI.CanvasRenderer(canvas.width, canvas.height, canvas),
+var renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas}, true, true);
     stage = new PIXI.Stage(0xFFFFAA);
 // Make the canvas focussable
 renderer.view.tabIndex = 0;
@@ -19,7 +19,6 @@ stage.addChild(container);
 renderer.render(stage);
 document.body.appendChild(renderer.view);
 renderer.view.focus();
-document.body.removeChild(canvas);
 
 // Add transform to the container
 container.position.x =  renderer.width/2; // center at origin

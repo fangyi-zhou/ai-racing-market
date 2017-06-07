@@ -22,7 +22,8 @@ function initDraw() {
     console.log(document.body.childElementCount);
 
     canvas = document.getElementById('PIXIcanvas');
-    renderer = new PIXI.CanvasRenderer(canvas.width, canvas.height, canvas, false);
+    // renderer = new PIXI.CanvasRenderer(canvas.width, canvas.height, canvas, false);
+    renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas}, true, true);
     // Make the canvas focusable
     renderer.view.tabIndex = 0;
     stage = new PIXI.Stage(0xFFFFAA);
