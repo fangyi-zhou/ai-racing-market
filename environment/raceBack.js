@@ -103,7 +103,6 @@ setInterval(function() {
 
 function initIO(clientID, simID){
     let sim = simulations.get(simID);
-    console.log('numcar = '+sim.raceCars.count());
     return {
         numCars: sim.raceCars.count(),
         carWidth: RaceCar.carWidth,
