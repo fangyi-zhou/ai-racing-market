@@ -158,11 +158,11 @@ Slider
   width: 100%;
   height: auto;
   min-height: 100%;
-  -webkit-transform: translateX(100%);
-  -moz-transform: translateX(100%);
-  -ms-transform: translateX(100%);
-  -o-transform: translateX(100%);
-  transform: translateX(100%);
+  /*-webkit-transform: translateX(100%);*/
+  /*-moz-transform: translateX(100%);*/
+  /*-ms-transform: translateX(100%);*/
+  /*-o-transform: translateX(100%);*/
+  /*transform: translateX(100%);*/
 }
 .cd-hero-slider li.selected {
   /* this is the visible slide */
