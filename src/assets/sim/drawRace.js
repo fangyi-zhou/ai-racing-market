@@ -1,7 +1,7 @@
 /**
  * Created by ruiaohu on 27/05/2017.
  */
-var zoom = 20;
+var zoom = 30;
 var cars = {};
 var carWidth;
 var carHeight;
@@ -22,25 +22,14 @@ function initDraw() {
     console.log(document.body.childElementCount);
 
     canvas = document.getElementById('PIXIcanvas');
-    // renderer = new PIXI.CanvasRenderer(canvas.width, canvas.height, canvas, false);
-    renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas}, true, true);
+    renderer = PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas}, true, true);
     // Make the canvas focusable
     renderer.view.tabIndex = 0;
     stage = new PIXI.Stage(0xFFFFAA);
     renderer.backgroundColor = 0x181818;
     container = new PIXI.DisplayObjectContainer();
     stage.addChild(container);
-    document.body.appendChild(renderer.view);
     renderer.view.focus();
-
-    // document.body.removeChild(canvas);
-    // Reference Square
-    // var colour = 0xFFFF00;
-    // referenceSquare = new PIXI.Graphics();
-    // referenceSquare.beginFill(colour, 0.3);
-    // referenceSquare.lineStyle(0.01, colour, 1);
-    // referenceSquare.drawRect(-5, -5, 10, 10);
-    // container.addChild(referenceSquare);
 
     // Add transform to the container
     container.position.x = renderer.width / 2; // center at origin
