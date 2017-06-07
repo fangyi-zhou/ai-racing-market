@@ -66,7 +66,7 @@
       'init':init,
       'syncServerWithMovement':syncServerWithMovement,
       'disconnectOnSwap':disconnectOnSwap
-  }
+  };
 
   root.communication = communication;
 

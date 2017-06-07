@@ -7,6 +7,7 @@ import { DashboardComponent} from './dashboard/dashboard.component';
 import { RoomComponent} from './rooms/room.component';
 import { LoginComponent } from './login/login.component';
 import { CodeSubmissionComponent } from './codeSubmission/codeSubmission.component';
+import { MapBuilderComponent } from './mapBuilder/mapBuilder.component';
 
 import { AppRoutingModule} from './app-rounting.module';
 
@@ -21,7 +22,8 @@ import { AppRoutingModule} from './app-rounting.module';
     DashboardComponent,
     RoomComponent,
     LoginComponent,
-    CodeSubmissionComponent
+    CodeSubmissionComponent,
+    MapBuilderComponent
   ],
   bootstrap: [ AppComponent ]
 })

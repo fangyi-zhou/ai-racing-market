@@ -1,6 +1,8 @@
 
 import { Component, OnInit } from '@angular/core';
 
+declare var mapBuilder: any;
+
 @Component({
   selector:'mapBuilder',
   templateUrl:'./mapBuilder.component.html',
@@ -9,6 +11,6 @@ import { Component, OnInit } from '@angular/core';
 
 export class MapBuilderComponent implements OnInit{
   ngOnInit():void{
-
+    mapBuilder.initDraw();
   }
 }
