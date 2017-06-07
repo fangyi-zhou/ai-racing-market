@@ -19,7 +19,7 @@ function serverCallBack() {
     });
     socket.on('newMap', function (info) {
         updateMap(info);
-    })
+    });
 }
 
 // Key controls

@@ -8,9 +8,8 @@ const util = require('../util');
 
 const hitPoint = p2.vec2.create();
 function checkpointResult(result, ray, raceCars){
-    // console.log(raceCars.count());
     result.getHitPoint(hitPoint, ray);
-    // let car = raceCars.get(result.body.id);
+    let car = raceCars.get(result.body.id);
 
     // TODO: send checkpoint to AI (reward signal);
 }

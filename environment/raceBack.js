@@ -6,13 +6,15 @@ const util = require('./util');
 const RaceCar = require('./RaceCar');
 const Map = require('./maps/Map');
 const Simulation = require('./Simulation');
+const mapFS = require('./mapSave');
 
 // Globals
 const fixedTimeStep = 0.06;
 const maxSteer = Math.PI / 5;
 
 // Default map
-let current_map = [require('./maps/map1.js')["map1"], [[[0,0],[0,0]]], [[0, 0], [0, 1]]];
+let x = mapFS.readMap('./maps/map1.json');
+let current_map = [x["segments"], x["gates"], x["startGate"]];
 
 // Create the simulations
 // var simulations = [];
@@ -50,7 +52,7 @@ function addRaceCar(clientID, position, simID) {
 function addClient(clientID, simID){
     console.log(simID);
     console.log('USER', clientID);
-    const initPosition = [5, 5];
+    const initPosition = [-2.7, 0];
     addRaceCar(clientID, initPosition, simID);
 }
 

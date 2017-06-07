@@ -234,6 +234,7 @@ requestAnimationFrame(animate);
 var mapName = 'mapSave';
 function sendMapToServer() {
   if (map.complete()) {
+      console.log(map.createJSON());
     saveMap(map.createJSON());
   } else {
     alert("Your race track needs a start gate.");
