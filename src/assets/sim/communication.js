@@ -6,13 +6,16 @@
 
     var socket;
 
-  function init() {
+  function init(id) {
     socket = io();
     initDraw();
-    // socket.on('connected', function () {
-    //   serverCallBack();
-    // })
-    serverCallBack();
+    socket.on('connected', function () {
+        console.log(`join ${id}`);
+        socket.emit('join', {
+            simId : id
+        })
+        serverCallBack();
+    })
   };
 
   function serverCallBack() {

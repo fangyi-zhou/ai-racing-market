@@ -21,7 +21,7 @@ describe("Host", function() {
             childStub.getChildByCarId = (_) => {
                 return mockChild;
             };
-            raceBackStub.applyMove = (control, _) => {
+            raceBackStub.applyMove = (control, _, __) => {
                 output.push(control);
             };
             host = proxyquire('../usercode/host', {

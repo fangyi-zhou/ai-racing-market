@@ -24,9 +24,10 @@ time.sleep(10)\n\
 let children = new Hashmap.HashMap();
 
 class Child extends EventEmitter {
-    constructor(scriptId, carId, initPosition) {
+    constructor(scriptId, carId, initPosition, simID) {
         super();
         this.scriptId = scriptId;
+        this.simID = simID;
         this.carId = carId;
         // Get script
         this.script = getScriptByScriptId(scriptId);
@@ -39,7 +40,7 @@ class Child extends EventEmitter {
         this.write = function (data) {
             if (this.writable) process.stdin.write(data + "\n");
         };
-        let car = raceBack.addRaceCar(this.carId, initPosition);
+        let car = raceBack.addRaceCar(this.carId, initPosition, simID);
         process.on("exit", () => {
             console.log(`child ${this.carId} exited`);
             this.emit("exit");

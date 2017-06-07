@@ -49,8 +49,6 @@ class Map{
         position:[0,0],
         type: p2.Body.STATIC,
       });
-      // console.log('one time');
-      // console.log(segment);
       p2map.fromPolygon(segment);
       world.addBody(p2map);
 
@@ -61,10 +59,9 @@ class Map{
       }
       /*******************************************************************/
       return p2map
-    }
+    };
 
     this.createMap = function (world, raceCars) {
-        console.log(raceCars.count());
       // Create physical polygons
       for (let p = 0; p < this.segments.length; p++) {
         this.mapPolys.push(this._createp2MapSegment(world, this.segments[p]));

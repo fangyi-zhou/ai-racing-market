@@ -15,7 +15,7 @@ function serverCallBack() {
 
     socket.on('dc', function (info) {
         console.log(`dc ${info.id}`);
-        removeUser(info.id);
+        removeUser(info.id, 0);
     });
     socket.on('newMap', function (info) {
         updateMap(info);

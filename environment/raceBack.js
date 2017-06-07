@@ -4,14 +4,12 @@
 // Requires
 const util = require('./util');
 const RaceCar = require('./RaceCar');
-const rays = require('./rays');
 const Map = require('./maps/Map');
 const Simulation = require('./Simulation');
 
 // Globals
 const fixedTimeStep = 0.06;
 const maxSteer = Math.PI / 5;
-
 
 // Default map
 let current_map = [require('./maps/map1.js')["map1"], [[[0,0],[0,0]]], [[0, 0], [0, 1]]];
@@ -26,9 +24,10 @@ for (let i = 0; i < numSimulations; i++) {
 }
 
 // TODO: Change the 0 to be the chosen simulation
-function packageGraphics () {
+function packageGraphics (simID) {
     let graphics_dict = {};
-    simulations.get(0).raceCars.forEach(function (raceCar, key) {
+    let sim = simulations.get(simID);
+    sim.raceCars.forEach(function (raceCar, key) {
         graphics_dict[raceCar.clientID] = {
             position: raceCar.box_graphic.position,
             angle: raceCar.box_graphic.angle,
@@ -41,44 +40,38 @@ function packageGraphics () {
 }
 
 // TODO: Change the 0 to be the chosen simulation
-function addRaceCar(clientID, position) {
-    let car = new RaceCar.RaceCar(simulations.get(0).raceCars.count()+1, clientID, simulations.get(0).world, position);
-    simulations.get(0).raceCars.set(clientID, car);
+function addRaceCar(clientID, position, simID) {
+    let sim = simulations.get(simID);
+    let car = new RaceCar.RaceCar(sim.raceCars.count()+1, clientID, sim.world, position);
+    sim.raceCars.set(clientID, car);
     return car;
 }
 
-function addClient(id){
-    console.log('USER', id);
+function addClient(clientID, simID){
+    console.log(simID);
+    console.log('USER', clientID);
     const initPosition = [5, 5];
-    addRaceCar(id, initPosition);
-}
-
-// Send details of p2 race car to its graphical counterpart
-// TODO: Change the 0 to be the chosen simulation
-function updateGraphics () {
-    simulations.get(0).raceCars.forEach(function (value, key) {
-        //update information of each racer.
-        value.updateGraphics();
-        rays.constructRays(value,RaceCar.numRays,simulations.get(0).world);
-    });
+    addRaceCar(clientID, initPosition, simID);
 }
 
 // TODO: Change the 0 to be the chosen simulation
-function updateMovement(keys, id){
+function updateMovement(keys, clientID, simID){
     let control = {};
     control["steerValue"] = keys[37] - keys[39];
     if (keys[38] && keys[40]) control["engineForce"] = 0;
         else if (keys[38]) control["engineForce"] = 1;
         else if (keys[40]) control["engineForce"] = -0.5;
         else control["engineForce"] = 0;
-    applyMove(control, id);
+    applyMove(control, clientID, simID);
 }
 
 // TODO: Change the 0 to be the chosen simulation
-function applyMove(control, id) {
-    let clientCar = simulations.get(0).raceCars.get(id);
+function applyMove(control, clientID, simID) {
+    console.log(simID);
+    let sim = simulations.get(simID);
+    let clientCar = sim.raceCars.get(clientID);
     if (clientCar === null || clientCar === undefined) {
-        console.error(`Applying a move to null car ${id}`);
+        console.error(`Applying a move to null car ${clientID}`);
         return;
     }
     // Steer value zero means straight forward. Positive is left and negative right.
@@ -97,63 +90,57 @@ function applyMove(control, id) {
 
 // p2 implementation of vehicle.removeFromWorld is buggy; doesn't remove the chassis
 // TODO: Change the 0 to be the chosen simulation
-function removeVehicle(vehicle) {
-  simulations.get(0).world.removeBody(vehicle.chassisBody);
+function removeVehicle(vehicle, simID) {
+    let sim = simulations.get(simID);
+    sim.world.removeBody(vehicle.chassisBody);
   vehicle.removeFromWorld();
 }
 
 // TODO: Change the 0 to be the chosen simulation
-function removeUser(id){
-    let car = simulations.get(0).raceCars.get(id);
+function removeUser(clientID, simID){
+    console.log(simID);
+    let sim = simulations.get(simID);
+    let car = sim.raceCars.get(clientID);
     if (car !== undefined && car !== null)
-        removeVehicle(car.vehicle);
-    simulations.get(0).raceCars.remove(id);
-}
-
-// TODO: Change the 0 to be the chosen simulation
-function carCount(){
-    let num = simulations.get(0).raceCars.count();
-    return num;
-}
-
-// TODO: Change the 0 to be the chosen simulation
-function getCarById(carId) {
-    return simulations.get(0).raceCars.get(carId);
+        removeVehicle(car.vehicle, simID);
+    sim.raceCars.remove(clientID);
 }
 
 // Loop the program
 setInterval(function() {
     simulations.stepAll(fixedTimeStep);
-    simulations.get(0).checkCheckpoints();
+    simulations.checkCheckpoints();
     // current_map.checkCheckpoints();
 
     // Update graphics
-    updateGraphics ();
+    simulations.updateGraphics();
 }, 1000/30);
 
-function initIO(clientID){
+function initIO(clientID, simID){
+    let sim = simulations.get(simID);
     return {
-        numCars:carCount(),
+        numCars: sim.raceCars.count(),
         carWidth: RaceCar.carWidth,
         carHeight: RaceCar.carHeight,
         numRays: RaceCar.numRays,
         id: clientID,
-        cars: packageGraphics(),
-        map: simulations.get(0).map.save,
-        checkpoints: simulations.get(0).map.checkpoints,
-        startGate: simulations.get(0).map.startGate
+        cars: packageGraphics(simID),
+        map: sim.map.save,
+        checkpoints: sim.map.checkpoints,
+        startGate: sim.map.startGate
     }
 }
 
 // TODO: Change the 0 to be the chosen simulation
-function changeMap(info) {
+function changeMap(info, simID) {
+    let sim = simulations.get(simID);
   let segments = info.map.segments;
   let checkpoints = info.map.gates;
   let startGate = info.map.startGate;
-    simulations.get(0).map.removeMap(simulations.get(0).world);
-    simulations.get(0).map = new Map.Map(segments, checkpoints, startGate);
-    simulations.get(0).map.createMap(simulations.get(0).world);
-  return simulations.get(0).save;
+    sim.map.removeMap(sim.world);
+    sim.map = new Map.Map(segments, checkpoints, startGate);
+    sim.map.createMap(sim.world);
+  return sim.save;
 }
 
 module.exports.packageGraphics = packageGraphics;
@@ -162,6 +149,6 @@ module.exports.addRaceCar = addRaceCar;
 module.exports.updateMovement = updateMovement;
 module.exports.applyMove = applyMove;
 module.exports.removeUser= removeUser;
-module.exports.getCarById = getCarById;
 module.exports.initIO = initIO;
 module.exports.changeMap = changeMap;
+module.exports.simulations = simulations;

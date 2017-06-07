@@ -32,8 +32,7 @@ export class RoomComponent {
 
   onSelect(room: Room): void {
     this.selectedRoom = room;
-
-      communication.init();
+      communication.init(room.id);
   }
 }
 

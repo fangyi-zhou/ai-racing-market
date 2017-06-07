@@ -63,35 +63,44 @@ app.use(function (req, res, next) {
 // });
 
 io.on('connection', function (socket) {
-  host.addAiCar(1, io);
-  raceBack.addClient(socket.id);
+    let simId = undefined;
+    io.to(socket.id).emit('connected');
+    socket.on('join',function (info) {
+        simId = info.simId;
+        io.to(socket.id).emit('init', raceBack.initIO(socket.id, simId));
+        host.addAiCar(1, io, simId);
+        raceBack.addClient(socket.id, simId);
+    })
+
+
   //send back the number of cars need to be rendered
-  io.to(socket.id).emit('init', raceBack.initIO(socket.id));
+
 
   console.log('user connection, socket id = ' + socket.id);
 
   //iterate physics
   setInterval(function () {
-    socket.emit('updateClient', raceBack.packageGraphics());
+      if(simId != undefined)
+          socket.emit('updateClient', raceBack.packageGraphics(simId));
   }, 1000 / 30);
 
   socket.on('disconnect', function () {
     console.log('user disconnected, socket id = ' + socket.id);
-    raceBack.removeUser(socket.id);
+    raceBack.removeUser(socket.id, simId);
     socket.broadcast.emit('dc', {
       id: socket.id
     });
   });
 
   socket.on('movement', function (info) {
-    raceBack.updateMovement(info, socket.id);
+    raceBack.updateMovement(info, socket.id, simId);
   });
 
   // ************** TODO: Change this to POST ************* //
   socket.on('saveMap', function (info) {
     /******** TODO: replace to save to database ********/
     socket.broadcast.emit('newMap', {
-      map: raceBack.changeMap(info)
+      map: raceBack.changeMap(info, simId)
     });
   });
 

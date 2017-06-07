@@ -5,6 +5,8 @@ const hashMap = require('hashmap');
 const p2 = require('p2');
 const Map = require('./maps/Map');
 const util = require('./util');
+const rays = require('./rays');
+const RaceCar = require('./RaceCar');
 
 class Simulations{
     constructor () {
@@ -22,6 +24,21 @@ class Simulations{
         this.stepAll = function(timeStep) {
             this.simulations.forEach(function(sim, id) {
                 sim.step(timeStep);
+            });
+        };
+        this.checkCheckpoints = function() {
+            this.simulations.forEach(function(sim, id) {
+                sim.checkCheckpoints();
+            });
+        }
+        // Send details of p2 race car to its graphical counterpart
+        this.updateGraphics = function () {
+            this.simulations.forEach(function(sim, id) {
+                sim.raceCars.forEach(function (value, key) {
+                    //update information of each racer.
+                    value.updateGraphics();
+                    rays.constructRays(value, RaceCar.numRays, sim.world);
+                });
             });
         }
     }
