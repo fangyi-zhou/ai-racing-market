@@ -11,7 +11,7 @@
     }
 
   function init(id) {
-    socket = io();
+    socket = io({ forceNew: true });
     socket.on('connected', function () {
         console.log(`join ${id}`);
         socket.emit('join', {
@@ -19,6 +19,7 @@
         })
         serverCallBack();
     })
+      renderer.view.focus();
   };
 
   function serverCallBack() {
@@ -52,10 +53,7 @@
 
   function disconnectOnSwap(){
       if (socket != undefined){
-          console.log('foo');
-          socket.emit('requestDC',{
-              cilentID:socket.id
-          })
+          socket.disconnect();
       }
       while(container.children[0]){
           container.removeChild(container.children[0]);

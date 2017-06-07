@@ -40,7 +40,6 @@ class Child extends EventEmitter {
         this.write = function (data) {
             if (this.writable) process.stdin.write(data + "\n");
         };
-        console.log(raceBack.simulations.get(simID));
         let car = raceBack.simulations.get(simID).addRaceCar(this.carId, initPosition);
         process.on("exit", () => {
             console.log(`child ${this.carId} exited`);

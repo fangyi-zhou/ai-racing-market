@@ -62,6 +62,7 @@ app.use(function (req, res, next) {
 //   res.send(err.status);
 // });
 
+
 io.on('connection', function (socket) {
     let simId = undefined;
     io.to(socket.id).emit('connected');
@@ -86,19 +87,12 @@ io.on('connection', function (socket) {
 
   socket.on('disconnect', function () {
     console.log('user disconnected, socket id = ' + socket.id);
-    raceBack.removeUser(socket.id, simId);
+    if (simId != undefined)
+        raceBack.removeUser(socket.id, simId);
     socket.broadcast.emit('dc', {
       id: socket.id
     });
   });
-
-  socket.on('requestDC',function(){
-      console.log('user disconnected, socket id = ' + socket.id);
-      raceBack.removeUser(socket.id, simId);
-      socket.broadcast.emit('dc', {
-          id: socket.id
-      });
-  })
 
   socket.on('movement', function (info) {
     raceBack.updateMovement(info, socket.id, simId);
