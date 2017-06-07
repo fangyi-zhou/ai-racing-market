@@ -49,7 +49,7 @@ function updateMovement(keys, clientID, simID){
     let control = {};
     control["steerValue"] = keys[37] - keys[39];
     if (keys[38] && keys[40]) control["engineForce"] = 0;
-        else if (keys[38]) control["engineForce"] = 1;
+        else if (keys[38]) control["engineForce"] = 2;
         else if (keys[40]) control["engineForce"] = -0.5;
         else control["engineForce"] = 0;
     applyMove(control, clientID, simID);
@@ -68,7 +68,7 @@ function applyMove(control, clientID, simID) {
         clientCar.frontWheel.steerValue = steerValue;
     }
     if (control["engineForce"] !== undefined && control["engineForce"] !== null) {
-        let engineForce = Math.min(Math.max(control["engineForce"], -0.5), 1);
+        let engineForce = Math.min(Math.max(control["engineForce"], -0.5), 2);
         clientCar.backWheel.engineForce = engineForce;
         let breaking = (clientCar.backWheel.getSpeed() > 0.1 && engineForce < 0)
             || (clientCar.backWheel.getSpeed() < -0.1 && engineForce > 0);

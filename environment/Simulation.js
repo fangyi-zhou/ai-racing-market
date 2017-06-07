@@ -54,6 +54,7 @@ class Simulation{
             gravity : [0,0]
         });
         this.world.defaultContactMaterial.friction = 0.001;
+        this.world.defaultContactMaterial.restitution = 0.5;
 
         this.rawMap = util.arrayCopy(map);
         this.map = new Map.Map(map[0], map[1], map[2]);
