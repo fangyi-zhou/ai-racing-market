@@ -1,141 +1,51 @@
 ;(function(root) {
     // Parameters
-    var car_width = 0.5;
-    var car_height = 1;
+    const car_width = 0.5;
+    const car_height = 1;
     var zoom = 40;
-    var wall_colour = 0x00FF00;
+    const wall_colour = 0x00FF00;
 
     // Smoother user control
-    var moving = [false, false, false, false]; // Up down left right
+    const moving = [false, false, false, false]; // Up down left right
     var dZoom = 1;
 
     // Modes of operation
-    Mode = {
+    const Mode = {
         MapDraw : 0,
         GateDraw : 1,
         StartLineDraw : 2
-    }
-
-    function gateMode() {
-        return currentMode == Mode.GateDraw || currentMode == Mode.StartLineDraw;
-    }
-
-    function changeMode(mode) {
-        currentMode = mode;
-        currentGate.visible = gateMode();
-        mouseHover.visible = currentMode == Mode.MapDraw;
-    }
-
-    function completePolygon() {
-      completeCurrentLine(currentLine, first_point);
-
-      // Reset segment drawing
-      first_point = null;
-
-      // Add polygon to list
-      let segment = new Segment(currentPath);
-      segment.drawSegment(container, wall_colour);
-      map.addSegment(segment);
-
-      // Reset path
-      currentPath = []
-    }
-
-    // Snapping mouse position to drawing grid
-    function snap(x, m) {
-      return Math.round(x / m) * m;
-    }
-
-    function snap_point(point, m) {
-      return scalePoint([snap(point.x, m), snap(point.y, m)], 1/zoom)
-    }
-
-    function scalePoint(point, scale) {
-      return mul(point, scale);
-    }
-
-    function getMousePos(canvas, evt) {
-      var rect = canvas.getBoundingClientRect();
-      return {
-        x: evt.clientX - rect.left - container.position.x,
-        y: -(evt.clientY - rect.top - container.position.y)
-      };
-    }
-
-    function completeCurrentLine(currentLine, point) {
-      setEndLine(currentLine, point)
-    }
-
-    function updateMapHover(gridPoint) {
-      mouseHover.position.x = (gridPoint[0]);
-      mouseHover.position.y = (gridPoint[1]);
-      if (first_point != null) {
-        completeCurrentLine(currentLine, gridPoint);
-      }
-    }
-
-    function drawNewVertex(mousePos) {
-      gridPoint = snap_point(mousePos, cell_size*zoom)
-
-      if (first_point == null) {
-        first_point = gridPoint;
-      } else {
-        currentLine.lineTo(gridPoint[0], gridPoint[1]);
-      }
-      currentPath.push(gridPoint)
-
-      currentLine = new PIXI.Graphics();
-      container.addChild(currentLine);
-      currentLine.lineStyle(0.01, 0xFF0000, 1);
-      currentLine.moveTo(gridPoint[0], gridPoint[1]);
-    }
-
-
-
-    // User control updates
-    function updateContainer() {
-      container.position.x += (moving[2] - moving[3]) * panSpeed
-      container.position.y += (moving[0] - moving[1]) * panSpeed
-      zoom *= dZoom;
-      container.scale.x =  zoom;
-      container.scale.y =  -zoom;
-    }
-
-    // Loop the program
-    function animate() {
-      updateContainer();
-      if (gateMode()) {
-        updateGateRotation(map.getAllPolygonsPIXI());
-      }
-
-      renderer.render(stage);
-      requestAnimationFrame(animate);
-    }
-
-    // Sends map segment paths to server to be saved
-    var mapName = 'mapSave';
-    function sendMapToServer() {
-      if (map.complete()) {
-          console.log(map.createJSON());
-        saveMap(map.createJSON());
-      } else {
-        alert("Your race track needs a start gate.");
-      }
-    }
+    };
+    var canvas;
+    var renderer;
+    var stage;
+    var container;
+    var lineColour;
+    var w, h;
+    var cell_size;
+    var map;
+    var colour;
+    var position;
+    var panSpeed;
+    var zoomSpeed;
+    var mouseHover;
+    var first_point;
+    var currentPath;
+    var currentLine;
+    var currentMode = Mode.MapDraw;
 
     function initDraw() {
         // Overall map
         map = new _Map();
 
         // Create the PIXI renderer
-        var canvas = document.getElementById('PIXIcanvas');
-        var renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas}, true, true);
-        var stage = new PIXI.Stage(0xFFFFAA);
+        canvas = document.getElementById('PIXIcanvas');
+        renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas}, true, true);
+        stage = new PIXI.Stage(0xFFFFAA);
         // Make the canvas focussable
         renderer.view.tabIndex = 0;
         renderer.backgroundColor = 0xFFFFFF;
-        container = new PIXI.DisplayObjectContainer(),
-            stage.addChild(container);
+        container = new PIXI.DisplayObjectContainer();
+        stage.addChild(container);
         renderer.render(stage);
         renderer.view.focus();
 
@@ -146,8 +56,8 @@
         container.scale.y = -zoom; // Note: we flip the y axis to make "up" the physics "up"
 
         // Reference Square
-        var colour = 0xFFFF00;
-        referenceSquare = new PIXI.Graphics();
+        colour = 0xFFFF00;
+        let referenceSquare = new PIXI.Graphics();
         referenceSquare.beginFill(colour, 0.3);
         referenceSquare.lineStyle(0.01, colour, 1);
         referenceSquare.drawRect(-5, -5, 10, 10);
@@ -157,9 +67,9 @@
         addGateLine(container);
 
         // Draw grid
-        var lineColour = 0xBFBFBF;
-        var w = 100, h = 100;
-        var cell_size = car_width;
+        lineColour = 0xBFBFBF;
+        w = 100, h = 100;
+        cell_size = car_width;
         drawGrid(container, w, h, cell_size, lineColour);
 
         // User control variables
@@ -171,7 +81,7 @@
         mouseHover = new PIXI.Graphics();
         mouseHover.beginFill(colour, 0.3);
         mouseHover.lineStyle(0.1, 0xFF0000, 1);
-        ab = [0.5, 0.5];
+        const ab = [0.5, 0.5];
         mouseHover.scale.x = ab[0];
         mouseHover.scale.y = ab[0];
         mouseHover.drawCircle(0, 0, ab[0], ab[1]);
@@ -179,8 +89,8 @@
 
         // _Map drawing
         first_point = null;
-        var currentPath = []
-        var currentLine = new PIXI.Graphics();
+        currentPath = [];
+        currentLine = new PIXI.Graphics();
 
         // Start animation loop
         requestAnimationFrame(animate);
@@ -188,7 +98,7 @@
         changeMode(Mode.MapDraw); // Default mode
 
         /*
-            User Control
+         User Control
          */
         renderer.view.addEventListener('keydown', function onKeyPress(evt){
             // console.log(evt.keyCode)
@@ -232,9 +142,9 @@
         }, true);
 
         renderer.view.addEventListener('mousemove', function(evt) {
-            var mousePos = getMousePos(renderer.view, evt);
-            gridPoint = snap_point(mousePos, cell_size*zoom);
-            actualPoint = scalePoint(vectorfy(mousePos), 1/zoom);
+            let mousePos = getMousePos(renderer.view, evt);
+            let gridPoint = snap_point(mousePos, cell_size*zoom);
+            let actualPoint = scalePoint(vectorfy(mousePos), 1/zoom);
 
             switch (currentMode) {
                 case Mode.MapDraw:  updateMapHover(gridPoint);
@@ -246,8 +156,8 @@
         }, false);
 
         renderer.view.addEventListener('mousedown', function(evt) {
-            var mousePos = getMousePos(renderer.view, evt);
-            var actualPoint = scalePoint(vectorfy(mousePos), 1/zoom);
+            let mousePos = getMousePos(renderer.view, evt);
+            let actualPoint = scalePoint(vectorfy(mousePos), 1/zoom);
             if (map.contains(actualPoint)) {
                 return;
             }
@@ -268,6 +178,115 @@
 
         }, false);
     }
+
+    function gateMode() {
+        return currentMode == Mode.GateDraw || currentMode == Mode.StartLineDraw;
+    }
+
+    function changeMode(mode) {
+        let currentMode = mode;
+        currentGate.visible = gateMode();
+        mouseHover.visible = (currentMode == Mode.MapDraw);
+    }
+
+    function completePolygon() {
+      completeCurrentLine(currentLine, first_point);
+
+      // Reset segment drawing
+        first_point = null;
+
+      // Add polygon to list
+      let segment = new Segment(currentPath);
+      segment.drawSegment(container, wall_colour);
+      map.addSegment(segment);
+
+      // Reset path
+      currentPath = []
+    }
+
+    // Snapping mouse position to drawing grid
+    function snap(x, m) {
+      return Math.round(x / m) * m;
+    }
+
+    function snap_point(point, m) {
+      return scalePoint([snap(point.x, m), snap(point.y, m)], 1/zoom)
+    }
+
+    function scalePoint(point, scale) {
+      return mul(point, scale);
+    }
+
+    function getMousePos(canvas, evt) {
+      let rect = canvas.getBoundingClientRect();
+      return {
+        x: evt.clientX - rect.left - container.position.x,
+        y: -(evt.clientY - rect.top - container.position.y)
+      };
+    }
+
+    function completeCurrentLine(currentLine, point) {
+      setEndLine(currentLine, point)
+    }
+
+    function updateMapHover(gridPoint) {
+      mouseHover.position.x = (gridPoint[0]);
+      mouseHover.position.y = (gridPoint[1]);
+      if (first_point != null) {
+        completeCurrentLine(currentLine, gridPoint);
+      }
+    }
+
+    function drawNewVertex(mousePos) {
+      let gridPoint = snap_point(mousePos, cell_size*zoom)
+
+      if (first_point == null) {
+        first_point = gridPoint;
+      } else {
+        currentLine.lineTo(gridPoint[0], gridPoint[1]);
+      }
+      currentPath.push(gridPoint);
+
+      currentLine = new PIXI.Graphics();
+      container.addChild(currentLine);
+      currentLine.lineStyle(0.01, 0xFF0000, 1);
+      currentLine.moveTo(gridPoint[0], gridPoint[1]);
+    }
+
+
+
+    // User control updates
+    function updateContainer() {
+      container.position.x += (moving[2] - moving[3]) * panSpeed
+      container.position.y += (moving[0] - moving[1]) * panSpeed
+      zoom *= dZoom;
+      container.scale.x =  zoom;
+      container.scale.y =  -zoom;
+    }
+
+    // Loop the program
+    function animate() {
+      updateContainer();
+      if (gateMode()) {
+        updateGateRotation(map.getAllPolygonsPIXI());
+      }
+
+      renderer.render(stage);
+      requestAnimationFrame(animate);
+    }
+
+    // Sends map segment paths to server to be saved
+    var mapName = 'mapSave';
+    function sendMapToServer() {
+      if (map.complete()) {
+          console.log(map.createJSON());
+        saveMap(map.createJSON());
+      } else {
+        alert("Your race track needs a start gate.");
+      }
+    }
+
+
 
     var mapBuilder = {
         'initDraw':initDraw
