@@ -4,11 +4,14 @@
 
 ;(function(root) {
 
-    var socket;
+    var socket = undefined;
+
+    function initGraphics(){
+        initDraw();
+    }
 
   function init(id) {
     socket = io();
-    initDraw();
     socket.on('connected', function () {
         console.log(`join ${id}`);
         socket.emit('join', {
@@ -47,9 +50,23 @@
     }
   }
 
+  function disconnectOnSwap(){
+      if (socket != undefined){
+          console.log('foo');
+          socket.emit('requestDC',{
+              cilentID:socket.id
+          })
+      }
+      while(container.children[0]){
+          container.removeChild(container.children[0]);
+      }
+  }
+
   var communication = {
+      'initGraphics':initGraphics,
       'init':init,
-      'syncServerWithMovement':syncServerWithMovement
+      'syncServerWithMovement':syncServerWithMovement,
+      'disconnectOnSwap':disconnectOnSwap
   }
 
   root.communication = communication;
