@@ -32,6 +32,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use("/dev", express.static(path.join(__dirname, 'public')));
+app.use('/api', api);
 
 app.route('/*')
   .get(function (req, res) {
@@ -41,7 +42,7 @@ app.route('/*')
 app.use('/rooms',rooms);
 app.use('/dev',dev);
 app.use('/races', races);
-app.use('/api', api);
+
 
 //catch 404 and forward to error handler
 app.use(function (req, res, next) {
