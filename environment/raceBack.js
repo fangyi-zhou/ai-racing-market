@@ -25,7 +25,6 @@ for (let i = 0; i < numSimulations; i++) {
     simulations.addSimulation(i, mapCopy);
 }
 
-// TODO: Change the 0 to be the chosen simulation
 function packageGraphics (simID) {
     let graphics_dict = {};
     let sim = simulations.get(simID);
@@ -41,7 +40,6 @@ function packageGraphics (simID) {
     return graphics_dict;
 }
 
-// TODO: Change the 0 to be the chosen simulation
 function addRaceCar(clientID, position, simID) {
     let sim = simulations.get(simID);
     let car = new RaceCar.RaceCar(sim.raceCars.count()+1, clientID, sim.world, position);
@@ -50,13 +48,11 @@ function addRaceCar(clientID, position, simID) {
 }
 
 function addClient(clientID, simID){
-    console.log(simID);
     console.log('USER', clientID);
     const initPosition = [-2.7, 0];
     addRaceCar(clientID, initPosition, simID);
 }
 
-// TODO: Change the 0 to be the chosen simulation
 function updateMovement(keys, clientID, simID){
     let control = {};
     control["steerValue"] = keys[37] - keys[39];
@@ -67,9 +63,7 @@ function updateMovement(keys, clientID, simID){
     applyMove(control, clientID, simID);
 }
 
-// TODO: Change the 0 to be the chosen simulation
 function applyMove(control, clientID, simID) {
-    console.log(simID);
     let sim = simulations.get(simID);
     let clientCar = sim.raceCars.get(clientID);
     if (clientCar === null || clientCar === undefined) {
@@ -91,16 +85,13 @@ function applyMove(control, clientID, simID) {
 }
 
 // p2 implementation of vehicle.removeFromWorld is buggy; doesn't remove the chassis
-// TODO: Change the 0 to be the chosen simulation
 function removeVehicle(vehicle, simID) {
     let sim = simulations.get(simID);
     sim.world.removeBody(vehicle.chassisBody);
   vehicle.removeFromWorld();
 }
 
-// TODO: Change the 0 to be the chosen simulation
 function removeUser(clientID, simID){
-    console.log(simID);
     let sim = simulations.get(simID);
     let car = sim.raceCars.get(clientID);
     if (car !== undefined && car !== null)
@@ -133,7 +124,6 @@ function initIO(clientID, simID){
     }
 }
 
-// TODO: Change the 0 to be the chosen simulation
 function changeMap(info, simID) {
     let sim = simulations.get(simID);
   let segments = info.map.segments;

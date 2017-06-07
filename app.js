@@ -92,6 +92,14 @@ io.on('connection', function (socket) {
     });
   });
 
+  socket.on('requestDC',function(){
+      console.log('user disconnected, socket id = ' + socket.id);
+      raceBack.removeUser(socket.id, simId);
+      socket.broadcast.emit('dc', {
+          id: socket.id
+      });
+  })
+
   socket.on('movement', function (info) {
     raceBack.updateMovement(info, socket.id, simId);
   });
