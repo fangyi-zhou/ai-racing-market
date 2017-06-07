@@ -13,11 +13,10 @@ const fixedTimeStep = 0.06;
 const maxSteer = Math.PI / 5;
 
 // Default map
-let x = mapFS.readMap('./maps/map1.json');
-let current_map = [x["segments"], x["gates"], x["startGate"]];
+let defaultMap = mapFS.readMap('./maps/map1.json');
+let current_map = [defaultMap["segments"], defaultMap["gates"], defaultMap["startGate"]];
 
 // Create the simulations
-// var simulations = [];
 const numSimulations = 10;
 let simulations = new Simulation.Simulations();
 for (let i = 0; i < numSimulations; i++) {
@@ -41,19 +40,11 @@ function packageGraphics (simID) {
     return graphics_dict;
 }
 
-// TODO: Change the 0 to be the chosen simulation
-function addRaceCar(clientID, position, simID) {
-    let sim = simulations.get(simID);
-    let car = new RaceCar.RaceCar(sim.raceCars.count()+1, clientID, sim.world, position);
-    sim.raceCars.set(clientID, car);
-    return car;
-}
-
 function addClient(clientID, simID){
     console.log(simID);
     console.log('USER', clientID);
     const initPosition = [-2.7, 0];
-    addRaceCar(clientID, initPosition, simID);
+    simulations.get(simID).addRaceCar(clientID, initPosition, simID);
 }
 
 // TODO: Change the 0 to be the chosen simulation
@@ -147,7 +138,6 @@ function changeMap(info, simID) {
 
 module.exports.packageGraphics = packageGraphics;
 module.exports.addClient = addClient;
-module.exports.addRaceCar = addRaceCar;
 module.exports.updateMovement = updateMovement;
 module.exports.applyMove = applyMove;
 module.exports.removeUser= removeUser;

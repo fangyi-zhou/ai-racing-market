@@ -66,6 +66,13 @@ class Simulation{
         this.checkCheckpoints = function () {
             return this.map.checkCheckpoints(this.world);
         }
+
+        // Adds a new race car to the world
+        this.addRaceCar = function (clientID, position) {
+            let car = new RaceCar.RaceCar(this.raceCars.count()+1, clientID, this.world, position);
+            this.raceCars.set(clientID, car);
+            return car;
+        }
     }
 }
 

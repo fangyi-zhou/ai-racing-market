@@ -14,7 +14,7 @@ function randomColour() {
 // Race Car
 class RaceCar {
     constructor(collision_id, clientID, world, position) {
-        const carComponents = p2RaceCar(collision_id,clientID,world, position, carWidth, carHeight, carMass);
+        const carComponents = p2RaceCar(collision_id, clientID, world, position, carWidth, carHeight, carMass);
         this.vehicle = carComponents[0];
         this.frontWheel = carComponents[1];
         this.backWheel = carComponents[2];
