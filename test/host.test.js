@@ -18,11 +18,15 @@ describe("Host", function() {
         before(function () {
             let childStub = {};
             let raceBackStub = {};
+            let simStub = {};
+            simStub.applyMove = (control, _) => {
+                output.push(control);
+            };
             childStub.getChildByCarId = (_) => {
                 return mockChild;
             };
-            raceBackStub.applyMove = (control, _, __) => {
-                output.push(control);
+            raceBackStub.getSim = (_) => {
+                return simStub;
             };
             host = proxyquire('../usercode/host', {
                 './child' : childStub,

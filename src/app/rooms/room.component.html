@@ -1,8 +1,6 @@
 <!--The whole content below can be removed with the new code.-->
 
-<div *ngIf="selectedRoom">
 
-</div>
 
 <div class = "row">
   <div class = "col s12 m4 l3">
@@ -17,7 +15,9 @@
   </div>
 
   <div class = "col s12 m8 l9">
-      <h3 class="black-text center">Currently viewing Room {{selectedRoom.id}}</h3>
+      <div *ngIf="selectedRoom">
+          <h3 class="black-text center">Currently viewing Room {{selectedRoom.id}}</h3>
+      </div>
       <canvas id="PIXIcanvas" width="750" height="600" tabindex="0" style="touch-action: none; cursor: inherit;" class="pixiCanvas"></canvas>
     <style>#PIXIcanvas { background-color: rgba(158, 167, 184, 0.5); }</style>
   </div>
