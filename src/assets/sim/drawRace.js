@@ -1,7 +1,7 @@
 /**
  * Created by ruiaohu on 27/05/2017.
  */
-var zoom = 30;
+var zoom = 40;
 var cars = {};
 var carWidth;
 var carHeight;
@@ -9,7 +9,7 @@ var numRays;
 var wall_colour = 0xD7D7D7;
 var clientCarID = null;
 var canvas;
-var renderer;
+var renderer = undefined;
 var stage;
 var container;
 var currentMap;
