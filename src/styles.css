@@ -1,5 +1,3 @@
-/*@import "assets/font-awesome-4.5.0/css/font-awesome.min.css";*/
-/*@import "assets/css/bootstrap.min.css";*/
-/*@import "assets/css/magnific-popup.css";*/
-/*@import "assets/css/hero-slider-style.css";*/
-/*@import "assets/css/templatemo-style.css";*/
+body {
+    background-image: url("/assets/img/grid.jpeg");
+}
