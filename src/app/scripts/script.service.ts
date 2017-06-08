@@ -18,7 +18,7 @@ export class ScriptService {
     }
 
     // post("/api/script")
-    createContact(newScript: Script): Promise<Script> {
+    createScript(newScript: Script): Promise<Script> {
         return this.http.post(this.scriptUrl, newScript)
             .toPromise()
             .then(response => response.json() as Script)
