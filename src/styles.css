@@ -1,3 +1,10 @@
 body {
     background-image: url("/assets/img/grid.jpeg");
 }
+
+.semi-transparent {
+    background-color: #FFFFFF !important;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+    color: darkblue;
+}

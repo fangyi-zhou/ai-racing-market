@@ -11,4 +11,7 @@ export class CodeEditorService {
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/python");
     }
+    foo() {
+        console.log('fooed');
+    }
 }

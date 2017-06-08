@@ -16,4 +16,8 @@ export class CodeSubmissionComponent implements OnInit{
   ngOnInit():void{
     this.codeEditorService.loadCodeEditor();
   }
+
+    onSubmit() {
+        this.codeEditorService.foo();
+    }
 }
