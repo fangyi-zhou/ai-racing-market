@@ -38,7 +38,7 @@ function processSetCommand(child, splatInput) {
         default:
             console.error(`Cannot set ${splatInput[1]} for Child ${carId}`)
     }
-    raceBack.applyMove(control, child.carId, child.simID);
+    raceBack.getSim(child.simID).applyMove(control, child.carId);
 }
 
 function processSingleCommand(child, data) {
@@ -66,7 +66,7 @@ function processUserOutput(child, data) {
 
 function childExit(child, io) {
     return function () {
-        raceBack.removeUser(child.carId, child.simID);
+        raceBack.getSim(child.simID).removeUser(child.carId);
         io.local.emit("dc", {
             id: child.carId
         });
