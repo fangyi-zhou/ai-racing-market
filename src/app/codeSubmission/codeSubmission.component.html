@@ -1,45 +1,26 @@
-<script>
-  YUI().use('aui-ace-editor', function(Y) {
-    var editor = new Y.AceEditor({
-      boundingBox: '#myEditor',
-      height: '200',
-      mode: 'javascript',
-      value: 'alert("Write something here...")',
-      width: '500'
-    }).render();
-
-    var mode = Y.one('#mode');
-
-    if (mode) {
-      var contents = {
-        javascript: 'alert("Write something here...")',
-        python: 'import numpy as np'
-      };
-
-      var currentMode = 'javascript';
-
-      var updateValue = function() {
-        editor.set('value', contents[currentMode]);
-      };
-
-      mode.on('change', function(event) {
-        currentMode = this.val();
-        editor.set('mode', currentMode);
-        updateValue();
-      });
-    }
-  });
-</script>
-
 <div id="myWrapper">
-  <form class="form">
-    <div class="form-group">
-      <label for="mode" class="control-label">Language Mode:</label>
-      <select id="mode" class="form-control">
-        <option>javascript</option>
-        <option>python</option>
-      </select>
+    <form class="form">
+        <div class="form-group">
+            <label for="mode" class="control-label">Language Mode:</label>
+            <select id="mode" class="form-control">
+                <option>javascript</option>
+                <option>python</option>
+            </select>
+        </div>
+    </form>
+    <div id="editor-container" class="row">
+        <div id="editor" class="col-xs-12">function foo(items) {{ '{' }}
+            var x = "All this is syntax highlighted";
+            return x;
+            {{ '}' }}
+        </div>
     </div>
-  </form>
-  <div id="myEditor"></div>
 </div>
+
+
+
+<script>
+    var editor = ace.edit("myWrapper.editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/javascript");
+</script>
