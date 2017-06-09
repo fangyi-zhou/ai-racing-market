@@ -1,4 +1,4 @@
 export class Script {
-    id: string;
+    id?: string;
     code: string;
 }

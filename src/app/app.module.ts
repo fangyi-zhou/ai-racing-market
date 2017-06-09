@@ -10,13 +10,15 @@ import {CodeSubmissionComponent} from "./codeSubmission/codeSubmission.component
 import {MapBuilderComponent} from "./mapBuilder/mapBuilder.component";
 
 import {AppRoutingModule} from "./app-rounting.module";
+import {HttpModule} from "@angular/http";
 
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
-        AppRoutingModule
+        AppRoutingModule,
+        HttpModule
     ],
     declarations: [
         AppComponent,

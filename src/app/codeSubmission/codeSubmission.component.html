@@ -4,7 +4,6 @@
      <div id="editor" class="col s12" style="height: 500px;">import numpy as np:
      </div>
  </div>
-    <form  (ngSubmit)="onSubmit()" #heroForm="ngForm">
         <div class="form-group">
             <label for="language" style="height: 100px;">Language Mode</label>
             <select class="form-control" id="language">
@@ -12,8 +11,7 @@
             </select>
         </div>
 
-        <button class="btn waves-effect semi-transparent" type="submit" name="action">Submit
+        <button class="btn waves-effect semi-transparent" type="submit" name="action" (click)="submitScript()">Submit
             <i class="fa fa-arrow-circle-o-right fa-fw"></i></button>
-    </form>
 
 </div>
