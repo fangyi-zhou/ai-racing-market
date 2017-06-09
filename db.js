@@ -4,6 +4,7 @@ const ObjectID = mongodb.ObjectID;
 let db;
 
 const SCRIPT_COLLECTION = "script";
+const USER_COLLECTION = "user";
 
 function init(callback) {
     mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
@@ -27,6 +28,16 @@ function createScript(script, callback) {
     db.collection(SCRIPT_COLLECTION).insertOne(script, callback);
 }
 
+function getUserByUsername(username, callback) {
+    db.collection(USER_COLLECTION).findOne({username: username}, callback);
+}
+
+function createUser(username, saltedPass, salt, callback) {
+    db.collection(USER_COLLECTION).insertOne({username: username, saltedPass: saltedPass, salt: salt}, callback);
+}
+
 module.exports.getScriptById = getScriptById;
 module.exports.createScript = createScript;
+module.exports.getUserByUsername = getUserByUsername;
+module.exports.createUser = createUser;
 module.exports.init = init;
