@@ -64,6 +64,10 @@ class Child extends EventEmitter {
             this.emit("exit");
         });
         this.car = car;
+        this.kill = () => {
+            process.kill("SIGKILL");
+            this.emit("exit");
+        }
     }
 }
 
