@@ -98,10 +98,33 @@ class Simulation{
         this.raceStartTime = 0;
         this.currentRaceDuration = Number.MAX_VALUE;
 
+        this.findFirstPlaceCar = function() {
+            let bestCar = this.raceCars.get(0);
+            this.raceCars.forEach(function(car, id) {
+                if (car.progress > bestCar.progress) {
+                    bestCar = car;
+                }
+            });
+            return bestCar;
+        };
+
+        this.endRace = function() {
+            if (this.raceCars.count() === 0) {
+                console.log('Race ran between 0 cars');
+                return;
+            }
+            let winner = this.findFirstPlaceCar();
+            console.log('Race ended. In first place is: ', winner.clientID);
+        };
+
         this.step = function(timeStep) {
             if (!this.paused) {
                 this.world.step(timeStep);
+                var wasRunning = this.runningRace;
                 this.runningRace = (this.world.time - this.raceStartTime) <= this.currentRaceDuration;
+                if (wasRunning && !this.runningRace) { // i.e. Race has ended
+                    this.endRace();
+                }
                 this.paused = !this.runningRace;
             }
         };

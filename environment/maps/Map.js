@@ -13,9 +13,6 @@ function checkpointResult(result, ray, raceCars, rayid) {
     let reward = rayid - car.progress;
     car.progress += reward;
     car.lastGate = rayid;
-
-    // TODO: send checkpoint to AI (reward signal);
-
 }
 
 function checkStartGateResult(result, ray, raceCars){

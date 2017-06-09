@@ -17,6 +17,9 @@ function processGetCommand(child, splatInput) {
                 child.write(`${idx} ${value}`);
             });
             break;
+        case "totalReward":
+            child.write(child.car.progress);
+            break;
         default:
             console.error(`Cannot get ${splatInput[1]} for Child ${child.carId}`)
     }

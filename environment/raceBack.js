@@ -10,7 +10,7 @@ const mapFS = require('./mapSave');
 // Globals
 const fixedTimeStep = 0.06;
 const raceDuration = 3;
-const numAIinRace = 2;
+const numAIinRace = 10;
 
 // Default map
 let defaultMap, current_map;
