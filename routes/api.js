@@ -10,7 +10,7 @@ function handleError(res, reason, message, code) {
 router.get('/script/:id', function (req, res) {
   database.getScriptById(req.params.id, function(err, doc) {
     if (err) {
-      handleError(res, err.message, "Failed to get contact");
+      handleError(res, err.message, "Failed to get script");
     } else {
       res.status(200).json(doc);
     }
