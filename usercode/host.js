@@ -81,5 +81,5 @@ function createCar(io, simID, initPosition) {
     console.log(`Spawn child ${carId}`);
 }
 
-module.exports.addAiCar = addAiCar;
+module.exports.createCar = createCar;
 module.exports.processUserOutput = processUserOutput;
