@@ -24,7 +24,8 @@ export class CodeSubmissionComponent implements OnInit{
           code : this.codeEditorService.getCode()
       };
       this.scriptService.createScript(script).then((newScript: Script) => {
-          // TODO : tell user upload complete
+          // TODO : tell user upload complete properly
+          alert("Success!");
           console.log("%o", newScript);
       });
   };
