@@ -11,7 +11,6 @@ let children = new Hashmap.HashMap();
 class Child extends EventEmitter {
     constructor(scriptId, carId, initPosition, simID) {
         super();
-        this.scriptId = scriptId;
         this.simID = simID;
         this.carId = carId;
         children.set(this.carId, this);
