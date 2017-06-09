@@ -41,14 +41,14 @@ function initDraw() {
     // User control
     renderer.view.addEventListener('keydown', onKeyPress);
     function onKeyPress(evt) {
-      keys[evt.keyCode] = 1;
-      communication.syncServerWithMovement();
+        keys[evt.keyCode] = 1;
+        communication.syncServerWithMovement();
     }
 
     renderer.view.addEventListener('keyup', onKeyRelease);
     function onKeyRelease(evt) {
-      keys[evt.keyCode] = 0;
-      communication.syncServerWithMovement();
+        keys[evt.keyCode] = 0;
+        communication.syncServerWithMovement();
     }
 
 }
@@ -133,6 +133,7 @@ function RaceCarGraphic(colour) {
 
 function removeUser(id) {
     let car = cars[id];
+    console.log(car === undefined);
     if (car === undefined) return;
     for (let ray_id in car.rayGraphics) {
         container.removeChild(car.rayGraphics[ray_id]);
@@ -148,3 +149,4 @@ var keys = {
     '38': 0, // up
     '40': 0 // down
 };
+

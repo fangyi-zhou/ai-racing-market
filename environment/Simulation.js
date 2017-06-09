@@ -7,12 +7,14 @@ const Map = require('./maps/Map');
 const util = require('./util');
 const rays = require('./rays');
 const RaceCar = require('./RaceCar');
+const AICar = require('../usercode/child');
+const AIHost = require('../usercode/host');
 
 class Simulations{
     constructor () {
         this.simulations = new hashMap.HashMap();
-        this.addSimulation = function(simId, map) {
-            var newSim = new Simulation(simId, map);
+        this.addSimulation = function(simId, map, io) {
+            var newSim = new Simulation(simId, map, io);
             this.simulations.set(newSim.id, newSim);
         };
         this.removeSimulation = function(simulationId) {
@@ -35,35 +37,73 @@ class Simulations{
         // Send details of p2 race car to its graphical counterpart
         this.updateGraphics = function () {
             this.simulations.forEach(function(sim, id) {
-                sim.raceCars.forEach(function (value, key) {
+                sim.raceCars.forEach(function (raceCar, key) {
                     //update information of each racer.
-                    value.updateGraphics();
-                    rays.constructRays(value, RaceCar.numRays, sim.world);
+                    raceCar.updateGraphics();
+                    rays.constructRays(raceCar, RaceCar.numRays, sim.world);
                 });
             });
+        };
+
+        // Runs races on all available Simulations
+        this.runNewRaces = function(raceDuration, numAI) {
+            // this.simulations.forEach(function (sim, id) {
+            //     if (!sim.runningRace) {
+            //         sim.runRandomRace(raceDuration, numAI);
+            //     }
+            // })
+            // console.log(!this.simulations.get(0).runningRace);
+
+            /*
+                CURRENTLY JUST RUNNING RACES ON ROOM 0
+             */
+
+            if (!this.simulations.get(9).runningRace) {
+                this.simulations.get(9).runRandomRace(raceDuration, numAI);
+            }
         }
     }
 }
 
 class Simulation{
-    constructor (id, map) {
+    constructor (id, map, io) {
         this.id = id;
+        this.io = io;
 
         this.raceCars = new hashMap.HashMap();
+        this.AIs = new hashMap.HashMap();
 
-        this.world =  new p2.World({
-            gravity : [0,0]
-        });
-        this.world.defaultContactMaterial.friction = 0.001;
-        this.world.defaultContactMaterial.restitution = 0.5;
+        this.world =  new p2.World();
+
+        this.configureWorld = function() {
+            this.world.gravity = [0,0];
+            this.world.defaultContactMaterial.friction = 0.001;
+            this.world.defaultContactMaterial.restitution = 0.5;
+        };
+        this.configureWorld();
+
         this.maxSteer = Math.PI / 5;
 
         this.rawMap = util.arrayCopy(map);
-        this.map = new Map.Map(map[0], map[1], map[2]);
-        this.map.createMap(this.world, this.raceCars);
+
+        this.setMap = function(map) {
+            this.map = new Map.Map(map[0], map[1], map[2]);
+            this.map.createMap(this.world, this.raceCars);
+        };
+        this.setMap(map);
+
+        // Races on this simulation
+        this.paused = false;
+        this.runningRace = false;
+        this.raceStartTime = 0;
+        this.currentRaceDuration = Number.MAX_VALUE;
 
         this.step = function(timeStep) {
-            this.world.step(timeStep);
+            if (!this.paused) {
+                this.world.step(timeStep);
+                this.runningRace = (this.world.time - this.raceStartTime) <= this.currentRaceDuration;
+                this.paused = !this.runningRace;
+            }
         };
 
         this.checkCheckpoints = function () {
@@ -71,10 +111,14 @@ class Simulation{
         };
 
         // Adds a new race car to the world
+        this.addRaceCarToWorld = function(raceCar) {
+            this.raceCars.set(raceCar.clientID, raceCar);
+            return raceCar;
+        };
+
         this.addRaceCar = function (clientID, position) {
             let car = new RaceCar.RaceCar(this.raceCars.count()+1, clientID, this.world, position);
-            this.raceCars.set(clientID, car);
-            return car;
+            return this.addRaceCarToWorld(car);
         };
 
         // Change the map in the world
@@ -170,13 +214,51 @@ class Simulation{
             }
         };
 
+        // Clears the world and then adds the map again
+        this.reset = function() {
+            this.world.clear();
+            this.configureWorld();
+            this.AIs.forEach(function(child, id) {
+                child.kill();
+            });
+            this.AIs = new hashMap.HashMap();
+            this.raceCars = new hashMap.HashMap();
+            let newRaw = util.arrayCopy(this.rawMap);
+            this.setMap(this.rawMap);
+            this.rawMap = newRaw;
+        };
+
+        // Run a race between random AI
+        this.runRandomRace = function (timeLength, numCars) {
+            console.log('RUNNING RANDOM RACE')
+            var scriptIDList = [0, 1, 2, 3, 4, 5];
+            var scriptIDListCopy = util.arrayCopy(scriptIDList); // Dummy List
+            var raceScriptIDs = [], randomlySelectedScriptID;
+            for (let i = 0; i < numCars; i++) {
+                randomlySelectedScriptID = Math.floor(Math.random() * scriptIDList.length);
+                raceScriptIDs.push(randomlySelectedScriptID);
+            }
+            this.runRace(timeLength, raceScriptIDs);
+        };
+
         // Runs a race on this Simulation
-        this.runRace = function () { // Parameters: Child cars (AI)
-            // Reset simulation
-            // Run race for set amount of time
-            // Give timeout signal when finished
-            // Update rankings
-        }
+        //TODO: Give timeout signal to script when race ends
+        this.runRace = function (timeLength, scriptIDs) {
+            this.reset();
+            this.paused = true;
+            for (let i = 0; i < scriptIDs.length; i++) {
+                let startingPosition = [1, 1];
+                let child = AIHost.createCar(io, scriptIDs[i], this.id, startingPosition);
+                this.AIs.set(child.carId, child);
+            }
+
+            // Begin the race
+            this.currentRaceDuration = timeLength;
+            this.raceStartTime = this.world.time;
+            this.runningRace = true;
+            this.paused = !this.runningRace;
+        };
+
     }
 }
 

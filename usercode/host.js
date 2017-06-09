@@ -65,6 +65,9 @@ function processUserOutput(child, data) {
 }
 
 function childExit(child, io) {
+    if (io == null) {
+        console.log('You must first call setIO on host');
+    }
     return function () {
         raceBack.getSim(child.simID).removeUser(child.carId);
         io.local.emit("dc", {
@@ -79,7 +82,9 @@ function createCar(io, scriptId, simID, initPosition) {
     const child = new Child.Child(scriptId, carId, initPosition, simID);
     child.on("exit", childExit(child, io));
     console.log(`Spawn child ${carId}`);
+    return child;
 }
 
 module.exports.createCar = createCar;
 module.exports.processUserOutput = processUserOutput;
+module.exports.childExit = childExit;

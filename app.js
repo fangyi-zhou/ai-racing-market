@@ -20,6 +20,8 @@ const io = require('socket.io')(server, {
 
 const host = require('./usercode/host');
 const raceBack = require('./environment/raceBack.js');
+const numSimulations = 10;
+raceBack.init(io, numSimulations);
 const mongodb = require('mongodb');
 
 // uncomment after placing your favicon in /public
