@@ -16,10 +16,11 @@ class Child extends EventEmitter {
         this.carId = carId;
         children.set(this.carId, this);
         // Get script
-        db.getScriptById(scriptId, function(err, doc) {
-            if (err) {
+        db.getScriptById(scriptId, (err, doc) => {
+            if (err || doc === null) {
                 console.log("Cannot get script");
-                this.emit("exit");
+                this.write = (_) => {};
+                this.kill = () => {};
             } else {
                 this.script = doc.code;
                 const filePath = tempWrite.sync(this.script);

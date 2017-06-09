@@ -23,39 +23,37 @@ const raceBack = require('./environment/raceBack.js');
 const numSimulations = 10;
 const db = require('./db');
 
-raceBack.init(io, numSimulations);
-db.init();
+db.init(() => {
+    raceBack.init(io, numSimulations);
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieParser());
+    app.use(logger('dev'));
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'dist')));
+    app.use(express.static(path.join(__dirname, 'dist')));
 
-app.use("/dev", express.static(path.join(__dirname, 'public')));
-app.use('/api', api);
+    app.use("/dev", express.static(path.join(__dirname, 'public')));
+    app.use('/api', api);
 
-app.route('/*')
-  .get(function (req, res) {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-  });
+    app.route('/*')
+        .get(function (req, res) {
+            res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+        });
 
-app.use('/rooms',rooms);
-app.use('/dev',dev);
-app.use('/races', races);
+    app.use('/rooms',rooms);
+    app.use('/dev',dev);
+    app.use('/races', races);
 
 
 //catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+    app.use(function (req, res, next) {
+        var err = new Error('Not Found');
+        err.status = 404;
+        next(err);
+    });
 
-/****** TODO error handler ********/
+    /****** TODO error handler ********/
 // app.use(function(err, req, res, next){
 //   // set locals, only providing error in development
 //   res.locals.message = err.message;
@@ -67,48 +65,49 @@ app.use(function (req, res, next) {
 // });
 
 
-io.on('connection', function (socket) {
-    let simId = undefined;
-    io.to(socket.id).emit('connected');
-    socket.on('join',function (info) {
-        simId = info.simId;
-        io.to(socket.id).emit('init', raceBack.getSim(simId).initIO(socket.id));
-        raceBack.getSim(simId).addClient(socket.id);
-    })
+    io.on('connection', function (socket) {
+        let simId = undefined;
+        io.to(socket.id).emit('connected');
+        socket.on('join',function (info) {
+            simId = info.simId;
+            io.to(socket.id).emit('init', raceBack.getSim(simId).initIO(socket.id));
+            raceBack.getSim(simId).addClient(socket.id);
+        })
 
 
-  //send back the number of cars need to be rendered
+        //send back the number of cars need to be rendered
 
 
-  console.log('user connection, socket id = ' + socket.id);
+        console.log('user connection, socket id = ' + socket.id);
 
-  //iterate physics
-  setInterval(function () {
-      if(simId != undefined)
-          socket.emit('updateClient', raceBack.getSim(simId).packageGraphics());
-  }, 1000 / 30);
+        //iterate physics
+        setInterval(function () {
+            if(simId != undefined)
+                socket.emit('updateClient', raceBack.getSim(simId).packageGraphics());
+        }, 1000 / 30);
 
-  socket.on('disconnect', function () {
-    console.log('user disconnected, socket id = ' + socket.id);
-    if (simId != undefined)
-        raceBack.getSim(simId).removeUser(socket.id);
-    socket.broadcast.emit('dc', {
-      id: socket.id
+        socket.on('disconnect', function () {
+            console.log('user disconnected, socket id = ' + socket.id);
+            if (simId != undefined)
+                raceBack.getSim(simId).removeUser(socket.id);
+            socket.broadcast.emit('dc', {
+                id: socket.id
+            });
+        });
+
+        socket.on('movement', function (info) {
+            raceBack.getSim(simId).updateMovement(info, socket.id);
+        });
+
+        // ************** TODO: Change this to POST ************* //
+        socket.on('saveMap', function (info) {
+            /******** TODO: replace to save to database ********/
+            socket.broadcast.emit('newMap', {
+                map: raceBack.getSim(simID).changeMap(info)
+            });
+        });
+
     });
-  });
-
-  socket.on('movement', function (info) {
-    raceBack.getSim(simId).updateMovement(info, socket.id);
-  });
-
-  // ************** TODO: Change this to POST ************* //
-  socket.on('saveMap', function (info) {
-    /******** TODO: replace to save to database ********/
-    socket.broadcast.emit('newMap', {
-      map: raceBack.getSim(simID).changeMap(info)
-    });
-  });
-
 });
 
 module.exports = {app: app, server: server};
