@@ -74,9 +74,9 @@ function childExit(child, io) {
     }
 }
 
-function createCar(io, simID, initPosition) {
+function createCar(io, scriptId, simID, initPosition) {
     const carId = `Child_${Date.now()}`;
-    const child = new Child.Child(1, carId, initPosition, simID);
+    const child = new Child.Child(scriptId, carId, initPosition, simID);
     child.on("exit", childExit(child, io));
     console.log(`Spawn child ${carId}`);
 }
