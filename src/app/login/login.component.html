@@ -3,8 +3,8 @@
 <div class="login">
     <h1>Login to AI Racing Market</h1>
     <form #f="ngForm" (ngSubmit)="onLogin(f.value)" *ngIf="!auth.loggedIn()">
-        <p><input type="text" name="username" value="" placeholder="Username"></p>
-        <p><input type="password" name="password" value="" placeholder="Password"></p>
-        <p class="submit"><input type="submit" name="commit" value="Login"></p>
+        <p><input type="text" name="username" [(ngModel)]="credential.username" placeholder="Username"></p>
+        <p><input type="password" name="password" [(ngModel)]="credential.password"  placeholder="Password"></p>
+        <p class="submit"><input type="submit" value="Login"></p>
     </form>
 </div>

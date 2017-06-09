@@ -11,12 +11,20 @@ export class AuthService {
 
     private authUrl: string = "/api/auth";
 
-    login(credential) {
+    login(credential, successCallback, failureCallback) {
         this.http.post(this.authUrl, credential)
             .map(res => res.json())
             .subscribe(
-                data => localStorage.setItem('id_token', data.id_token),
-                error => console.log(error)
+                data => {
+                    const token: string = data.id_token;
+                    localStorage.setItem('id_token', token);
+                    if (successCallback)
+                        successCallback(token);
+                },
+                error => {
+                    if (failureCallback)
+                        failureCallback(error)
+                }
             );
     }
 
