@@ -74,13 +74,11 @@ function childExit(child, io) {
     }
 }
 
-function addAiCar(numAi, io, simID) {
-    for (let i = 0; i < numAi; i++) {
-        const carId = `Child_${Date.now()}`;
-        const child = new Child.Child(1, carId, [1, 1], simID);
-        child.on("exit", childExit(child, io));
-        console.log(`Spawn child ${carId}`);
-    }
+function createCar(io, simID, initPosition) {
+    const carId = `Child_${Date.now()}`;
+    const child = new Child.Child(1, carId, initPosition, simID);
+    child.on("exit", childExit(child, io));
+    console.log(`Spawn child ${carId}`);
 }
 
 module.exports.addAiCar = addAiCar;

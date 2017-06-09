@@ -69,7 +69,6 @@ io.on('connection', function (socket) {
     socket.on('join',function (info) {
         simId = info.simId;
         io.to(socket.id).emit('init', raceBack.getSim(simId).initIO(socket.id));
-        host.addAiCar(1, io, simId);
         raceBack.getSim(simId).addClient(socket.id);
     })
 
