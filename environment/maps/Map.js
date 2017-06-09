@@ -7,87 +7,100 @@ const result = new p2.RaycastResult();
 const util = require('../util');
 
 const hitPoint = p2.vec2.create();
-function checkpointResult(result, ray, raceCars){
+function checkpointResult(result, ray, raceCars, rayid) {
     result.getHitPoint(hitPoint, ray);
     let car = raceCars.get(result.body.id);
+    let reward = rayid - car.progress;
+    car.progress += reward;
+    car.lastGate = rayid;
 
     // TODO: send checkpoint to AI (reward signal);
+
 }
 
-class Map{
-  constructor (segments, checkpoints, startGate) {
-    this.segments = segments;
-    this.checkpoints = checkpoints;
-    this.startGate = startGate;
+function checkStartGateResult(result, ray, raceCars){
+    let car = raceCars.get(result.body.id);
+    console.log('car ' + car.clientID+ ' has progress '+ car.progress);
+}
 
-    this.save = util.arrayCopy(segments); // Required since p2 manipulates array
-    this.mapPolys = [];
-    this.mapCheckpoints = new hashMap.HashMap();
-    this.mapStartGate;
+class Map {
+    constructor(segments, checkpoints, startGate) {
+        this.segments = segments;
+        this.checkpoints = checkpoints;
+        this.startGate = startGate;
 
-    this.removeMap = function (world) {
-      for (let i in this.mapPolys) {
-        world.removeBody(this.mapPolys[i]);
-      }
-      this.mapCheckpoints.clear();
-    };
+        this.save = util.arrayCopy(segments); // Required since p2 manipulates array
+        this.mapPolys = [];
+        this.mapCheckpoints = new hashMap.HashMap();
+        this.mapStartGate;
 
-    this.checkCheckpoints = function(world) {
-      this.mapCheckpoints.forEach(function(value, ray){
-        p2.vec2.copy(ray.from, value[1]);
-        p2.vec2.copy(ray.to, value[2]);
-        ray.update();
-        result.reset();
-        world.raycast(result, ray);
-      });
-    };
+        this.removeMap = function (world) {
+            for (let i in this.mapPolys) {
+                world.removeBody(this.mapPolys[i]);
+            }
+            this.mapCheckpoints.clear();
+        };
 
-    this._createp2MapSegment = function (world, segment) {
-      let p2map = new p2.Body({
-        mass : 1,
-        position:[0,0],
-        type: p2.Body.STATIC,
-      });
-      p2map.fromPolygon(segment);
-      world.addBody(p2map);
+        this.checkCheckpoints = function (world) {
+            this.mapCheckpoints.forEach(function (value, ray) {
+                p2.vec2.copy(ray.from, value[1]);
+                p2.vec2.copy(ray.to, value[2]);
+                ray.update();
+                result.reset();
+                world.raycast(result, ray);
+            });
+            p2.vec2.copy(this.mapStartGate.from, this.startGate[0]);
+            p2.vec2.copy(this.mapStartGate.to, this.startGate[1]);
+            this.mapStartGate.update();
+            result.reset();
+            world.raycast(result, this.mapStartGate);
+        };
 
-      /*************Blame the p2 author for bad API design **************/
-      for(let i = 0; i < p2map.shapes.length; i++){
-        p2map.shapes[i].collisionMask = -1;
-        p2map.shapes[i].collisionGroup = Math.pow(2,31);
-      }
-      /*******************************************************************/
-      return p2map
-    };
+        this._createp2MapSegment = function (world, segment) {
+            let p2map = new p2.Body({
+                mass: 1,
+                position: [0, 0],
+                type: p2.Body.STATIC,
+            });
+            p2map.fromPolygon(segment);
+            world.addBody(p2map);
 
-    this.createMap = function (world, raceCars) {
-      // Create physical polygons
-      for (let p = 0; p < this.segments.length; p++) {
-        this.mapPolys.push(this._createp2MapSegment(world, this.segments[p]));
-      }
+            /*************Blame the p2 author for bad API design **************/
+            for (let i = 0; i < p2map.shapes.length; i++) {
+                p2map.shapes[i].collisionMask = -1;
+                p2map.shapes[i].collisionGroup = Math.pow(2, 31);
+            }
+            /*******************************************************************/
+            return p2map
+        };
 
-      // Create checkpoint rays
-      for (let i = 0; i < this.checkpoints.length;i++){
-        let checkpoint = new p2.Ray({
-          mode: p2.Ray.ALL,
-          collisionMask:-1^Math.pow(2,31),
-          callback: function(result){
-            checkpointResult(result, this, raceCars);
-          }
-        });
-        this.mapCheckpoints.set(checkpoint, [i,checkpoints[i][0], checkpoints[i][1]]);
-      }
+        this.createMap = function (world, raceCars) {
+            // Create physical polygons
+            for (let p = 0; p < this.segments.length; p++) {
+                this.mapPolys.push(this._createp2MapSegment(world, this.segments[p]));
+            }
+            // Create checkpoint rays
+            for (let i = 0; i < this.checkpoints.length; i++) {
+                let checkpoint = new p2.Ray({
+                    mode: p2.Ray.ALL,
+                    collisionMask: -1 ^ Math.pow(2, 31),
+                    callback: function (result) {
+                        checkpointResult(result, this, raceCars,i);
+                    }
+                });
+                this.mapCheckpoints.set(checkpoint, [i, checkpoints[i][0], checkpoints[i][1]]);
+            }
 
-      // Create start point ray
-      this.mapStartGate = new p2.Ray({
-        mode: p2.Ray.ALL,
-        collisionMask:-1^Math.pow(2,31),
-        callback: function(result){
-          checkpointResult(result, this, raceCars);
+            // Create start point ray
+            this.mapStartGate = new p2.Ray({
+                mode: p2.Ray.ALL,
+                collisionMask: -1 ^ Math.pow(2, 31),
+                callback: function (result) {
+                    checkStartGateResult(result, this, raceCars);
+                }
+            })
         }
-      })
     }
-  }
 }
 
 module.exports.Map = Map;

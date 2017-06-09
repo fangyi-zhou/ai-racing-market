@@ -3,7 +3,6 @@
  */
 // Requires
 const util = require('./util');
-const RaceCar = require('./RaceCar');
 const Map = require('./maps/Map');
 const Simulation = require('./Simulation');
 const mapFS = require('./mapSave');

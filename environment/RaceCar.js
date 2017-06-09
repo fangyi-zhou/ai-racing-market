@@ -22,8 +22,9 @@ class RaceCar {
         this.frontWheel.steerValue = 0;
         this.backWheel.engineForce = 0;
         this.colour = randomColour();
-        this.progress = 0;
-        this.result = 0;
+
+        this.lastGate = 0; //current gate
+        this.progress = 0; //total reward
 
         this.rays = [];
         for (let i = 0; i < numRays; i++) {
