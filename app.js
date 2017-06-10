@@ -82,13 +82,13 @@ db.init(() => {
 
         //iterate physics
         setInterval(function () {
-            if(simId != undefined)
+            if(simId !== undefined)
                 socket.emit('updateClient', raceBack.getSim(simId).packageGraphics());
         }, 1000 / 30);
 
         socket.on('disconnect', function () {
             console.log('user disconnected, socket id = ' + socket.id);
-            if (simId != undefined)
+            if (simId !== undefined)
                 raceBack.getSim(simId).removeUser(socket.id);
             socket.broadcast.emit('dc', {
                 id: socket.id
