@@ -1,10 +1,11 @@
 <title>User Login</title>
 
-<div class="login">
+<div class="login" *ngIf="!auth.loggedIn()">
     <h1>Login to AI Racing Market</h1>
-    <form #f="ngForm" (ngSubmit)="onLogin(f.value)" *ngIf="!auth.loggedIn()">
+    <form #f="ngForm">
         <p><input type="text" name="username" [(ngModel)]="credential.username" placeholder="Username"></p>
         <p><input type="password" name="password" [(ngModel)]="credential.password"  placeholder="Password"></p>
-        <p class="submit"><input type="submit" value="Login"></p>
+        <p class="submit"><input type="submit" (click)="onLogin()" value="Login"></p>
+        <p class="submit"><input type="submit" (click)="onRegister()" value="Register"></p>
     </form>
 </div>
