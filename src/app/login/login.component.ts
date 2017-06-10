@@ -34,6 +34,10 @@ export class LoginComponent implements OnInit {
         this.auth.register(this.credential, this.successCallback, this.failureCallback);
     }
 
+    onLogout() {
+        this.auth.logout();
+    }
+
     successCallback(token) {
         alert("success!");
     }

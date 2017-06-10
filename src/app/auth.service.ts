@@ -58,4 +58,8 @@ export class AuthService {
     loggedIn() {
         return tokenNotExpired('id_token');
     }
+
+    logout() {
+        localStorage.removeItem('id_token');
+    }
 }
