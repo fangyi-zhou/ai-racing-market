@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
     }
 
     failureCallback(error) {
-        alert("failed!");
+        const errorText = JSON.parse(error._body).error;
+        alert(`failed! Reason: ${errorText}`);
     }
 }

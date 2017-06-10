@@ -70,7 +70,7 @@ router.post("/auth", function(req, res) {
         if (err){
             handleError(res, err.message, "Failed to authenticate user")
         } else if (doc === null) {
-            res.status(403).json();
+            res.status(403).json({error: "Invalid login"});
         } else {
             const salt = doc.salt;
             const pass = doc.saltedPass;
@@ -79,9 +79,9 @@ router.post("/auth", function(req, res) {
             hash.update(salt);
             if (hash.digest('hex') === pass) {
                 const token = jwt.sign({ username: username }, process.env.TOKEN_SECRET || TOKEN_SECRET);
-                res.json(token);
+                res.json({id_token: token});
             } else {
-                res.status(403).json();
+                res.status(403).json({error: "Invalid login"});
             }
         }
     })
