@@ -13,6 +13,7 @@ class Child extends EventEmitter {
         super();
         this.simID = simID;
         this.carId = carId;
+        this.initPosition = initPosition;
         children.set(this.carId, this);
         // Get script
         db.getScriptById(scriptId, (err, doc) => {
