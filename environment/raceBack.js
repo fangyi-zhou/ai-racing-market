@@ -30,7 +30,7 @@ function init(io, numSims) {
         let mapCopy = util.arrayCopy(current_map);
         simulations.addSimulation(i, mapCopy, io);
     }
-    simulations.get(9).mode = Simulation.SimMode.RankedRacing;
+    // simulations.get(9).mode = Simulation.SimMode.RankedRacing;
 
     // Loop the program
     setInterval(function() {
