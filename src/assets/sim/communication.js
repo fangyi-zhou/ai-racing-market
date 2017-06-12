@@ -71,7 +71,7 @@
 
   function zoomOut(){
       if (zoom != undefined){
-          zoom = zoom-5>0 ? zoom-5:0;
+          zoom = zoom-5>0 ? zoom-5:1;
           container.scale.x = zoom;
           container.scale.y = -zoom;
       }
