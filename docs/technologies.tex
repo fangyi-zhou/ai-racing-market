@@ -28,4 +28,21 @@ Javascript packages could be used in both front end and back end. The
 simulation code in the front end and back end could be very similar so that
 there is no need to code similar snippets in different languages.
 \end{enumerate}
+
+\section{Front End Framework Choice}
+
+The front end of this app uses \texttt{Angular} framework.
+
+\section{Continuous Integration}
+
+The project uses \texttt{Travis CI} for continuous integration. After each push
+to \texttt{Github}. The continuous integration service will start a build and
+run tests using \texttt{npm test} after the build.
+
+\section{Deployment}
+
+The projects runs on \texttt{Heroku}. A webhook is set so that the latest
+commit will be automatically deployed if it passes the continuous integration
+test as stated in previous section.
+
 \end{document}
