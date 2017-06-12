@@ -299,8 +299,13 @@ class Simulation{
         };
 
         // Training Mode
+        // TODO: Add check in training mode
         this.childReset = function(child) {
             let car = this.raceCars.get(child.carId);
+            if (car === undefined) {
+                console.log('ERROR: Cannot reset child car if child.carId not in raceCars.');
+                return;
+            }
             car.reset(child.initPosition);
         }
 

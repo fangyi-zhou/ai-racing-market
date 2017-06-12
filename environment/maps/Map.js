@@ -11,7 +11,7 @@ function checkpointResult(result, ray, raceCars, rayid) {
     result.getHitPoint(hitPoint, ray);
     let car = raceCars.get(result.body.id);
     if (car === undefined) {
-        console.log('Car is undefined (checkpointResult)');
+        console.log('ERROR: Car is undefined (checkpointResult)');
         return;
     }
     let reward = Math.min(Math.max((rayid - car.lastGate), -1), 1);
