@@ -14,6 +14,7 @@ class Child extends EventEmitter {
         this.simID = simID;
         this.carId = carId;
         this.initPosition = initPosition;
+        this.car = raceBack.getSim(simID).addRaceCar(this.carId, initPosition);
         children.set(this.carId, this);
         // Get script
         db.getScriptById(scriptId, (err, doc) => {
@@ -31,7 +32,7 @@ class Child extends EventEmitter {
                 this.write = function (data) {
                     if (this.writable) process.stdin.write(data + "\n");
                 };
-                let car = raceBack.getSim(simID).addRaceCar(this.carId, initPosition);
+                // this.car = raceBack.getSim(simID).addRaceCar(this.carId, initPosition);
                 process.on("exit", () => {
                     console.log(`child ${this.carId} exited`);
                     this.emit("exit");
@@ -54,7 +55,6 @@ class Child extends EventEmitter {
                     console.error(err);
                     this.emit("exit");
                 });
-                this.car = car;
                 this.kill = () => {
                     process.kill("SIGKILL");
                     this.emit("exit");

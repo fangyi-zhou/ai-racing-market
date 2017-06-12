@@ -28,9 +28,10 @@ function processGetCommand(child, splatInput) {
 function processSetCommand(child, splatInput) {
     let control = {};
     const carId = child.carId;
-    if (splatInput.length < 3) return;
+    // if (splatInput.length < 3) return;
     switch (splatInput[1]) {
         case "engineForce":
+            console.log('Setting engine force')
             const newEngineForce = parseFloat(splatInput[2]);
             control["engineForce"] = newEngineForce;
             break;
@@ -39,7 +40,7 @@ function processSetCommand(child, splatInput) {
             control["steerValue"] = newSteerValue;
             break;
         case "resetWorld":
-            let sim = raceBack.getSim(child.simId);
+            let sim = raceBack.getSim(child.simID);
             sim.childReset(child);
             break;
         default:
