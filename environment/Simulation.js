@@ -110,11 +110,12 @@ class Simulation{
         this.currentRaceDuration = Number.MAX_VALUE;
 
         this.findFirstPlaceCar = function() {
-            let bestCar = null;
-            let bestProgress = Number.MIN_VALUE;
+            let bestCar = undefined;
+            let bestProgress = -Number.MAX_VALUE;
             this.raceCars.forEach(function(car, id) {
                 if (car.progress > bestProgress) {
                     bestCar = car;
+                    bestProgress = car.progress;
                 }
             });
             return bestCar;
@@ -127,7 +128,7 @@ class Simulation{
             }
             let winner = this.findFirstPlaceCar();
             /********** Removed since winner is sometimes null *************/
-            // console.log('Race ended. In first place is: ', winner.clientID, ' breaking ', winner.progress, ' gates!');
+            console.log('Race ended. In first place is: ', winner.clientID, ' breaking ', winner.progress, ' gates!');
         };
 
         this.step = function(timeStep) {
@@ -252,11 +253,11 @@ class Simulation{
 
         // Clears the world and then adds the map again
         this.reset = function() {
-            this.world.clear();
-            this.configureWorld();
             this.AIs.forEach(function(child, id) {
                 child.kill();
             });
+            this.world.clear();
+            this.configureWorld();
             this.AIs = new hashMap.HashMap();
             this.raceCars = new hashMap.HashMap();
             let newRaw = util.arrayCopy(this.rawMap);
@@ -271,7 +272,7 @@ class Simulation{
             var scriptIDListCopy = util.arrayCopy(scriptIDList); // Dummy List
             var raceScriptIDs = [], randomlySelectedScriptID;
             for (let i = 0; i < numCars; i++) {
-                randomlySelectedScriptID = '593eb5862e40900011acc35b';//Math.floor(Math.random() * scriptIDList.length);
+                randomlySelectedScriptID = '593f073acc84fc00118b1cb8';//Math.floor(Math.random() * scriptIDList.length);
                 raceScriptIDs.push(randomlySelectedScriptID);
             }
             this.runRace(timeLength, raceScriptIDs);
@@ -285,7 +286,9 @@ class Simulation{
             for (let i = 0; i < scriptIDs.length; i++) {
                 let startingPosition = [1, 1];
                 let child = AIHost.createCar(io, scriptIDs[i], this.id, startingPosition);
+                // this.AIs.set(child.carId, child);
                 this.AIs.set(child.carId, child);
+                this.raceCars.set(child.carId, child.car);
             }
 
             // Begin the race
