@@ -61,11 +61,33 @@
       cars = {};
   }
 
+  function zoomIn(){
+      if (zoom != undefined){
+          zoom = zoom+5 > 0 ? zoom+5:0;
+          container.scale.x = zoom;
+          container.scale.y = -zoom;
+      }
+  }
+
+  function zoomOut(){
+      if (zoom != undefined){
+          zoom = zoom-5>0 ? zoom-5:0;
+          container.scale.x = zoom;
+          container.scale.y = -zoom;
+      }
+  }
+  function switchCar(){
+      //TODO switch car views
+  }
+
   var communication = {
       'initGraphics':initGraphics,
       'init':init,
       'syncServerWithMovement':syncServerWithMovement,
-      'disconnectOnSwap':disconnectOnSwap
+      'disconnectOnSwap':disconnectOnSwap,
+      'zoomIn':zoomIn,
+      'zoomOut':zoomOut,
+      'switchCar':switchCar
   };
 
   root.communication = communication;

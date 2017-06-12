@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit} from '@angular/core';
 
 export class Room {
     id: number;
@@ -41,6 +41,15 @@ export class RoomComponent implements OnInit{
             this.selectedRoom = room;
             communication.init(room.id);
         }
+    }
+    zoomIn(): void {
+        communication.zoomIn();
+    }
+    zoomOut(): void {
+        communication.zoomOut();
+    }
+    switchCar(): void {
+        communication.switchCar();
     }
 }
 
