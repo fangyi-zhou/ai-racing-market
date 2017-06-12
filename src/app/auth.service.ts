@@ -31,8 +31,9 @@ export class AuthService {
     }
 
     static handleFailure(error, failureCallback) {
+        const errorText = JSON.parse(error._body).error;
         if (failureCallback)
-            failureCallback(error)
+            failureCallback(errorText)
     }
 
     login(credential, successCallback, failureCallback) {

@@ -27,10 +27,18 @@ export class LoginComponent implements OnInit {
     }
 
     onLogin() {
+        if (this.credential.username === "" || this.credential.password === "") {
+            this.failureCallback("Username and password must not be empty")
+            return;
+        }
         this.auth.login(this.credential, this.successCallback, this.failureCallback);
     }
 
     onRegister() {
+        if (this.credential.username === "" || this.credential.password === "") {
+            this.failureCallback("Username and password must not be empty")
+            return;
+        }
         this.auth.register(this.credential, this.successCallback, this.failureCallback);
     }
 
@@ -42,8 +50,7 @@ export class LoginComponent implements OnInit {
         alert("success!");
     }
 
-    failureCallback(error) {
-        const errorText = JSON.parse(error._body).error;
+    failureCallback(errorText) {
         alert(`failed! Reason: ${errorText}`);
     }
 }
