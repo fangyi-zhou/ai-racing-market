@@ -55,6 +55,12 @@ class RaceCar {
 
         this.getAngle = () => {
             return this.vehicle.chassisBody.angle;
+        };
+
+        this.reset = function(position) {
+            this.vehicle.position = position;
+            this.lastGate = 0;
+            this.progress = 0;
         }
     }
 }

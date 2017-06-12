@@ -55,20 +55,32 @@ class Simulations{
             // console.log(!this.simulations.get(0).runningRace);
 
             /*
-                CURRENTLY JUST RUNNING RACES ON ROOM 0
+                CURRENTLY JUST RUNNING RACES ON ROOM 9
              */
 
-            if (!this.simulations.get(9).runningRace) {
-                this.simulations.get(9).runRandomRace(raceDuration, numAI);
-            }
+            // if (!this.simulations.get(9).runningRace) {
+            //     this.simulations.get(9).runRandomRace(raceDuration, numAI);
+            // }
+            this.simulations.forEach(function(sim, id) {
+                if (!sim.runningRace && sim.mode === SimMode.RankedRacing) {
+                    sim.runRandomRace(raceDuration, numAI);
+                }
+            })
         }
     }
 }
+
+const SimMode = {
+    RankedRacing : 0,
+    Training : 1,
+    ClientDrive: 2
+};
 
 class Simulation{
     constructor (id, map, io) {
         this.id = id;
         this.io = io;
+        this.mode = SimMode.ClientDrive;
 
         this.raceCars = new hashMap.HashMap();
         this.AIs = new hashMap.HashMap();
@@ -260,7 +272,7 @@ class Simulation{
             var scriptIDListCopy = util.arrayCopy(scriptIDList); // Dummy List
             var raceScriptIDs = [], randomlySelectedScriptID;
             for (let i = 0; i < numCars; i++) {
-                randomlySelectedScriptID = Math.floor(Math.random() * scriptIDList.length);
+                randomlySelectedScriptID = '593eb5862e40900011acc35b';//Math.floor(Math.random() * scriptIDList.length);
                 raceScriptIDs.push(randomlySelectedScriptID);
             }
             this.runRace(timeLength, raceScriptIDs);
@@ -284,7 +296,14 @@ class Simulation{
             this.paused = !this.runningRace;
         };
 
+        // Training Mode
+        this.childReset = function(child) {
+            let car = this.raceCars.get(child.carId);
+            car.reset(child.initPosition);
+        }
+
     }
 }
 
 module.exports.Simulations = Simulations;
+module.exports.SimMode = SimMode;
