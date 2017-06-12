@@ -17,7 +17,7 @@ let defaultMap, current_map;
 let simulations;
 
 function init(io, numSims) {
-    defaultMap = mapFS.readMap('./maps/map1.json');
+    defaultMap = mapFS.readMap('./maps/map3.json');
     current_map = [defaultMap["segments"], defaultMap["gates"], defaultMap["startGate"]];
 
     // Globals

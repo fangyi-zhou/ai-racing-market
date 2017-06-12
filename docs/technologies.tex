@@ -4,40 +4,65 @@
 \usepackage[english]{babel}
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{graphicx}
 
 %% Sets page size and margins
-\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage[a4paper,top=1cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+\usepackage{hyperref}
 
 \title{Project Technology Report}
-\author{Rishiraj Bheenick, Robert Holland, Ruiao Hu, Fangyi Zhou}
+\author{Group 28: Robert Holland, Ruiao Hu, Fangyi Zhou}
 
 \begin{document}
 \maketitle
 
-\section{Back End Language Choice}
+\section{Language/Framework Choice}
 
 The back end of this app is made in \texttt{node.js}. The choice has been made
-for the following reasons.
-\begin{enumerate}
-\item
-There are abundant Javascript packages available for physics engine needed for
-the racing game. This smoothes the development process by a lot and there is no
-need to re-invent the wheel.
-\item
-Javascript packages could be used in both front end and back end. The
-simulation code in the front end and back end could be very similar so that
-there is no need to code similar snippets in different languages.
-\end{enumerate}
-
-\section{Front End Framework Choice}
+for the following reasons. There are abundant Javascript packages available for
+different components of this project which eases the development process.
 
 The front end of this app uses \texttt{Angular} framework.
+
+\section{User Code Execution}
+
+User code is executed by spawning new processes and executing the code
+alongside the server. The communication is done by piping \texttt{stdin} and
+\texttt{stdout} to the server so that the user do not have to spend time
+dealing with I/O. However, this method has potential security issues as
+malicious code may cause damages to the server or other computers. Running code
+inside a docker sandbox is planned to replace the current method.
+
+\section{Simulation and Rendering}
+
+Simulation is done using the Javascript physics engine \texttt{p2.js}, it is
+done on the server side.
+After simulation has been done on the server side, information on all car
+positions are packed and sent to the client side. The client side uses the
+Javascript Rendering Engine \texttt{PixiJS} and renders the graphics using the
+data transmitted by the server.
+
+\section{Database}
+
+\texttt{Mongodb} has been used for this application. The service has been
+integrated to \texttt{Heroku} and is easy to use.
+
+\section{Authentication}
+
+JSON Web Tokens (\href{https://tools.ietf.org/html/rfc7519}{RFC 7519}) have
+been used for authentication purposes, this allows authentication to be done in
+a secure and compact fashion.
 
 \section{Continuous Integration}
 
 The project uses \texttt{Travis CI} for continuous integration. After each push
 to \texttt{Github}. The continuous integration service will start a build and
 run tests using \texttt{npm test} after the build.
+\begin{figure}
+  \includegraphics[width=\linewidth]{build}
+  \label{fig:boat1}
+\end{figure}
 
 \section{Deployment}
 

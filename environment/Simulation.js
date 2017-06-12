@@ -215,7 +215,7 @@ class Simulation{
         // Adds a client car to the simulation that the client can control
         this.addClient = function(clientID) {
             console.log('USER', clientID);
-            const initPosition = [-2.7, 0];
+            const initPosition = [-26, 16];
             this.addRaceCar(clientID, initPosition);
         };
 

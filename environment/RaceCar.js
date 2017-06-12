@@ -80,7 +80,7 @@ function p2RaceCar(collision_id,clientID, world, position, width, height, mass) 
         collisionMask: -1
     });
     chassisBody.addShape(boxShape);
-    chassisBody.angle = 0.001;
+    chassisBody.angle = Math.PI;
     world.addBody(chassisBody);
 
     // Create the vehicle
