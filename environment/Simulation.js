@@ -99,9 +99,11 @@ class Simulation{
         this.currentRaceDuration = Number.MAX_VALUE;
 
         this.findFirstPlaceCar = function() {
-            let bestCar = this.raceCars.get(0);
+            console.log(this.raceCars);
+            let bestCar = null;
+            let bestProgress = Number.MIN_VALUE;
             this.raceCars.forEach(function(car, id) {
-                if (car.progress > bestCar.progress) {
+                if (car.progress > bestProgress) {
                     bestCar = car;
                 }
             });
@@ -114,7 +116,7 @@ class Simulation{
                 return;
             }
             let winner = this.findFirstPlaceCar();
-            console.log('Race ended. In first place is: ', winner.clientID);
+            console.log('Race ended. In first place is: ', winner.clientID, ' breaking ', winner.progress, ' gates!');
         };
 
         this.step = function(timeStep) {

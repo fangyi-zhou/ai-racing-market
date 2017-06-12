@@ -8,9 +8,7 @@ const Simulation = require('./Simulation');
 const mapFS = require('./mapSave');
 
 // Globals
-const fixedTimeStep = 0.06;
-const raceDuration = 3;
-const numAIinRace = 10;
+let fixedTimeStep, raceDuration, numAIinRace;
 
 // Default map
 let defaultMap, current_map;
@@ -18,10 +16,14 @@ let defaultMap, current_map;
 // Create the simulations
 let simulations;
 
-
 function init(io, numSims) {
     defaultMap = mapFS.readMap('./maps/map1.json');
     current_map = [defaultMap["segments"], defaultMap["gates"], defaultMap["startGate"]];
+
+    // Globals
+    fixedTimeStep = 0.06;
+    raceDuration = 30;
+    numAIinRace = 3;
 
     simulations = new Simulation.Simulations();
     for (let i = 0; i < numSims; i++) {
@@ -40,7 +42,6 @@ function init(io, numSims) {
         simulations.updateGraphics();
     }, 1000/30);
 }
-
 
 function getSim(simID) {
     return simulations.get(simID);

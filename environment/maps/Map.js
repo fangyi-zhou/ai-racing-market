@@ -10,14 +10,13 @@ const hitPoint = p2.vec2.create();
 function checkpointResult(result, ray, raceCars, rayid) {
     result.getHitPoint(hitPoint, ray);
     let car = raceCars.get(result.body.id);
-    let reward = rayid - car.progress;
+    let reward = Math.min(Math.max((rayid - car.lastGate), -1), 1);
     car.progress += reward;
     car.lastGate = rayid;
 }
 
 function checkStartGateResult(result, ray, raceCars){
     let car = raceCars.get(result.body.id);
-    console.log('car ' + car.clientID+ ' has progress '+ car.progress);
 }
 
 class Map {
@@ -77,12 +76,13 @@ class Map {
                 this.mapPolys.push(this._createp2MapSegment(world, this.segments[p]));
             }
             // Create checkpoint rays
+            let numGates = this.checkpoints.length;
             for (let i = 0; i < this.checkpoints.length; i++) {
                 let checkpoint = new p2.Ray({
                     mode: p2.Ray.ALL,
                     collisionMask: -1 ^ Math.pow(2, 31),
                     callback: function (result) {
-                        checkpointResult(result, this, raceCars,i);
+                        checkpointResult(result, this, raceCars, i);
                     }
                 });
                 this.mapCheckpoints.set(checkpoint, [i, checkpoints[i][0], checkpoints[i][1]]);
@@ -93,7 +93,7 @@ class Map {
                 mode: p2.Ray.ALL,
                 collisionMask: -1 ^ Math.pow(2, 31),
                 callback: function (result) {
-                    checkStartGateResult(result, this, raceCars);
+                    // checkStartGateResult(result, this, raceCars, 0);
                 }
             })
         }
