@@ -7,7 +7,6 @@ const Map = require('./maps/Map');
 const util = require('./util');
 const rays = require('./rays');
 const RaceCar = require('./RaceCar');
-const AICar = require('../usercode/child');
 const AIHost = require('../usercode/host');
 
 class Simulations{
@@ -111,7 +110,6 @@ class Simulation{
         this.currentRaceDuration = Number.MAX_VALUE;
 
         this.findFirstPlaceCar = function() {
-            console.log(this.raceCars);
             let bestCar = null;
             let bestProgress = Number.MIN_VALUE;
             this.raceCars.forEach(function(car, id) {
@@ -128,7 +126,8 @@ class Simulation{
                 return;
             }
             let winner = this.findFirstPlaceCar();
-            console.log('Race ended. In first place is: ', winner.clientID, ' breaking ', winner.progress, ' gates!');
+            /********** Removed since winner is sometimes null *************/
+            // console.log('Race ended. In first place is: ', winner.clientID, ' breaking ', winner.progress, ' gates!');
         };
 
         this.step = function(timeStep) {

@@ -20,10 +20,6 @@ function processGetCommand(child, splatInput) {
         case "totalReward":
             child.write(child.car.progress);
             break;
-        case "resetWorld":
-            let sim = raceBack.getSim(child.simId);
-            sim.childReset(child);
-            break;
         default:
             console.error(`Cannot get ${splatInput[1]} for Child ${child.carId}`)
     }
@@ -41,6 +37,10 @@ function processSetCommand(child, splatInput) {
         case "steerValue":
             const newSteerValue = parseFloat(splatInput[2]);
             control["steerValue"] = newSteerValue;
+            break;
+        case "resetWorld":
+            let sim = raceBack.getSim(child.simId);
+            sim.childReset(child);
             break;
         default:
             console.error(`Cannot set ${splatInput[1]} for Child ${carId}`)
