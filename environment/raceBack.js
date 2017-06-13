@@ -17,7 +17,7 @@ let defaultMap, current_map;
 let simulations;
 
 function init(io, numSims) {
-    defaultMap = mapFS.readMap('./maps/map3.json');
+    defaultMap = mapFS.readMap('./maps/ovalTrain.json');
     current_map = [defaultMap["segments"], defaultMap["gates"], defaultMap["startGate"]];
 
     // Globals
@@ -31,7 +31,7 @@ function init(io, numSims) {
         simulations.addSimulation(i, mapCopy, io);
     }
     // simulations.get(9).mode = Simulation.SimMode.RankedRacing;
-    simulations.get(8).train('594032638e42770011ebaa67');
+    simulations.get(8).train('5940666cd6b6d60011a560cb');
 
     // Loop the program
     setInterval(function() {

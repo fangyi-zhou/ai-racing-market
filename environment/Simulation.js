@@ -218,7 +218,7 @@ class Simulation{
         this.addClient = function(clientID) {
             if (this.mode === SimMode.ClientDrive) {
                 console.log('USER', clientID);
-                const initPosition = [-26, 16];
+                const initPosition = [-26, 0];
                 this.addRaceCar(clientID, initPosition);
             }
         };
@@ -289,7 +289,7 @@ class Simulation{
             this.reset();
             this.paused = true;
             for (let i = 0; i < scriptIDs.length; i++) {
-                let startingPosition = [-26, 16];
+                let startingPosition = [-26, 0];
                 let child = AIHost.createCar(io, scriptIDs[i], this.id, startingPosition);
                 // this.AIs.set(child.carId, child);
                 this.AIs.set(child.carId, child);
@@ -312,13 +312,13 @@ class Simulation{
                 return;
             }
             car.vehicle.chassisBody.position = util.arrayCopy(child.initPosition);
-            car.vehicle.chassisBody.angle = Math.PI;
+            car.vehicle.chassisBody.angle = 0;
             this.addRaceCarToWorld(car);
         };
 
         this.train = function(scriptID) {
             this.mode = SimMode.Training;
-            let startingPosition = [-26, 16];
+            let startingPosition = [-20, 0];
             let child = AIHost.createCar(io, scriptID, this.id, startingPosition);
         }
 
