@@ -5,9 +5,8 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const index = require('./routes/index');
 const races = require('./routes/races');
-const dev = require('./routes/dev');
+const leaderboard = require('./routes/leaderboard');
 const api = require('./routes/api');
 const rooms = require('./routes/rooms');
 
@@ -35,6 +34,7 @@ db.init(() => {
 
     app.use("/dev", express.static(path.join(__dirname, 'public')));
     app.use('/api', api);
+    app.use('/leaderboard',leaderboard);
 
     app.route('/*')
         .get(function (req, res) {
@@ -42,7 +42,6 @@ db.init(() => {
         });
 
     app.use('/rooms',rooms);
-    app.use('/dev',dev);
     app.use('/races', races);
 
 
