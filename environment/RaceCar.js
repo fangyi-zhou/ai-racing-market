@@ -58,7 +58,7 @@ class RaceCar {
         };
 
         this.reset = function(position) {
-            this.vehicle.position = position;
+            this.vehicle.chassisBody.position = position;
             this.lastGate = 0;
             this.progress = 0;
         }

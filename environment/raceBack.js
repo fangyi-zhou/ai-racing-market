@@ -22,7 +22,7 @@ function init(io, numSims) {
 
     // Globals
     fixedTimeStep = 0.06;
-    raceDuration = 4;
+    raceDuration = 10;
     numAIinRace = 3;
 
     simulations = new Simulation.Simulations();
@@ -31,6 +31,7 @@ function init(io, numSims) {
         simulations.addSimulation(i, mapCopy, io);
     }
     simulations.get(9).mode = Simulation.SimMode.RankedRacing;
+    simulations.get(8).train('593f134a166cfe0011612b28');
 
     // Loop the program
     setInterval(function() {

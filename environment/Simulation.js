@@ -272,7 +272,7 @@ class Simulation{
             var scriptIDListCopy = util.arrayCopy(scriptIDList); // Dummy List
             var raceScriptIDs = [], randomlySelectedScriptID;
             for (let i = 0; i < numCars; i++) {
-                randomlySelectedScriptID = '593f073acc84fc00118b1cb8';//Math.floor(Math.random() * scriptIDList.length);
+                randomlySelectedScriptID = '593fcaeea968db0011d55e16';//Math.floor(Math.random() * scriptIDList.length);
                 raceScriptIDs.push(randomlySelectedScriptID);
             }
             this.runRace(timeLength, raceScriptIDs);
@@ -284,7 +284,7 @@ class Simulation{
             this.reset();
             this.paused = true;
             for (let i = 0; i < scriptIDs.length; i++) {
-                let startingPosition = [1, 1];
+                let startingPosition = [-26, 16];
                 let child = AIHost.createCar(io, scriptIDs[i], this.id, startingPosition);
                 // this.AIs.set(child.carId, child);
                 this.AIs.set(child.carId, child);
@@ -301,12 +301,19 @@ class Simulation{
         // Training Mode
         // TODO: Add check in training mode
         this.childReset = function(child) {
+            console.log('child reset itself');
             let car = this.raceCars.get(child.carId);
             if (car === undefined) {
                 console.log('ERROR: Cannot reset child car if child.carId not in raceCars.');
                 return;
             }
             car.reset(child.initPosition);
+        }
+
+        this.train = function(scriptID) {
+            this.mode = SimMode.Training;
+            let startingPosition = [-26, 16];
+            let child = AIHost.createCar(io, scriptID, this.id, startingPosition);
         }
 
     }
