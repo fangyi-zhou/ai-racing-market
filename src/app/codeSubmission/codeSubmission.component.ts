@@ -29,4 +29,20 @@ export class CodeSubmissionComponent implements OnInit{
           console.log("%o", newScript);
       });
   };
+    changeListener($event): void {
+        this.readThis($event.target);
+    }
+
+    readThis(inputValue: any): void {
+        const file : File = inputValue.files[0];
+        const myReader: FileReader = new FileReader();
+
+        myReader.onloadend = (e) => {
+            // you can perform an action with readed data here
+            console.log(myReader.result);
+            this.codeEditorService.postCode(myReader.result);
+        };
+
+        myReader.readAsText(file);
+    }
 }

@@ -5,7 +5,7 @@ declare const ace: any;
 @Injectable()
 export class CodeEditorService {
 
-    editor : any;
+    editor: any;
 
     loadCodeEditor() : void {
         this.editor = ace.edit("editor");
@@ -15,5 +15,9 @@ export class CodeEditorService {
 
     getCode() : string {
         return this.editor.getValue();
+    }
+
+    postCode(script: String): void {
+        this.editor.setValue(script);
     }
 }
