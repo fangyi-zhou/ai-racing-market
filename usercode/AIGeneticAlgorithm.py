@@ -42,7 +42,7 @@ class Creature:
         # Apply weights to inputs to get (output == angle)
         for weight in self.weights:
             inputs = np.array(np.mat(weight)* np.mat(inputs))
-            inputs = inputs - 1.4 * len(inputs)
+            inputs = inputs - 1.55 * len(inputs)
             inputs = self.sigmoid(inputs)
         return inputs
 
@@ -52,7 +52,7 @@ class Creature:
     def step(self, inputs):
         out = self.feed_forward(inputs)
         sendCommand("set engineForce " + str(self.max_engine_force * (out[0][0] - 0.5)))
-        sendCommand("set steerValue " + str(self.max_steer_force * (out[1][0] - 0.5)))
+        sendCommand("set steerValue " + str(self.max_steer_force * (out[1][0] - 0.85)))
         sendCommand("world step");
 
 # /******************* Genetics Class **********************/
@@ -103,7 +103,7 @@ def crossover_mutate(creatures, mutation_rate):
   return new_creatures
 
 
-number_of_steps_per_episode = 5000
+number_of_steps_per_episode = 3000
 number_of_episodes = 500
 total_learning_steps = number_of_episodes * number_of_steps_per_episode
 number_of_creatures = 20
@@ -143,7 +143,7 @@ for i in range(number_of_episodes):
         sendCommand('get totalReward')
         creature.life = float(sys.stdin.readline())
 
-    creatures = crossover_mutate(creatures, 0.005)
+    creatures = crossover_mutate(creatures, 0.01)
     sendCommand('------------ Training epoch ' + str(i))
     sendCommand("Best fitness: " + str(creatures[number_of_creatures - 1].life))
     median_fitness = creatures[int(number_of_creatures / 2)].life

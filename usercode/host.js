@@ -56,7 +56,6 @@ function processSetCommand(child, splatInput) {
             control["engineForce"] = newEngineForce;
             break;
         case "steerValue":
-            // console.log(splatInput[2]);
             const newSteerValue = parseFloat(splatInput[2]);
             control["steerValue"] = newSteerValue;
             break;
