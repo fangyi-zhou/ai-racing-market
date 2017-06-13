@@ -15,16 +15,21 @@ function randomColour() {
 class RaceCar {
     constructor(collision_id, clientID, world, position) {
         const carComponents = p2RaceCar(collision_id, clientID, world, position, carWidth, carHeight, carMass);
+        this.collisionID = collision_id;
         this.vehicle = carComponents[0];
         this.frontWheel = carComponents[1];
         this.backWheel = carComponents[2];
         this.clientID = clientID;
         this.frontWheel.steerValue = 0;
         this.backWheel.engineForce = 0;
+        this.carWidth = carWidth;
+        this.carHeight = carHeight;
+        this.carMass = carMass;
         this.colour = randomColour();
 
         this.lastGate = 0; //current gate
-        this.progress = 0; //total reward
+        this.totalReward = 0; //total reward
+        console.log('totalReward initialised to ', this.totalReward);
 
         this.rays = [];
         for (let i = 0; i < numRays; i++) {
@@ -56,12 +61,6 @@ class RaceCar {
         this.getAngle = () => {
             return this.vehicle.chassisBody.angle;
         };
-
-        this.reset = function(position) {
-            this.vehicle.chassisBody.position = position;
-            this.lastGate = 0;
-            this.progress = 0;
-        }
     }
 }
 

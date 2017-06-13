@@ -30,8 +30,8 @@ function init(io, numSims) {
         let mapCopy = util.arrayCopy(current_map);
         simulations.addSimulation(i, mapCopy, io);
     }
-    simulations.get(9).mode = Simulation.SimMode.RankedRacing;
-    simulations.get(8).train('593f134a166cfe0011612b28');
+    // simulations.get(9).mode = Simulation.SimMode.RankedRacing;
+    simulations.get(8).train('59400993ee272200116f9174');
 
     // Loop the program
     setInterval(function() {
@@ -51,3 +51,4 @@ function getSim(simID) {
 
 module.exports.getSim = getSim;
 module.exports.init = init;
+module.exports.fixedTimeStep = fixedTimeStep;

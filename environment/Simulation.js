@@ -24,7 +24,9 @@ class Simulations{
         };
         this.stepAll = function(timeStep) {
             this.simulations.forEach(function(sim, id) {
-                sim.step(timeStep);
+                if (sim.mode != SimMode.Training) {
+                    sim.step(timeStep);
+                }
             });
         };
         this.checkCheckpoints = function() {
@@ -182,7 +184,7 @@ class Simulation{
                 }
             });
             return graphics_dict;
-        }
+        };
 
         // Initialise IO with this simulation and the client
         this.initIO = function (clientID) {
@@ -214,9 +216,11 @@ class Simulation{
 
         // Adds a client car to the simulation that the client can control
         this.addClient = function(clientID) {
-            console.log('USER', clientID);
-            const initPosition = [-26, 16];
-            this.addRaceCar(clientID, initPosition);
+            if (this.mode === SimMode.ClientDrive) {
+                console.log('USER', clientID);
+                const initPosition = [-26, 16];
+                this.addRaceCar(clientID, initPosition);
+            }
         };
 
         // Updates a car's movement instructions in the simulation and then applies them to the car
@@ -301,14 +305,15 @@ class Simulation{
         // Training Mode
         // TODO: Add check in training mode
         this.childReset = function(child) {
-            console.log('child reset itself');
             let car = this.raceCars.get(child.carId);
             if (car === undefined) {
                 console.log('ERROR: Cannot reset child car if child.carId not in raceCars.');
                 return;
             }
-            car.reset(child.initPosition);
-        }
+            car = new RaceCar.RaceCar(car.collisionID, car.clientID, this.world,
+                                        child.initPosition, car.carWidth, car.carHeight, car.carMass);
+            this.addRaceCarToWorld(car);
+        };
 
         this.train = function(scriptID) {
             this.mode = SimMode.Training;

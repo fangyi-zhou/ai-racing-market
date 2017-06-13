@@ -2,6 +2,24 @@ const child_process = require('child_process');
 const Child = require("./child");
 const raceBack = require("../environment/raceBack");
 
+function processWorldCommand(child, splatInput) {
+    const car = child.car;
+    if (car === undefined || car === null) {
+        console.error(`Cannot find car with carId ${child.carId}`);
+    }
+    let sim = raceBack.getSim(child.simID);
+    switch (splatInput[1]) {
+        case "step":
+            sim.step(0.06);
+            break;
+        case "reset":
+            sim.childReset(child);
+            break;
+        default:
+            console.error(`Cannot get ${splatInput[1]} for Child ${child.carId}`)
+    }
+}
+
 function processGetCommand(child, splatInput) {
     const car = child.car;
     if (car === undefined || car === null) {
@@ -12,13 +30,16 @@ function processGetCommand(child, splatInput) {
             child.write(car.getSpeed());
             break;
         case "rays":
+            // console.log('ray request')
             const rayDists = car.rayDists;
             rayDists.forEach((value, idx) => {
                 child.write(`${idx} ${value}`);
             });
             break;
         case "totalReward":
-            child.write(child.car.progress);
+            // console.log('reward request');
+            console.log('totalReward sent back: ', car.totalReward, ' to: ', car.clientID);
+            child.write(car.totalReward);
             break;
         default:
             console.error(`Cannot get ${splatInput[1]} for Child ${child.carId}`)
@@ -31,17 +52,13 @@ function processSetCommand(child, splatInput) {
     // if (splatInput.length < 3) return;
     switch (splatInput[1]) {
         case "engineForce":
-            console.log('Setting engine force')
+            // console.log('Setting engine force')
             const newEngineForce = parseFloat(splatInput[2]);
             control["engineForce"] = newEngineForce;
             break;
         case "steerValue":
             const newSteerValue = parseFloat(splatInput[2]);
             control["steerValue"] = newSteerValue;
-            break;
-        case "resetWorld":
-            let sim = raceBack.getSim(child.simID);
-            sim.childReset(child);
             break;
         default:
             console.error(`Cannot set ${splatInput[1]} for Child ${carId}`)
@@ -60,8 +77,12 @@ function processSingleCommand(child, data) {
         case "get":
             processGetCommand(child, splatInput);
             break;
+        case "world":
+            processWorldCommand(child, splatInput);
+            break;
         default:
-            console.error(`Cannot decode ${data} from Child ${carId}`);
+            // console.error(`Cannot decode ${data} from Child ${carId}`);
+           console.error(`${data}`);
     }
 }
 
