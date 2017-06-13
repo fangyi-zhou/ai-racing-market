@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { CodeSubmissionComponent } from './codeSubmission/codeSubmission.component';
 import { MapBuilderComponent } from './mapBuilder/mapBuilder.component';
 import { LeaderBoardComponent } from './leaderboard/leaderboard.component';
+import { LandingComponent } from './landing/landing.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -16,7 +17,8 @@ const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'codeSubmission', component: CodeSubmissionComponent },
     { path: 'mapBuilder', component: MapBuilderComponent },
-    { path: 'leaderboard', component: LeaderBoardComponent}
+    { path: 'leaderboard', component: LeaderBoardComponent},
+    { path: 'landing', component: LandingComponent}
 ];
 
 @NgModule({

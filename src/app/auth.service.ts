@@ -7,7 +7,6 @@ declare const asmCrypto: any;
 
 @Injectable()
 export class AuthService {
-
     constructor(private http: Http) {
     }
 
