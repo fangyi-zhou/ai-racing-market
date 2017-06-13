@@ -3,10 +3,10 @@
         <h2>Leaderboard</h2>
         <ul class="list-group semi-transparent">
             <li class="list-group-item"
-                *ngFor="let entry of entries"
+                *ngFor="let entry of entries | orderBy : 'value' :true"
                 (click)="selectContact(entry)"
                 [class.active]="entry === selectedEntry">
-                {{entry.name}} has id {{entry.id}}
+                {{entry.name}} has id {{entry.id}} has value {{entry.value}}
             </li>
         </ul>
     </div>

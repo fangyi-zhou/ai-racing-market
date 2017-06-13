@@ -9,7 +9,7 @@ export class LeaderBoardService {
 
     constructor (private http: Http) {}
 
-    // get("/leaderboard")
+    // get("/api/leaderboard")
     getUsers(): Promise<Entry[]> {
         return this.http.get(this.Url)
             .toPromise()

@@ -5,7 +5,7 @@ import { LeaderBoardService } from './leaderboard.service';
     selector: 'leaderboard',
     templateUrl: './leaderboard.component.html',
     styleUrls: ['./leaderboard.component.css'],
-    providers: [LeaderBoardService]
+    providers: [LeaderBoardService],
 })
 
 export class LeaderBoardComponent implements OnInit {
@@ -20,7 +20,7 @@ export class LeaderBoardComponent implements OnInit {
             .getUsers()
             .then((entry: Entry[]) => {
                 this.entries = entry.map((entry) => {
-                    console.log(entry);
+                    entry.value = Math.random() * 10;
                     return entry;
                 });
             });

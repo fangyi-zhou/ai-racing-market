@@ -34,6 +34,7 @@
     "materialize-css": "^0.98.2",
     "mongodb": "^2.2.28",
     "morgan": "~1.8.1",
+    "ngx-order-pipe": "^1.0.0",
     "p2": "^0.7.1",
     "rxjs": "^5.1.0",
     "serve-favicon": "~2.4.2",
