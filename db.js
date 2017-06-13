@@ -32,6 +32,10 @@ function getUserByUsername(username, callback) {
     db.collection(USER_COLLECTION).findOne({username: username}, callback);
 }
 
+function getAllUsers(callback){
+    db.collection(USER_COLLECTION).find({}).toArray(callback);
+}
+
 function createUser(username, saltedPass, salt, callback) {
     db.collection(USER_COLLECTION).insertOne({username: username, saltedPass: saltedPass, salt: salt}, callback);
 }
@@ -40,4 +44,5 @@ module.exports.getScriptById = getScriptById;
 module.exports.createScript = createScript;
 module.exports.getUserByUsername = getUserByUsername;
 module.exports.createUser = createUser;
+module.exports.getAllUsers = getAllUsers;
 module.exports.init = init;

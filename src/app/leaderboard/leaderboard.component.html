@@ -1,0 +1,13 @@
+<div class="row">
+    <div class="col-md-5">
+        <h2>Leaderboard</h2>
+        <ul class="list-group semi-transparent">
+            <li class="list-group-item"
+                *ngFor="let entry of entries"
+                (click)="selectContact(entry)"
+                [class.active]="entry === selectedEntry">
+                {{entry.name}} has id {{entry.id}}
+            </li>
+        </ul>
+    </div>
+</div>

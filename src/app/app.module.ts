@@ -8,9 +8,11 @@ import {RoomComponent} from "./rooms/room.component";
 import {LoginComponent} from "./login/login.component";
 import {CodeSubmissionComponent} from "./codeSubmission/codeSubmission.component";
 import {MapBuilderComponent} from "./mapBuilder/mapBuilder.component";
+import {LeaderBoardComponent} from "./leaderboard/leaderboard.component";
 
 import {AppRoutingModule} from "./app-rounting.module";
 import {HttpModule} from "@angular/http";
+
 
 
 @NgModule({
@@ -26,7 +28,8 @@ import {HttpModule} from "@angular/http";
         RoomComponent,
         LoginComponent,
         CodeSubmissionComponent,
-        MapBuilderComponent
+        MapBuilderComponent,
+        LeaderBoardComponent
     ],
     bootstrap: [AppComponent]
 })

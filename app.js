@@ -34,7 +34,7 @@ db.init(() => {
 
     app.use("/dev", express.static(path.join(__dirname, 'public')));
     app.use('/api', api);
-    app.use('/leaderboard',leaderboard);
+    app.use('/api/leaderboard',leaderboard);
 
     app.route('/*')
         .get(function (req, res) {
