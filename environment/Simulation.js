@@ -156,7 +156,7 @@ class Simulation{
         };
 
         this.addRaceCar = function (clientID, position) {
-            let car = new RaceCar.RaceCar(this.raceCars.count()+1, clientID, this.world, position);
+            let car = new RaceCar.RaceCar(this.raceCars.count()+1, clientID, this.world, position, Math.PI);
             return this.addRaceCarToWorld(car);
         };
 
@@ -263,7 +263,8 @@ class Simulation{
             this.world.clear();
             this.configureWorld();
             this.AIs = new hashMap.HashMap();
-            this.raceCars = new hashMap.HashMap();
+            /************* VERY DODGY - Need to keep pointer ***************/
+            this.raceCars = this.raceCars.clear();
             let newRaw = util.arrayCopy(this.rawMap);
             this.setMap(this.rawMap);
             this.rawMap = newRaw;
@@ -310,8 +311,8 @@ class Simulation{
                 console.log('ERROR: Cannot reset child car if child.carId not in raceCars.');
                 return;
             }
-            car = new RaceCar.RaceCar(car.collisionID, car.clientID, this.world,
-                                        child.initPosition, car.carWidth, car.carHeight, car.carMass);
+            car.vehicle.chassisBody.position = util.arrayCopy(child.initPosition);
+            car.vehicle.chassisBody.angle = Math.PI;
             this.addRaceCarToWorld(car);
         };
 

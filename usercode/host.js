@@ -10,7 +10,7 @@ function processWorldCommand(child, splatInput) {
     let sim = raceBack.getSim(child.simID);
     switch (splatInput[1]) {
         case "step":
-            sim.step(0.06);
+            sim.step(0.01);
             break;
         case "reset":
             sim.childReset(child);
@@ -38,8 +38,7 @@ function processGetCommand(child, splatInput) {
             break;
         case "totalReward":
             // console.log('reward request');
-            console.log('totalReward sent back: ', car.totalReward, ' to: ', car.clientID);
-            child.write(car.totalReward);
+            child.write(car.lastGate);
             break;
         default:
             console.error(`Cannot get ${splatInput[1]} for Child ${child.carId}`)
@@ -52,11 +51,12 @@ function processSetCommand(child, splatInput) {
     // if (splatInput.length < 3) return;
     switch (splatInput[1]) {
         case "engineForce":
-            // console.log('Setting engine force')
+            // console.log('Setting engine force: ', splatInput[2]);
             const newEngineForce = parseFloat(splatInput[2]);
             control["engineForce"] = newEngineForce;
             break;
         case "steerValue":
+            // console.log(splatInput[2]);
             const newSteerValue = parseFloat(splatInput[2]);
             control["steerValue"] = newSteerValue;
             break;

@@ -15,12 +15,12 @@ function checkpointResult(result, ray, raceCars, rayid) {
         return;
     }
     let reward = Math.min(Math.max((rayid - car.lastGate), -1), 1);
-    car.totalReward += reward;
+    car.totalReward = car.totalReward + reward;
     if (car.totalReward > 20) {
         // console.log(car)
-        console.log('This car has a reward of', car.totalReward)
     }
-    car.lastGate = rayid;
+
+    car.lastGate = rayid % 119;
 }
 
 function checkStartGateResult(result, ray, raceCars){
