@@ -1,7 +1,7 @@
 const Docker = require('dockerode');
 const docker = new Docker({
-    host: process.DOCKER_HOST,
-    port: process.DOCKER_PORT,
+    host: process.env.DOCKER_HOST,
+    port: process.env.DOCKER_PORT,
     ca: process.env.CA,
     cert: process.env.CERT,
     key: process.env.KEY
