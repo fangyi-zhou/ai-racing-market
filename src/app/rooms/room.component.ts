@@ -40,6 +40,13 @@ export class RoomComponent implements OnInit{
             communication.init(room.id);
         }
     }
+    createNewSim() {
+        const room: Room = {
+            id: this.rooms.length,
+            name: 'foo'
+        };
+        this.rooms.push(room);
+    }
     zoomIn(): void {
         communication.zoomIn();
     }
