@@ -31,11 +31,7 @@ function init(io, maxSims) {
         simulations.addSimulation(i, mapCopy, io);
     }
     // simulations.get(9).mode = Simulation.SimMode.RankedRacing;
-<<<<<<< HEAD
-    simulations.get(8).train('59417fc8eb644f0011582ed4');
-=======
-    simulations.get(maxSims-1).train('594176155bdf7e0011b0f852');
->>>>>>> 756b91f52f7e7198582e6bc2ce193bf753eb9093
+    simulations.get(maxSims-1).train('59417fc8eb644f0011582ed4');
 
     // Loop the program
     setInterval(function() {
