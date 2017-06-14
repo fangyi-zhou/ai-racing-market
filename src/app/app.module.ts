@@ -10,7 +10,7 @@ import {LoginComponent} from "./login/login.component";
 import {CodeSubmissionComponent} from "./codeSubmission/codeSubmission.component";
 import {MapBuilderComponent} from "./mapBuilder/mapBuilder.component";
 import {LeaderBoardComponent} from "./leaderboard/leaderboard.component";
-import { LandingComponent } from './landing/landing.component';
+import {LandingComponent} from './landing/landing.component';
 
 import {AppRoutingModule} from "./app-rounting.module";
 import {HttpModule} from "@angular/http";

@@ -3,12 +3,13 @@ import { AuthService } from './auth.service';
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
-  styleUrls: [ './app.component.css' ]
+  styleUrls: [ './app.component.css' ],
+    providers: [AuthService]
 })
 export class AppComponent {
-    constructor(private auth: AuthService) {}
     loggedon = false;
     title = 'AI Racing Market';
+    constructor(private auth: AuthService) {}
 
     logon(): void {
         this.loggedon = true;
