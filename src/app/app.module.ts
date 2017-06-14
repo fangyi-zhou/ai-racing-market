@@ -15,6 +15,7 @@ import {LandingComponent} from './landing/landing.component';
 import {AppRoutingModule} from "./app-rounting.module";
 import {HttpModule} from "@angular/http";
 import { StatisticsComponent } from './statistics/statistics.component';
+import { TutorialComponent } from './tutorial/tutorial.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { StatisticsComponent } from './statistics/statistics.component';
         MapBuilderComponent,
         LeaderBoardComponent,
         LandingComponent,
-        StatisticsComponent
+        StatisticsComponent,
+        TutorialComponent
     ],
     bootstrap: [AppComponent]
 })
