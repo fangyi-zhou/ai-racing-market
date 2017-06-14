@@ -49,6 +49,11 @@ function getSim(simID) {
     return simulations.get(simID);
 }
 
+function getAllSims(){
+    return simulations.currentSims();
+}
+
 module.exports.getSim = getSim;
 module.exports.init = init;
 module.exports.fixedTimeStep = fixedTimeStep;
+module.exports.getAllSims = getAllSims;

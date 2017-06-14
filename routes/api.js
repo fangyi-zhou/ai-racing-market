@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const TOKEN_SECRET = "secret";
 
-const simulations = require('../environment/Simulation');
+const raceBack = require('../environment/raceBack');
 
 function handleError(res, reason, message, code) {
   console.log("ERROR: " + reason);
@@ -96,8 +96,7 @@ router.get("/statistics", function (req,res){
 });
 
 router.get("/sims", function(req,res){
-    let ans = simulations.Simulations.currentSims();
-    console.log(ans);
+    let ans = raceBack.getAllSims();
     res.json(ans);
 })
 
