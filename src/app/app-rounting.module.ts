@@ -11,7 +11,7 @@ import { LeaderBoardComponent } from './leaderboard/leaderboard.component';
 import { LandingComponent } from './landing/landing.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+    { path: '', redirectTo: '/landing', pathMatch: 'full' },
     { path: 'dashboard',  component: DashboardComponent },
     { path: 'rooms',     component: RoomComponent },
     { path: 'login', component: LoginComponent },
