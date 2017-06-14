@@ -22,6 +22,16 @@ router.get('/script/:id', function (req, res) {
   });
 });
 
+router.get('/script', function(req,res){
+    database.getAllScripts(function(err, scripts) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json(scripts);
+        }
+    });
+});
+
 router.post("/script", function(req, res) {
   const newScript = req.body;
   newScript.createDate = new Date();
@@ -101,7 +111,6 @@ router.get("/sims", function(req,res){
 })
 
 router.post("/sims", function(req,res){
-    console.log(req.body.id);
     raceBack.addSim(req.body.id, req.body.mode);
     //TODO implement AI selection
     res.json("yes");

@@ -4,14 +4,14 @@ import 'rxjs/add/operator/toPromise';
 import {Script} from './Script';
 
 @Injectable()
-export class TrainingService {
-    private raceUrl = '/api/training';
+export class ScriptService {
+    private scriptUrl = '/api/script';
 
     constructor (private http: Http) {}
 
-    // get("/races")
+    // get("/api/script")
     getScripts(): Promise<Script[]> {
-      return this.http.get(this.raceUrl)
+      return this.http.get(this.scriptUrl)
                  .toPromise()
                  .then(response => response.json() as Script[])
                  .catch(this.handleError);
@@ -19,7 +19,7 @@ export class TrainingService {
 
     // post("/races")
     createSim(newRace: Script): Promise<Script> {
-      return this.http.post(this.raceUrl, newRace)
+      return this.http.post(this.scriptUrl, newRace)
                  .toPromise()
                  .then(response => response.json() as Script)
                  .catch(this.handleError);
@@ -27,7 +27,7 @@ export class TrainingService {
 
     // put("/api/:id")
     updateRaces(putRace: Script): Promise<Script> {
-      var putUrl = this.raceUrl + '/' + putRace.id;
+      var putUrl = this.scriptUrl + '/' + putRace._id;
       return this.http.put(putUrl, putRace)
                  .toPromise()
                  .then(response => response.json() as Script)

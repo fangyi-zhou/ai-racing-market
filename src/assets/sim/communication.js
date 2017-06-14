@@ -16,7 +16,7 @@
         console.log(`join ${id}`);
         socket.emit('join', {
             simId : id
-        })
+        });
         serverCallBack();
     })
       renderer.view.focus();
@@ -77,6 +77,13 @@
       }
   }
 
+  function train(scriptId) {
+      socket.emit('train', {
+          id:1337,
+          scriptId : scriptId
+      })
+  }
+
   function switchCar(){
       //TODO switch car views
       carIDs = getCars();
@@ -94,7 +101,8 @@
       'disconnectOnSwap':disconnectOnSwap,
       'zoomIn':zoomIn,
       'zoomOut':zoomOut,
-      'switchCar':switchCar
+      'switchCar':switchCar,
+      'train':train
   };
 
   root.communication = communication;
