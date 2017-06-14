@@ -302,7 +302,7 @@ class Simulation{
             this.reset();
             this.paused = true;
             for (let i = 0; i < scriptIDs.length; i++) {
-                let startingPosition = [-26, 0];
+                let startingPosition = [0, 0];
                 let child = AIHost.createCar(io, scriptIDs[i], this.id, startingPosition);
                 // this.AIs.set(child.carId, child);
                 this.AIs.set(child.carId, child);

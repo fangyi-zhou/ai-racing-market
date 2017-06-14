@@ -11,6 +11,7 @@ import { LeaderBoardComponent } from './leaderboard/leaderboard.component';
 import { LandingComponent } from './landing/landing.component';
 import { StatisticsComponent} from './statistics/statistics.component';
 import { TutorialComponent} from './tutorial/tutorial.component';
+import { TrainingComponent} from './training/training.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/landing', pathMatch: 'full' },
@@ -22,7 +23,8 @@ const routes: Routes = [
     { path: 'leaderboard', component: LeaderBoardComponent},
     { path: 'landing', component: LandingComponent},
     { path: 'app-statistics', component: StatisticsComponent},
-    { path: 'app-tutorial', component: TutorialComponent}
+    { path: 'app-tutorial', component: TutorialComponent},
+    { path: 'app-training', component: TrainingComponent}
 ];
 
 @NgModule({
