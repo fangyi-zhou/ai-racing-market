@@ -10,8 +10,10 @@ const RaceCar = require('./RaceCar');
 const AIHost = require('../usercode/host');
 
 class Simulations{
-    constructor () {
+    constructor (maxSims) {
+        this.maxSims = maxSims;
         this.simulations = new hashMap.HashMap();
+
         this.addSimulation = function(simId, map, io) {
             var newSim = new Simulation(simId, map, io);
             this.simulations.set(newSim.id, newSim);
@@ -67,6 +69,17 @@ class Simulations{
                     sim.runRandomRace(raceDuration, numAI);
                 }
             })
+        }
+
+        this.currentSims = function(){
+            let sims = [];
+            this.simulations.forEach(function(sim, id){
+               sims.push({
+                   id:id
+                   //TODO add more information;
+               })
+            });
+            return sims;
         }
     }
 }

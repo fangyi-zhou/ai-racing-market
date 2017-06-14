@@ -5,6 +5,8 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const TOKEN_SECRET = "secret";
 
+const raceBack = require('../environment/raceBack');
+
 function handleError(res, reason, message, code) {
   console.log("ERROR: " + reason);
   res.status(code || 500).json({"error": message});
@@ -92,5 +94,10 @@ router.get("/statistics", function (req,res){
    //TODO implement statistics of AI/User
     res.json([{id:'foo', value:Math.PI}]);
 });
+
+router.get("/sims", function(req,res){
+    let ans = raceBack.getAllSims();
+    res.json(ans);
+})
 
 module.exports = router;

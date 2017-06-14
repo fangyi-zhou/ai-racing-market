@@ -16,7 +16,7 @@ let defaultMap, current_map;
 // Create the simulations
 let simulations;
 
-function init(io, numSims) {
+function init(io, maxSims) {
     defaultMap = mapFS.readMap('./maps/slalem2.json');
     current_map = [defaultMap["segments"], defaultMap["gates"], defaultMap["startGate"]];
 
@@ -25,13 +25,17 @@ function init(io, numSims) {
     raceDuration = 10;
     numAIinRace = 3;
 
-    simulations = new Simulation.Simulations();
-    for (let i = 0; i < numSims; i++) {
+    simulations = new Simulation.Simulations(maxSims);
+    for (let i = 0; i < maxSims; i++) {
         let mapCopy = util.arrayCopy(current_map);
         simulations.addSimulation(i, mapCopy, io);
     }
     // simulations.get(9).mode = Simulation.SimMode.RankedRacing;
+<<<<<<< HEAD
     simulations.get(8).train('59417fc8eb644f0011582ed4');
+=======
+    simulations.get(maxSims-1).train('594176155bdf7e0011b0f852');
+>>>>>>> 756b91f52f7e7198582e6bc2ce193bf753eb9093
 
     // Loop the program
     setInterval(function() {
@@ -49,6 +53,11 @@ function getSim(simID) {
     return simulations.get(simID);
 }
 
+function getAllSims(){
+    return simulations.currentSims();
+}
+
 module.exports.getSim = getSim;
 module.exports.init = init;
 module.exports.fixedTimeStep = fixedTimeStep;
+module.exports.getAllSims = getAllSims;

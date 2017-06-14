@@ -5,7 +5,7 @@
             <li *ngFor="let room of rooms"
                 [class.selected]="room === selectedRoom"
                 (click)="onSelect(room)">
-                <span>{{room.name}}<i class="fa-li fa fa-spinner fa-spin"></i> </span>
+                <span>room {{room.id}}<i class="fa-li fa fa-spinner fa-spin"></i> </span>
             </li>
         </ul>
     </div>

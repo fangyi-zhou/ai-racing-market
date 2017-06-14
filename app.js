@@ -19,7 +19,7 @@ const io = require('socket.io')(server, {
 
 const host = require('./usercode/host');
 const raceBack = require('./environment/raceBack.js');
-const numSimulations = 10;
+const numSimulations = 6;
 const db = require('./db');
 
 db.init(() => {
