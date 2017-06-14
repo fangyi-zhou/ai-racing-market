@@ -100,4 +100,11 @@ router.get("/sims", function(req,res){
     res.json(ans);
 })
 
+router.post("/sims", function(req,res){
+    console.log(req.body.id);
+    raceBack.addSim(req.body.id);
+    //TODO implement AI selection
+    res.json("yes");
+});
+
 module.exports = router;

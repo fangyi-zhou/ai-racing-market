@@ -16,7 +16,11 @@ let defaultMap, current_map;
 // Create the simulations
 let simulations;
 
+// log io
+let io;
+
 function init(io, maxSims) {
+    this.io = io;
     defaultMap = mapFS.readMap('./maps/slalem2.json');
     current_map = [defaultMap["segments"], defaultMap["gates"], defaultMap["startGate"]];
 
@@ -53,7 +57,13 @@ function getAllSims(){
     return simulations.currentSims();
 }
 
+function addSim(id){
+    let mapCopy = util.arrayCopy(current_map);
+    simulations.addSimulation(id, mapCopy, io);
+}
+
 module.exports.getSim = getSim;
 module.exports.init = init;
 module.exports.fixedTimeStep = fixedTimeStep;
 module.exports.getAllSims = getAllSims;
+module.exports.addSim = addSim;

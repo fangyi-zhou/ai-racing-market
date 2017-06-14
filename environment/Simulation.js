@@ -231,7 +231,7 @@ class Simulation{
         this.addClient = function(clientID) {
             if (this.mode === SimMode.ClientDrive) {
                 console.log('USER', clientID);
-                const initPosition = [-26, 0];
+                const initPosition = [0, 0];
                 this.addRaceCar(clientID, initPosition);
             }
         };
