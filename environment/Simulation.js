@@ -91,7 +91,7 @@ class Simulation{
         this.configureWorld = function() {
             this.world.gravity = [0,0];
             this.world.defaultContactMaterial.friction = 0.001;
-            this.world.defaultContactMaterial.restitution = 0.5;
+            this.world.defaultContactMaterial.restitution = 1;
         };
         this.configureWorld();
 
@@ -318,7 +318,7 @@ class Simulation{
 
         this.train = function(scriptID) {
             this.mode = SimMode.Training;
-            let startingPosition = [-20, 0];
+            let startingPosition = [0.5, 0.5];
             let child = AIHost.createCar(io, scriptID, this.id, startingPosition);
         }
 

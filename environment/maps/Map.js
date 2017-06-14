@@ -19,8 +19,7 @@ function checkpointResult(result, ray, raceCars, rayid) {
     if (car.totalReward > 20) {
         // console.log(car)
     }
-
-    car.lastGate = rayid % 119;
+    car.lastGate = rayid;
 }
 
 function checkStartGateResult(result, ray, raceCars){

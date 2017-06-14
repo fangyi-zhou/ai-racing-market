@@ -2,6 +2,8 @@ const child_process = require('child_process');
 const Child = require("./child");
 const raceBack = require("../environment/raceBack");
 
+let timeInterval = 0.05;
+
 function processWorldCommand(child, splatInput) {
     const car = child.car;
     if (car === undefined || car === null) {
@@ -10,7 +12,7 @@ function processWorldCommand(child, splatInput) {
     let sim = raceBack.getSim(child.simID);
     switch (splatInput[1]) {
         case "step":
-            sim.step(0.01);
+            sim.step(timeInterval);
             break;
         case "reset":
             sim.childReset(child);
