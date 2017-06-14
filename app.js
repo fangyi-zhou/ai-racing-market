@@ -5,7 +5,6 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const races = require('./routes/races');
 const leaderboard = require('./routes/leaderboard');
 const api = require('./routes/api');
 const rooms = require('./routes/rooms');
@@ -42,8 +41,6 @@ db.init(() => {
         });
 
     app.use('/rooms',rooms);
-    app.use('/races', races);
-
 
 //catch 404 and forward to error handler
     app.use(function (req, res, next) {
@@ -105,7 +102,9 @@ db.init(() => {
                 map: raceBack.getSim(simID).changeMap(info)
             });
         });
-
+        socket.on('train', function (info) {
+            raceBack.getSim(info.id).train(info.scriptId);
+        })
     });
 });
 

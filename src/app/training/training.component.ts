@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {TrainingService} from '../training.service';
+import {ScriptService} from '../Script.service';
 import { Script } from '../Script';
 
 declare var communication: any;
@@ -8,32 +8,32 @@ declare var communication: any;
     selector: 'app-training',
     templateUrl: './training.component.html',
     styleUrls: ['./training.component.css'],
-    providers: [TrainingService]
+    providers: [ScriptService]
 })
 export class TrainingComponent implements OnInit {
-    title = 'AI racing rooms';
     scripts: Script[];
     selectedScript: Script;
-    constructor(private trainingService: TrainingService) {}
+    constructor(private trainingService: ScriptService) {}
 
     ngOnInit(): void {
         this.trainingService
             .getScripts()
             .then((script: Script[]) => {
                 this.scripts = script.map((script) => {
-                    // TODO some mapping for raw sim json
+                    // TODO some mapping for raw script json
                     return script;
                 });
             });
         communication.initGraphics();
     }
     onSelect(script: Script): void {
-        if (this.selectedScript === script) {
-        }else {
-            communication.disconnectOnSwap();
-            this.selectedScript = script;
-            communication.init(script);
-        }
+        this.selectedScript = script;
+    }
+    trainAi(script: Script): void {
+        // TODO: clear graphics
+        communication.disconnectOnSwap();
+        communication.init(1337);
+        communication.train(script._id);
     }
     zoomIn(): void {
         communication.zoomIn();

@@ -24,6 +24,10 @@ function getScriptById(id, callback) {
     db.collection(SCRIPT_COLLECTION).findOne({ _id: new ObjectID(id) }, callback);
 }
 
+function getAllScripts(callback){
+    db.collection(SCRIPT_COLLECTION).find({}).toArray(callback);
+}
+
 function createScript(script, callback) {
     db.collection(SCRIPT_COLLECTION).insertOne(script, callback);
 }
@@ -45,4 +49,5 @@ module.exports.createScript = createScript;
 module.exports.getUserByUsername = getUserByUsername;
 module.exports.createUser = createUser;
 module.exports.getAllUsers = getAllUsers;
+module.exports.getAllScripts = getAllScripts;
 module.exports.init = init;
