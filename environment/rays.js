@@ -4,7 +4,7 @@
 const p2 = require('p2');
 const result = new p2.RaycastResult();
 const hitPoint = p2.vec2.create();
-const rayLength = 5;
+const rayLength = 3;
 
 
 function constructRays(car, numRays, world){

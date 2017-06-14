@@ -17,7 +17,7 @@ let defaultMap, current_map;
 let simulations;
 
 function init(io, numSims) {
-    defaultMap = mapFS.readMap('./maps/slalem_packed_gates.json');
+    defaultMap = mapFS.readMap('./maps/slalem2.json');
     current_map = [defaultMap["segments"], defaultMap["gates"], defaultMap["startGate"]];
 
     // Globals
@@ -31,7 +31,7 @@ function init(io, numSims) {
         simulations.addSimulation(i, mapCopy, io);
     }
     // simulations.get(9).mode = Simulation.SimMode.RankedRacing;
-    simulations.get(8).train('594176155bdf7e0011b0f852');
+    simulations.get(8).train('59417fc8eb644f0011582ed4');
 
     // Loop the program
     setInterval(function() {

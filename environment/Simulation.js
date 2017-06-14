@@ -91,11 +91,11 @@ class Simulation{
         this.configureWorld = function() {
             this.world.gravity = [0,0];
             this.world.defaultContactMaterial.friction = 0.001;
-            this.world.defaultContactMaterial.restitution = 1;
+            this.world.defaultContactMaterial.restitution = 0.6;
         };
         this.configureWorld();
 
-        this.maxSteer = Math.PI / 5;
+        this.maxSteer = 1;//Math.PI / 5;
 
         this.rawMap = util.arrayCopy(map);
 
