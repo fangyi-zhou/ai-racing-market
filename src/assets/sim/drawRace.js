@@ -8,11 +8,13 @@ var carHeight;
 var numRays;
 var wall_colour = 0xD7D7D7;
 var clientCarID = null;
+var viewingCarID = null;
 var canvas;
 var renderer = undefined;
 var stage;
 var container;
 var currentMap;
+var carViewCount = 0;
 
 function initDraw() {
     //Map
@@ -74,6 +76,7 @@ function updateAllGraphics(info) {
         if (!info.hasOwnProperty(id)) continue;
         let car = info[id];
         if (cars[id] === undefined) {
+            console.log('ID I DI DI DI DI ', id)
             cars[id] = new RaceCarGraphic(car.colour);
         }
         cars[id].carGraphic.position.x = car.position[0];
@@ -81,7 +84,7 @@ function updateAllGraphics(info) {
         cars[id].carGraphic.rotation = car.angle;
 
         // Centre client view on the car they control
-        if (clientCarID === car.clientID) {
+        if (viewingCarID === car.clientID) {
             container.position.x = -cars[id].carGraphic.position.x * zoom + renderer.width / 2; // center at origin
             container.position.y = cars[id].carGraphic.position.y * zoom + renderer.height / 2;
         }
@@ -103,6 +106,7 @@ function initWorld(info) {
     carHeight = info.carHeight;
     numRays = info.numRays;
     clientCarID = info.id;
+    viewingCarID = clientCarID;
     drawMap(info.map, info.checkpoints, info.startGate);
     updateAllGraphics(info.cars);
 }
@@ -140,6 +144,14 @@ function removeUser(id) {
     }
     container.removeChild(car.carGraphic);
     cars[id] = undefined;
+}
+
+var getCars = function(){
+    var keys = [];
+    for(var car in cars){
+        keys.push(car);
+    }
+    return keys;
 }
 
 // Key controls

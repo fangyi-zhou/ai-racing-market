@@ -29,7 +29,6 @@ class RaceCar {
 
         this.lastGate = 0; //current gate
         this.totalReward = 0; //total reward
-        console.log('totalReward initialised to ', this.totalReward);
 
         this.rays = [];
         for (let i = 0; i < numRays; i++) {

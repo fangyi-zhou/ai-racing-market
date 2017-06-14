@@ -76,8 +76,15 @@
           container.scale.y = -zoom;
       }
   }
+
   function switchCar(){
       //TODO switch car views
+      carIDs = getCars();
+      if (carIDs.length === 0) {
+          return;
+      }
+      carViewCount = (carViewCount + 1) % carIDs.length;
+      viewingCarID = carIDs[carViewCount];
   }
 
   var communication = {
