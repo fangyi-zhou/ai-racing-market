@@ -13,3 +13,8 @@ export class StatisticsComponent implements OnInit {
   }
 
 }
+
+export class Stats {
+    id: string;
+    value: number;
+}

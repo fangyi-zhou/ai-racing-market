@@ -88,4 +88,9 @@ router.post("/auth", function(req, res) {
     })
 });
 
+router.get("/statistics", function (req,res){
+   //TODO implement statistics of AI/User
+    res.json([{id:'foo', value:Math.PI}]);
+});
+
 module.exports = router;
