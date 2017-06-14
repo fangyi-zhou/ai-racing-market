@@ -102,7 +102,7 @@ router.get("/sims", function(req,res){
 
 router.post("/sims", function(req,res){
     console.log(req.body.id);
-    raceBack.addSim(req.body.id);
+    raceBack.addSim(req.body.id, req.body.mode);
     //TODO implement AI selection
     res.json("yes");
 });

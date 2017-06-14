@@ -3,6 +3,7 @@ import {RoomService} from './room.service';
 
 export class Room {
     id: number;
+    mode: number;
     name: string;
 }
 
@@ -43,6 +44,7 @@ export class RoomComponent implements OnInit{
     createNewSim() {
         const room: Room = {
             id: this.rooms.length,
+            mode: 2,
             name: 'foo'
         };
         if (this.rooms.length < 9) {

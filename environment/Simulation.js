@@ -14,8 +14,8 @@ class Simulations{
         this.maxSims = maxSims;
         this.simulations = new hashMap.HashMap();
 
-        this.addSimulation = function(simId, map, io) {
-            var newSim = new Simulation(simId, map, io);
+        this.addSimulation = function(simId, map, io, mode) {
+            var newSim = new Simulation(simId, map, io, mode);
             this.simulations.set(newSim.id, newSim);
         };
         this.removeSimulation = function(simulationId) {
@@ -91,10 +91,10 @@ const SimMode = {
 };
 
 class Simulation{
-    constructor (id, map, io) {
+    constructor (id, map, io, mode) {
         this.id = id;
         this.io = io;
-        this.mode = SimMode.ClientDrive;
+        this.mode = mode;//SimMode.ClientDrive;
 
         this.raceCars = new hashMap.HashMap();
         this.AIs = new hashMap.HashMap();
