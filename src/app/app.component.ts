@@ -7,17 +7,8 @@ import { AuthService } from './auth.service';
     providers: [AuthService]
 })
 export class AppComponent {
-    loggedon = false;
     title = 'AI Racing Market';
     constructor(private auth: AuthService) {}
-
-    logon(): void {
-        this.loggedon = true;
-        console.log("foo");
-    }
-    logoff(): void {
-        this.loggedon = false;
-    }
 }
 
 
