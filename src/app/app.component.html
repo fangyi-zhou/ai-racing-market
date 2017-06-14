@@ -12,14 +12,6 @@
                 <a class="nav-link" routerLink="/rooms" routerLinkActive="active">
                     <span class="black-text"><i class="fa fa-flag-checkered fa-fw"></i>Simulation Rooms</span></a>
             </li>
-            <li>
-                <a class="nav-link" routerLink="/mapBuilder" routerLinkActive="active">
-                    <span class="black-text"><i class="fa fa-map fa-fw"></i>Map Building</span></a>
-            </li>
-            <li>
-                <a class="nav-link" routerLink="/codeSubmission" routerLinkActive="active">
-                    <span class="black-text"><i class="fa fa-terminal fa-fw"></i>AI Code Submission</span></a>
-            </li>
             <li *ngIf="loggedon; else elseBlock">
                 <a class="nav-link" routerLink="/login" routerLinkActive="active">
                     <span class="black-text"><i class="fa  fa-key fa-fw"></i>Logoff</span></a>
@@ -30,7 +22,6 @@
                         <span class="black-text"><i class="fa  fa-key fa-fw"></i>Login</span></a>
                 </li>
             </ng-template>
-
             <li>
                 <a class="nav-link" routerLink="/leaderboard" routerLinkActive="active">
                     <span class="black-text"><i class="fa  fa-list-ol fa-fw"></i>leaderboard</span></a>

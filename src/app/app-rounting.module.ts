@@ -9,6 +9,7 @@ import { CodeSubmissionComponent } from './codeSubmission/codeSubmission.compone
 import { MapBuilderComponent } from './mapBuilder/mapBuilder.component';
 import { LeaderBoardComponent } from './leaderboard/leaderboard.component';
 import { LandingComponent } from './landing/landing.component';
+import { StatisticsComponent} from './statistics/statistics.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/landing', pathMatch: 'full' },
@@ -18,7 +19,8 @@ const routes: Routes = [
     { path: 'codeSubmission', component: CodeSubmissionComponent },
     { path: 'mapBuilder', component: MapBuilderComponent },
     { path: 'leaderboard', component: LeaderBoardComponent},
-    { path: 'landing', component: LandingComponent}
+    { path: 'landing', component: LandingComponent},
+    { path: 'app-statistics', component: StatisticsComponent}
 ];
 
 @NgModule({
