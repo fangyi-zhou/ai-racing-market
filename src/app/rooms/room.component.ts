@@ -45,7 +45,11 @@ export class RoomComponent implements OnInit{
             id: this.rooms.length,
             name: 'foo'
         };
-        this.rooms.push(room);
+        if (this.rooms.length < 9) {
+            this.roomService.createSim(room).then((newSim: Room) => {
+                this.rooms.push(room);
+            });
+        }
     }
     zoomIn(): void {
         communication.zoomIn();

@@ -18,14 +18,12 @@ export class RoomService {
     }
 
     // post("/races")
-    createRaces(newRace: Room): Promise<Room> {
+    createSim(newRace: Room): Promise<Room> {
       return this.http.post(this.raceUrl, newRace)
                  .toPromise()
                  .then(response => response.json() as Room)
                  .catch(this.handleError);
     }
-
-    // TODO get("/api/:id")
 
     // put("/api/:id")
     updateRaces(putRace: Room): Promise<Room> {
