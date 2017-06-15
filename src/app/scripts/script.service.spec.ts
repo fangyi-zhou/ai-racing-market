@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { ScriptFetcherService } from './script.service';
+import { ScriptService } from './script.service';
 
-describe('ScriptFetcherService', () => {
+describe('ScriptService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ScriptFetcherService]
+      providers: [ScriptService]
     });
   });
 
-  it('should be created', inject([ScriptFetcherService], (service: ScriptFetcherService) => {
+  it('should be created', inject([ScriptService], (service: ScriptService) => {
     expect(service).toBeTruthy();
   }));
 });

@@ -1,0 +1,11 @@
+.rounded-block {
+    border-radius: 15px;
+    padding: 2%;
+    margin: 2% 0 2% 0;
+    text-align: center;
+}
+
+.btn-lg {
+    min-width: 20%;
+    margin: 2%;
+}

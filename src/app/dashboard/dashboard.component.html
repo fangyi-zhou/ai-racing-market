@@ -1,40 +1,30 @@
-<div class="container">
-    <div class="section">
-        <div class="row">
-            <div class="col s4">
-                <div class="semi-transparent" style="color: black">
-                    <h2 class="center"><i class="fa fa-flash fa-fw"></i></h2>
-                    <h5 class="center">Competitive AI</h5>
-
-                    <p class="light">//TODO: write something</p>
-
-                        <a class="nav-link" routerLink="/mapBuilder" routerLinkActive="active">
-                            <span class="black-text" style="font-size: 3rem"><i class="fa fa-map fa-fw"></i>Map Building</span></a>
-
-                        <a class="nav-link" routerLink="/app-codeSubmission" routerLinkActive="active">
-                            <span class="black-text" style="font-size: 3rem"><i class="fa fa-terminal fa-fw"></i>AI Code Submission</span></a>
-                </div>
-            </div>
-            <div class="col s4">
-                <div class="semi-transparent" style="color: black">
-                    <h2 class="center"><i class="fa fa-gamepad fa-fw"></i></h2>
-                    <h5 class="center">Collaborative Learning</h5>
-
-                    <p class="light">//TODO: write something</p>
-                    Play against your own AI //TODOOOOO
-                </div>
-            </div>
-            <div class="col s4">
-                <div class="semi-transparent" style="color: black">
-                    <h2 class="center"><i class="fa fa-gears fa-fw"></i></h2>
-                    <h5 class="center">Easy to get started</h5>
-
-                    <p class="light">Only available when logged in i guess?</p>
-
-                        <a class="nav-link" routerLink="/app-statistics" routerLinkActive="active">
-                            <span class="black-text" style="font-size: 3rem"><i class="fa  fa-list-ol fa-fw"></i>statistics</span></a>
-                </div>
-            </div>
-        </div>
+<div class="row">
+    <div class="col s4 rounded-block">
+        <!--
+            <a class="nav-link" routerLink="/mapBuilder" routerLinkActive="active">
+                <span class="black-text" style="font-size: 3rem"><i class="fa fa-map fa-fw"></i>Map Building</span></a>
+        -->
+        <a class="nav-link" routerLink="/app-codeSubmission" routerLinkActive="active">
+            <button class="btn btn-primary btn-lg">
+                <i class="fa fa-terminal fa-fw"></i>
+                AI Code Submission
+            </button>
+        </a>
+    </div>
+    <div class="col s4 rounded-block">
+        <a class="nav-link" routerLink="/app-training" routerLinkActive="active">
+            <button class="btn btn-primary btn-lg">
+                <i class="fa fa-exchange fa-fw"></i>
+                Train your AI
+            </button>
+        </a>
+    </div>
+    <div class="col s4 rounded-block">
+        <a class="nav-link" routerLink="/app-statistics" routerLinkActive="active">
+            <button class="btn btn-primary btn-lg">
+                <i class="fa  fa-list-ol fa-fw"></i>
+                statistics
+            </button>
+        </a>
     </div>
 </div>
