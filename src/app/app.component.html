@@ -5,6 +5,9 @@
             class="black-text"><i class="fa fa-first-order fa-fw"></i>{{title}}</span></a>
         <ul class="right hide-on-med-and-do-l">
             <li *ngIf="auth.loggedIn()">
+                <span class="black-text">{{greetingMessage()}}, {{auth.userName()}}</span>
+            </li>
+            <li *ngIf="auth.loggedIn()">
                 <a class="nav-link" routerLink="/app-dashboard" routerLinkActive="active">
                     <span class="black-text"><i class="fa fa-dashboard fa-fw"></i>Dashboard</span></a>
             </li>
@@ -30,10 +33,6 @@
     </div>
 </nav>
 <div class="container">
-    <div *ngIf="auth.loggedIn()" class="page-header">
-        <h2 class="black-text">{{greetingMessage()}}, {{auth.userName()}}!</h2>
-    </div>
-
     <router-outlet></router-outlet>
 </div>
 
