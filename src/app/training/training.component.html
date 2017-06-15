@@ -5,7 +5,7 @@
             <li *ngFor="let script of scripts"
                 [class.selected]="script === selectedScript"
                 (click)="onSelect(script)">
-                <span>Script {{script.script_id}}<i class="fa-li fa fa-spinner fa-spin"></i> </span>
+                <span>Script {{script.scriptName}}<i class="fa-li fa fa-spinner fa-spin"></i> </span>
             </li>
         </ul>
         <div *ngIf="selectedScript">

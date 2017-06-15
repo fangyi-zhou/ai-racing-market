@@ -1,5 +1,6 @@
 export class Script {
-    script_id?: string;
+    _id?: string;
+    scriptName: string;
     username: string;
     code: string;
 }

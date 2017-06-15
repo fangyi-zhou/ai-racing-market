@@ -33,7 +33,7 @@ class Simulations{
         };
         this.addAI = function(id, AI){
             let sim = this.simulations.get(id);
-            sim.runRace(50,[AI]);
+            sim.runRace(100,[AI]);
         }
         this.checkCheckpoints = function() {
             this.simulations.forEach(function(sim, id) {
