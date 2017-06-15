@@ -22,16 +22,13 @@ export class LeaderBoardComponent implements OnInit {
                 this.entries = entry.map((entry) => {
                     entry.value = Math.random() * 10;
                     return entry;
+                }).sort(function (a, b) {
+                    return b.value - a.value;
                 });
             });
     }
     selectContact(entry: Entry) {
         this.selectedEntry = entry;
-    }
-    private getIndexOfContact = (contactId: String) => {
-        return this.entries.findIndex((contact) => {
-            return contact.id === contactId;
-        });
     }
 }
 
