@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
 
     successCallback(token) {
         alert("success!");
+        this.router.navigate(['./app-dashboard']);
     }
 
     failureCallback(errorText) {
