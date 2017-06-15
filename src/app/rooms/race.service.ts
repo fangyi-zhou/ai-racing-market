@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Room } from './room.component';
+import { Room } from './race.component';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
-export class RoomService {
+export class RaceService {
     private raceUrl = '/api/sims';
 
     constructor (private http: Http) {}

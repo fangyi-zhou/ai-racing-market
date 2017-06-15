@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RoomService} from './room.service';
+import {RaceService} from './race.service';
 
 export class Room {
     id: number;
@@ -10,16 +10,16 @@ export class Room {
 declare var communication: any;
 
 @Component({
-    selector: 'rooms',
-    templateUrl: './room.component.html',
-    styleUrls: ['./room.component.css'],
-    providers: [RoomService]
+    selector: 'app-race',
+    templateUrl: './race.component.html',
+    styleUrls: ['./race.component.css'],
+    providers: [RaceService]
 })
-export class RoomComponent implements OnInit{
+export class RaceComponent implements OnInit{
     title = 'AI racing rooms';
     rooms: Room[];
     selectedRoom: Room;
-    constructor(private roomService: RoomService) {}
+    constructor(private roomService: RaceService) {}
 
     ngOnInit(): void {
         this.roomService

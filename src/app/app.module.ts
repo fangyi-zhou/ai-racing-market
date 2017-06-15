@@ -5,7 +5,7 @@ import {OrderModule} from "ngx-order-pipe";
 
 import {AppComponent} from "./app.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
-import {RoomComponent} from "./rooms/room.component";
+import {RaceComponent} from "./rooms/race.component";
 import {LoginComponent} from "./login/login.component";
 import {CodeSubmissionComponent} from "./codeSubmission/codeSubmission.component";
 import {MapBuilderComponent} from "./mapBuilder/mapBuilder.component";
@@ -30,7 +30,7 @@ import { TrainingComponent } from './training/training.component';
     declarations: [
         AppComponent,
         DashboardComponent,
-        RoomComponent,
+        RaceComponent,
         LoginComponent,
         CodeSubmissionComponent,
         MapBuilderComponent,

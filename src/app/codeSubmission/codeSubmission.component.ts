@@ -5,17 +5,17 @@ import {ScriptService} from "../scripts/script.service";
 import {Script} from "../scripts/script";
 
 @Component({
-  selector:'codeSubmission',
-  templateUrl:'./codeSubmission.component.html',
-  styleUrls:['./codeSubmission.component.css'],
-  providers:[CodeEditorService, ScriptService]
+  selector: 'app-codeSubmission',
+  templateUrl: './codeSubmission.component.html',
+  styleUrls: ['./codeSubmission.component.css'],
+  providers: [CodeEditorService, ScriptService]
 })
 
 export class CodeSubmissionComponent implements OnInit{
 
   constructor(private codeEditorService: CodeEditorService, private scriptService: ScriptService) { }
 
-  ngOnInit():void{
+  ngOnInit(): void{
     this.codeEditorService.loadCodeEditor();
   }
 
