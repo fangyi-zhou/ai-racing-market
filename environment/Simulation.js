@@ -31,6 +31,10 @@ class Simulations{
                 }
             });
         };
+        this.addAI = function(id, AI){
+            let sim = this.simulations.get(id);
+            sim.runRace(50,[AI]);
+        }
         this.checkCheckpoints = function() {
             this.simulations.forEach(function(sim, id) {
                 sim.checkCheckpoints();
@@ -145,9 +149,9 @@ class Simulation{
                 console.log('Race ran between 0 cars');
                 return;
             }
-            let winner = this.findFirstPlaceCar();
-            /********** Removed since winner is sometimes null *************/
-            console.log('Race ended. In first place is: ', winner.clientID, ' breaking ', winner.progress, ' gates!');
+            // let winner = this.findFirstPlaceCar();
+            // /********** Removed since winner is sometimes null *************/
+            // console.log('Race ended. In first place is: ', winner.clientID, ' breaking ', winner.progress, ' gates!');
         };
 
         this.step = function(timeStep) {
@@ -173,7 +177,7 @@ class Simulation{
         };
 
         this.addRaceCar = function (clientID, position) {
-            let car = new RaceCar.RaceCar(this.raceCars.count()+1, clientID, this.world, position, Math.PI);
+            let car = new RaceCar.RaceCar(this.raceCars.count()+1, clientID, this.world, position, 0);
             return this.addRaceCarToWorld(car);
         };
 

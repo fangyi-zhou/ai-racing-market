@@ -33,7 +33,7 @@ export class TrainingComponent implements OnInit {
         // TODO: clear graphics
         communication.disconnectOnSwap();
         communication.init(1337);
-        communication.train(script._id);
+        communication.train(script.script_id);
     }
     zoomIn(): void {
         communication.zoomIn();

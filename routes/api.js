@@ -121,8 +121,8 @@ router.get("/sims", function(req,res){
 })
 
 router.post("/sims", function(req,res){
-    raceBack.addSim(req.body.id, req.body.mode);
-    //TODO implement AI selection
+    //Random selected AI
+    raceBack.addSim(req.body.id, req.body.mode, req.body.AI);
     res.json("yes");
 });
 

@@ -10,17 +10,15 @@
         </ul>
         <button class="btn btn-warning" (click)="createNewSim()">New Sim</button>
         <div *ngIf="auth.loggedIn();else notLoggedIn">
-            <div *ngIf="userScripts != []">
                 <label>Scripts</label>
                 <angular2-multiselect [data]="userScripts"  [(ngModel)]="selectedItems"
                                       [settings]= "dropDownSettings"
                                       (onSelect)="onItemSelect($event)"></angular2-multiselect>
-            </div>
             <ng-template #notLoggedIn>
-                L
+                LOL
             </ng-template>
         </div>
-
+        <button class="btn btn-warning" (click)="runNewSim()">GOGOGO</button>
     </div>
 
     <div class="col s8">

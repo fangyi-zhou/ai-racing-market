@@ -5,6 +5,7 @@ import {AuthService} from '../auth.service';
 import {Script} from '../scripts/script';
 
 export class Room {
+    AI?: string;
     id: number;
     mode: number;
     name: string;
@@ -27,11 +28,11 @@ export class RaceComponent implements OnInit{
         text: ' select your AI',
     };
     selectedItems = [];
-    userScripts: any[];
-    constructor(private roomService: RaceService, private scriptService: ScriptService, private auth: AuthService) {}
+    userScripts = [];
+    constructor(private raceService: RaceService, private scriptService: ScriptService, private auth: AuthService) {}
 
     ngOnInit(): void {
-        this.roomService
+        this.raceService
             .getSims()
             .then((sim: Room[]) => {
                 this.rooms = sim.map((sim) => {
@@ -58,19 +59,23 @@ export class RaceComponent implements OnInit{
                 this.userScripts = scripts.map((script) => {
                     console.log(script);
                     return {
-                        id: script._id,
+                        id: script.script_id,
                         itemName: script.username
                     }
                 });
             });
         }
+    }
+    runNewSim() {
         const room: Room = {
             id: this.rooms.length,
-            mode: 2,
-            name: 'foo'
+            mode: 0,
+            name: 'bar',
+            AI: this.selectedItems.length !== 0 ? this.selectedItems[0].id : ''
         };
+        console.log(room);
         if (this.rooms.length < 9) {
-            this.roomService.createSim(room).then((newSim: Room) => {
+            this.raceService.createSim(room).then((newSim: Room) => {
                 this.rooms.push(room);
             });
         }
@@ -86,7 +91,7 @@ export class RaceComponent implements OnInit{
     }
 
     onItemSelect(item: any): void {
-        console.log(item)
+        this.selectedItems = [item];
     }
 }
 
