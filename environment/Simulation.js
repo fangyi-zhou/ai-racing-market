@@ -74,10 +74,12 @@ class Simulations{
         this.currentSims = function(){
             let sims = [];
             this.simulations.forEach(function(sim, id){
-               sims.push({
-                   id:id
-                   //TODO add more information;
-               })
+                if (sim.mode != 1){
+                    sims.push({
+                        id:id
+                        //TODO add more information;
+                    })
+                }
             });
             return sims;
         }
