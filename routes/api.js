@@ -79,7 +79,7 @@ router.post("/register", function(req, res) {
                     handleError(res, err.message, "Failed to create new user")
                 } else {
                     const token = jwt.sign({ username: username }, process.env.TOKEN_SECRET || TOKEN_SECRET);
-                    res.json({id_token: token});
+                    res.json({id_token: token, username: username});
                 }
             })
         }
