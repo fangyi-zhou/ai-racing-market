@@ -5,6 +5,7 @@ let db;
 
 const SCRIPT_COLLECTION = "script";
 const USER_COLLECTION = "user";
+const USER_SCRIPTS_COLLECTION = "userScripts";
 
 function init(callback) {
     mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
@@ -42,6 +43,10 @@ function getAllUsers(callback){
 
 function createUser(username, saltedPass, salt, callback) {
     db.collection(USER_COLLECTION).insertOne({username: username, saltedPass: saltedPass, salt: salt}, callback);
+}
+
+function getUserScripts(username, callback) {
+    db.collection(USER_SCRIPTS_COLLECTION).find({username: username}).toArray(callback);
 }
 
 module.exports.getScriptById = getScriptById;
