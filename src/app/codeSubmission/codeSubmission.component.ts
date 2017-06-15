@@ -4,6 +4,7 @@ import {CodeEditorService} from "../code-editor.service";
 import {ScriptService} from "../scripts/script.service";
 import {Script} from "../scripts/script";
 import {AuthService} from '../auth.service'
+import {isUndefined} from "util";
 
 @Component({
   selector: 'app-codeSubmission',
@@ -18,19 +19,24 @@ export class CodeSubmissionComponent implements OnInit{
   constructor(private codeEditorService: CodeEditorService, private scriptService: ScriptService, private auth: AuthService) { }
 
   ngOnInit(): void{
+      this.script.username = "";
     this.codeEditorService.loadCodeEditor();
     this.codeEditorService.postCode(this.defaultCode);
   }
 
   submitScript() {
+      console.log(this.script.scriptName);
+      if (isUndefined(this.script.scriptName)) {
+          alert("need name field");
+      }else{
           this.script.code = this.codeEditorService.getCode();
           this.script.username = this.auth.userName();
-          console.log(this.script)
-      this.scriptService.createScript(this.script).then((newScript: Script) => {
-          // TODO : tell user upload complete properly
-          alert("Success!");
-          console.log("%o", newScript);
-      });
+          this.scriptService.createScript(this.script).then((newScript: Script) => {
+              // TODO : tell user upload complete properly
+              alert("Success!");
+              console.log("%o", newScript);
+          });
+      }
   };
     changeListener($event): void {
         this.readThis($event.target);
