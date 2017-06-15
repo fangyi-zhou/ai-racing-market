@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {AuthService} from "../auth.service";
+import {Router} from "@angular/router";
 
 interface Credential {
     username: string;
@@ -19,11 +20,13 @@ export class LoginComponent implements OnInit {
         password: ""
     };
 
-    constructor(private auth: AuthService) {
+    constructor(private auth: AuthService, private router: Router) {
     }
 
     ngOnInit(): void {
-
+        if (this.auth.loggedIn()) {
+            this.router.navigate(['./app-dashboard']);
+        }
     }
 
     onLogin() {
@@ -40,10 +43,6 @@ export class LoginComponent implements OnInit {
             return;
         }
         this.auth.register(this.credential, this.successCallback, this.failureCallback);
-    }
-
-    onLogout() {
-        this.auth.logout();
     }
 
     successCallback(token) {
