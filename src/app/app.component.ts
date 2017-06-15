@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './auth.service';
+import {Router} from "@angular/router";
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
@@ -8,7 +9,14 @@ import { AuthService } from './auth.service';
 })
 export class AppComponent {
     title = 'AI Racing Market';
-    constructor(private auth: AuthService) {}
+    constructor(private auth: AuthService, private router: Router) {}
+
+    onLogout() {
+        console.log("trying to logout");
+        this.auth.logout();
+        this.router.navigate(['./app-landing']);
+    }
+
     greetingMessage() {
         const hour = new Date().getHours();
         if (hour <= 4) return "It's late";

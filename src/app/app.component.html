@@ -16,8 +16,8 @@
                     <span class="black-text"><i class="fa fa-flag-checkered fa-fw"></i>Simulation Rooms</span></a>
             </li>
             <li *ngIf="auth.loggedIn(); else elseBlock">
-                <a class="nav-link" routerLink="/app-login" routerLinkActive="active">
-                    <span class="black-text"><i class="fa  fa-key fa-fw"></i>Logoff</span></a>
+                <a class="nav-link">
+                    <span class="black-text" (click)="onLogout()"><i class="fa  fa-key fa-fw"></i>Logout</span></a>
             </li>
             <ng-template #elseBlock>
                 <li>
