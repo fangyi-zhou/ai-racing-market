@@ -4,7 +4,7 @@
         <a href="#!" class="brand-logo left" style="color: black;"> <span
             class="black-text"><i class="fa fa-first-order fa-fw"></i>{{title}}</span></a>
         <ul class="right hide-on-med-and-do-l">
-            <li>
+            <li *ngIf="auth.loggedIn()">
                 <a class="nav-link" routerLink="/app-dashboard" routerLinkActive="active">
                     <span class="black-text"><i class="fa fa-dashboard fa-fw"></i>Dashboard</span></a>
             </li>
