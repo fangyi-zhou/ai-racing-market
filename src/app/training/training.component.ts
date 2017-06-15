@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ScriptService} from '../scripts/script.service';
 import { Script } from '../scripts/script';
-import { CodeEditorService } from '../code-editor.service'
+import { CodeEditorService } from '../code-editor.service';
+import { AuthService } from '../auth.service';
 
 declare var communication: any;
 
@@ -9,22 +10,25 @@ declare var communication: any;
     selector: 'app-training',
     templateUrl: './training.component.html',
     styleUrls: ['./training.component.css'],
-    providers: [ScriptService, CodeEditorService]
+    providers: [ScriptService, CodeEditorService, AuthService]
 })
 export class TrainingComponent implements OnInit {
     scripts: Script[];
     selectedScript: Script;
-    constructor(private trainingService: ScriptService, private codeEditorService: CodeEditorService) {}
+    constructor(private trainingService: ScriptService, private codeEditorService: CodeEditorService, private auth: AuthService) {}
 
     ngOnInit(): void {
-        this.trainingService
-            .getAllScript()
-            .then((script: Script[]) => {
-                this.scripts = script.map((script) => {
-                    // TODO some mapping for raw script json
-                    return script;
+        if (this.auth.loggedIn()) {
+            this.trainingService
+                .getUserScript(this.auth.userName())
+                .then((script: Script[]) => {
+                    this.scripts = script.map((script) => {
+                        // TODO some mapping for raw script json
+                        return script;
+                    });
+                    console.log(this.scripts);
                 });
-            });
+        }
         communication.initGraphics();
         this.codeEditorService.loadCodeEditor();
     }
@@ -35,7 +39,7 @@ export class TrainingComponent implements OnInit {
         // TODO: clear graphics
         communication.disconnectOnSwap();
         communication.init(1337);
-        communication.train(script.script_id);
+        communication.train(script._id);
     }
     zoomIn(): void {
         communication.zoomIn();

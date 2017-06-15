@@ -59,8 +59,8 @@ export class RaceComponent implements OnInit{
                 this.userScripts = scripts.map((script) => {
                     console.log(script);
                     return {
-                        id: script.script_id,
-                        itemName: script.username
+                        id: script._id,
+                        itemName: script.scriptName
                     }
                 });
             });
