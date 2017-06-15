@@ -30,7 +30,7 @@
     </div>
 </nav>
 <div *ngIf="auth.loggedIn()">
-    <h2 class="black-text">welcome {{auth.userName()}}</h2>
+    <h2 class="black-text">{{greetingMessage()}}, {{auth.userName()}}!</h2>
 </div>
 
 <router-outlet></router-outlet>
