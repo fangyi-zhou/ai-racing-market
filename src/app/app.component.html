@@ -29,10 +29,11 @@
         </ul>
     </div>
 </nav>
-<div *ngIf="auth.loggedIn()">
-    <h2 class="black-text">{{greetingMessage()}}, {{auth.userName()}}!</h2>
+<div class="container">
+    <div *ngIf="auth.loggedIn()" class="page-header">
+        <h2 class="black-text">{{greetingMessage()}}, {{auth.userName()}}!</h2>
+    </div>
+
+    <router-outlet></router-outlet>
 </div>
-
-<router-outlet></router-outlet>
-
 
