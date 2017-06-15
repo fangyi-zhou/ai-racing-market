@@ -9,10 +9,11 @@ import {AuthService} from '../auth.service'
   selector: 'app-codeSubmission',
   templateUrl: './codeSubmission.component.html',
   styleUrls: ['./codeSubmission.component.css'],
-  providers: [CodeEditorService, ScriptService,AuthService]
+  providers: [CodeEditorService, ScriptService, AuthService]
 })
 
 export class CodeSubmissionComponent implements OnInit{
+    script = new Script();
   defaultCode = "import sys";
   constructor(private codeEditorService: CodeEditorService, private scriptService: ScriptService, private auth: AuthService) { }
 
@@ -22,12 +23,10 @@ export class CodeSubmissionComponent implements OnInit{
   }
 
   submitScript() {
-      let script: Script = {
-          code : this.codeEditorService.getCode(),
-          scriptName : 'foo',
-          username: this.auth.userName()
-      };
-      this.scriptService.createScript(script).then((newScript: Script) => {
+          this.script.code = this.codeEditorService.getCode();
+          this.script.username = this.auth.userName();
+          console.log(this.script)
+      this.scriptService.createScript(this.script).then((newScript: Script) => {
           // TODO : tell user upload complete properly
           alert("Success!");
           console.log("%o", newScript);
