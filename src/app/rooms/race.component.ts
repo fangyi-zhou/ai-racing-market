@@ -79,6 +79,7 @@ export class RaceComponent implements OnInit{
                 this.rooms.push(room);
             });
         }
+        this.onSelect(room);
     }
     zoomIn(): void {
         communication.zoomIn();
