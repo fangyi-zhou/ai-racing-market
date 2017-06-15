@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ScriptService} from '../scripts/script.service';
 import { Script } from '../scripts/script';
+import { CodeEditorService } from '../code-editor.service'
 
 declare var communication: any;
 
@@ -8,12 +9,12 @@ declare var communication: any;
     selector: 'app-training',
     templateUrl: './training.component.html',
     styleUrls: ['./training.component.css'],
-    providers: [ScriptService]
+    providers: [ScriptService, CodeEditorService]
 })
 export class TrainingComponent implements OnInit {
     scripts: Script[];
     selectedScript: Script;
-    constructor(private trainingService: ScriptService) {}
+    constructor(private trainingService: ScriptService, private codeEditorService: CodeEditorService) {}
 
     ngOnInit(): void {
         this.trainingService
@@ -25,6 +26,7 @@ export class TrainingComponent implements OnInit {
                 });
             });
         communication.initGraphics();
+        this.codeEditorService.loadCodeEditor();
     }
     onSelect(script: Script): void {
         this.selectedScript = script;

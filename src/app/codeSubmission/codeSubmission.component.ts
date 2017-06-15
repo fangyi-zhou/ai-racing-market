@@ -12,11 +12,12 @@ import {Script} from "../scripts/script";
 })
 
 export class CodeSubmissionComponent implements OnInit{
-
+  defaultCode = "import sys";
   constructor(private codeEditorService: CodeEditorService, private scriptService: ScriptService) { }
 
   ngOnInit(): void{
     this.codeEditorService.loadCodeEditor();
+    this.codeEditorService.postCode(this.defaultCode);
   }
 
   submitScript() {

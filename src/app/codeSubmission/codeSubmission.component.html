@@ -5,7 +5,7 @@
                 <h4 > Upload your submission here</h4>
                 <input type="file" placeholder="Upload file..." (change)="changeListener($event)"  />
             </div>
-            <div id="editor" class="container left-align" style="height: 500px;">import numpy as np: </div>
+            <div id="editor" class="container left-align" style="height: 500px;">{{defaultCode}}</div>
                 <button class="btn waves-effect semi-transparent" type="submit" name="action" (click)="submitScript()">Submit
                     <i class="fa fa-arrow-circle-o-right fa-fw"></i></button>
             </div>

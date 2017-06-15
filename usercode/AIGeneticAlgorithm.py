@@ -104,10 +104,10 @@ def crossover_mutate(creatures, mutation_rate):
   return new_creatures
 
 
-number_of_steps_per_episode = 10000
-number_of_episodes = 100
+number_of_steps_per_episode = 4000
+number_of_episodes = 250
 total_learning_steps = number_of_episodes * number_of_steps_per_episode
-number_of_creatures = 50
+number_of_creatures = 25
 number_sensors_per_creature = 10
 sensor_length = 3
 creatures = []
@@ -131,6 +131,20 @@ for i in range(number_of_creatures):
 #     print np.asarray(mat.tolist())
 #     print mat
 
+def sendCommandDelay(command):
+    print command
+    time.sleep(0.01)
+    sys.stdout.flush()
+    time.sleep(0.01)
+
+def print_weights():
+    sorted_parents = sorted(creatures, key=lambda x: -x.life) #Sort copied creatures to serve as parents
+    sendCommandDelay('Best creature life')
+    c = sorted_parents[0]
+    sendCommandDelay(c.life)
+    for mat in c.weights:
+        sendCommandDelay(mat.tolist())
+
 def get_input():
     sendCommand('get rays')
     sensory_input = np.full((number_sensors_per_creature, 1), 0.0)
@@ -143,7 +157,7 @@ def get_input():
     # sendCommand(sensory_input)
     return sensory_input;
 
-down_count_max = 800
+down_count_max = 600
 for i in range(number_of_episodes):
     for creature in creatures:
         sendCommand('world reset')
@@ -161,10 +175,13 @@ for i in range(number_of_episodes):
             else:
                 down_count = 0
 
-            if (i == number_of_episodes - 1):
-                time.sleep(0.02)
+            # if (i == number_of_episodes - 1):
+            #     time.sleep(0.02)
         sendCommand('get totalReward')
         creature.life = float(sys.stdin.readline())
+
+    if (i % 5 == 0):
+        print_weights()
 
     creatures = crossover_mutate(creatures, 0.05)
     sendCommand('------------ Training epoch ' + str(i))
@@ -180,19 +197,3 @@ for i in range(number_of_episodes):
 
     sendCommand("Average fitness: " + str(average_fitness))
     sendCommand("Median fitness: " + str(median_fitness))
-#
-# for c in creatures:
-#     for mat in c.weights:
-#         sendCommand(mat.tolist())
-
-for c in creatures:
-    sendCommand('Test output')
-    test_input1 = np.matrix([0, 0, 0, 0, 0, 1, 1, 1, 1, 1]).T
-    test_input2 = np.matrix([1, 1, 1, 0, 0, 0, 0, 1, 1, 1]).T
-    test_input3 = np.matrix([1, 1, 1, 1, 1, 0, 0, 0, 0, 0]).T
-    sendCommand(c.feed_forward(test_input1))
-    time.sleep(0.01)
-    sendCommand(c.feed_forward(test_input2))
-    time.sleep(0.01)
-    sendCommand(c.feed_forward(test_input3))
-    time.sleep(0.01)
