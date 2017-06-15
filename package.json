@@ -39,8 +39,9 @@
     "rxjs": "^5.1.0",
     "serve-favicon": "~2.4.2",
     "socket.io": "^1.7.4",
-    "temp-write": "^3.3.0",
-    "zone.js": "^0.8.4"
+    "zone.js": "^0.8.4",
+    "fs-extra": "latest",
+    "tempdir": "latest"
   },
   "devDependencies": {
     "mocha": "^3.4.2",
