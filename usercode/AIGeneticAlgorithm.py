@@ -26,8 +26,8 @@ class Creature:
         self.life = 0
         self.positive_life = 0
         self.scale = 0
-        self.max_engine_force = 0.2
-        self.max_steer_force = 1
+        self.max_engine_force = 1
+        self.max_steer_force = 2
 
         # Genome
         self.weights = self.create_weights(config)

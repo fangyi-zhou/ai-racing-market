@@ -116,7 +116,7 @@ class Simulation{
         };
         this.configureWorld();
 
-        this.maxSteer = 1;//Math.PI / 5;
+        this.maxSteer = 2;//Math.PI / 5;
 
         this.rawMap = util.arrayCopy(map);
 
