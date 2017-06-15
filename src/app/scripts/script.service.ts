@@ -10,10 +10,10 @@ export class ScriptService {
     constructor(private http: Http) { };
 
     // get("/api/script")
-    getScript(): Promise<Script> {
+    getScript(): Promise<Script[]> {
         return this.http.get(this.scriptUrl)
             .toPromise()
-            .then(response => response.json() as Script)
+            .then(response => response.json() as Script[])
             .catch(this.handleError);
     }
 

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ScriptService} from '../Script.service';
-import { Script } from '../Script';
+import {ScriptService} from '../scripts/script.service';
+import { Script } from '../scripts/script';
 
 declare var communication: any;
 
@@ -17,7 +17,7 @@ export class TrainingComponent implements OnInit {
 
     ngOnInit(): void {
         this.trainingService
-            .getScripts()
+            .getScript()
             .then((script: Script[]) => {
                 this.scripts = script.map((script) => {
                     // TODO some mapping for raw script json
