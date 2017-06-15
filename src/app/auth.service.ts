@@ -23,7 +23,7 @@ export class AuthService {
     }
 
     static handleSuccess(data, successCallback) {
-        const token: string = data.id_token;
+        const token: string = JSON.stringify(data);
         localStorage.setItem('id_token', token);
         if (successCallback)
             successCallback(token);
@@ -61,5 +61,9 @@ export class AuthService {
 
     logout() {
         localStorage.removeItem('id_token');
+    }
+    userName() {
+        const token = JSON.parse(localStorage.getItem('id_token'));
+        return token.username;
     }
 }

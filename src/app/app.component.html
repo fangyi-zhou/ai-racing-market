@@ -3,7 +3,7 @@
 
         <a href="#!" class="brand-logo left" style="color: black;"> <span
             class="black-text"><i class="fa fa-first-order fa-fw"></i>{{title}}</span></a>
-        <ul class="right hide-on-med-and-down">
+        <ul class="right hide-on-med-and-do-l">
             <li>
                 <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
                     <span class="black-text"><i class="fa fa-dashboard fa-fw"></i>Dashboard</span></a>
@@ -29,6 +29,10 @@
         </ul>
     </div>
 </nav>
+<div *ngIf="auth.loggedIn()">
+    <h2 class="black-text">welcome {{auth.userName()}}</h2>
+</div>
+
 <router-outlet></router-outlet>
 
 

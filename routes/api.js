@@ -92,7 +92,7 @@ router.post("/auth", function(req, res) {
             hash.update(salt);
             if (hash.digest('hex') === pass) {
                 const token = jwt.sign({ username: username }, process.env.TOKEN_SECRET || TOKEN_SECRET);
-                res.json({id_token: token});
+                res.json({id_token: token, username: username});
             } else {
                 res.status(403).json({error: "Invalid login"});
             }
