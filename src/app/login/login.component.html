@@ -8,4 +8,8 @@
         <button class="btn btn-lg btn-default" (click)="onLogin()">Login</button>
         <button class="btn btn-lg btn-default" (click)="onRegister()">Register</button>
     </form>
+    <div class="error" *ngIf="hasError()">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {{errMsg}}
+    </div>
 </div>

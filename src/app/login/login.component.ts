@@ -15,6 +15,8 @@ interface Credential {
 })
 export class LoginComponent implements OnInit {
 
+    errMsg: string;
+
     credential: Credential = {
         username: "",
         password: ""
@@ -31,26 +33,34 @@ export class LoginComponent implements OnInit {
 
     onLogin() {
         if (this.credential.username === "" || this.credential.password === "") {
-            this.failureCallback("Username and password must not be empty")
+            this.failureCallback(this)("Username and password must not be empty");
             return;
         }
-        this.auth.login(this.credential, this.successCallback, this.failureCallback);
+        this.auth.login(this.credential, this.successCallback(this), this.failureCallback(this));
     }
 
     onRegister() {
         if (this.credential.username === "" || this.credential.password === "") {
-            this.failureCallback("Username and password must not be empty")
+            this.failureCallback(this)("Username and password must not be empty")
             return;
         }
-        this.auth.register(this.credential, this.successCallback, this.failureCallback);
+        this.auth.register(this.credential, this.successCallback(this), this.failureCallback(this));
     }
 
-    successCallback(token) {
-        alert("success!");
-        this.router.navigate(['./app-dashboard']);
+    successCallback(self) {
+        return (token) => {
+            alert("success!");
+            self.router.navigate(['./app-dashboard']);
+        }
     }
 
-    failureCallback(errorText) {
-        alert(`failed! Reason: ${errorText}`);
+    failureCallback(self) {
+        return (errMsg) => {
+            self.errMsg = errMsg;
+        }
+    }
+
+    hasError() {
+        return this.errMsg !== undefined;
     }
 }

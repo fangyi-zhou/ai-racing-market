@@ -18,5 +18,8 @@ input::placeholder {
     color: rgba(0,0,0, 0.6);
 }
 
-.form-control {
+.error {
+    color: #d9534f;
+    padding: 1%;
 }
+
