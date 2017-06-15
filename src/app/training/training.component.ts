@@ -17,7 +17,7 @@ export class TrainingComponent implements OnInit {
 
     ngOnInit(): void {
         this.trainingService
-            .getScript()
+            .getAllScript()
             .then((script: Script[]) => {
                 this.scripts = script.map((script) => {
                     // TODO some mapping for raw script json

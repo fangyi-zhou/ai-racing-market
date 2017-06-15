@@ -12,6 +12,16 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
+router.get('/user/:username', function (req, res) {
+    database.getUserScripts(req.params.username, function(err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to get script");
+        } else {
+            res.status(200).json(doc);
+        }
+    });
+});
+
 router.get('/script/:id', function (req, res) {
   database.getScriptById(req.params.id, function(err, doc) {
     if (err) {

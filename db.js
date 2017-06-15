@@ -55,4 +55,5 @@ module.exports.getUserByUsername = getUserByUsername;
 module.exports.createUser = createUser;
 module.exports.getAllUsers = getAllUsers;
 module.exports.getAllScripts = getAllScripts;
+module.exports.getUserScripts = getUserScripts;
 module.exports.init = init;

@@ -76,7 +76,9 @@ class Simulations{
             this.simulations.forEach(function(sim, id){
                 if (sim.mode != 1){
                     sims.push({
-                        id:id
+                        id:id,
+                        mode: 2,
+                        name: 'foo'
                         //TODO add more information;
                     })
                 }

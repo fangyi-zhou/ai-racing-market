@@ -21,7 +21,8 @@ export class CodeSubmissionComponent implements OnInit{
 
   submitScript() {
       let script: Script = {
-          code : this.codeEditorService.getCode()
+          code : this.codeEditorService.getCode(),
+          username : 'foo'
       };
       this.scriptService.createScript(script).then((newScript: Script) => {
           // TODO : tell user upload complete properly

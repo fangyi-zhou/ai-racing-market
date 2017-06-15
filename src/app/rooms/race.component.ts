@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {RaceService} from './race.service';
+import {ScriptService} from '../scripts/script.service';
+import {AuthService} from '../auth.service';
+import {Script} from '../scripts/script';
 
 export class Room {
     id: number;
@@ -13,13 +16,19 @@ declare var communication: any;
     selector: 'app-race',
     templateUrl: './race.component.html',
     styleUrls: ['./race.component.css'],
-    providers: [RaceService]
+    providers: [RaceService, ScriptService, AuthService]
 })
 export class RaceComponent implements OnInit{
     title = 'AI racing rooms';
     rooms: Room[];
     selectedRoom: Room;
-    constructor(private roomService: RaceService) {}
+    dropDownSettings = {
+        singleSelection: true,
+        text: ' select your AI',
+    };
+    selectedItems = [];
+    userScripts: any[];
+    constructor(private roomService: RaceService, private scriptService: ScriptService, private auth: AuthService) {}
 
     ngOnInit(): void {
         this.roomService
@@ -42,6 +51,19 @@ export class RaceComponent implements OnInit{
         }
     }
     createNewSim() {
+        if (this.auth.loggedIn()) {
+            this.scriptService
+                .getUserScript(this.auth.userName())
+                .then((scripts: Script[]) => {
+                this.userScripts = scripts.map((script) => {
+                    console.log(script);
+                    return {
+                        id: script._id,
+                        itemName: script.username
+                    }
+                });
+            });
+        }
         const room: Room = {
             id: this.rooms.length,
             mode: 2,
@@ -62,11 +84,9 @@ export class RaceComponent implements OnInit{
     switchCar(): void {
         communication.switchCar();
     }
+
+    onItemSelect(item: any): void {
+        console.log(item)
+    }
 }
 
-
-/*
- Copyright 2017 Google Inc. All Rights Reserved.
- Use of this source code is governed by an MIT-style license that
- can be found in the LICENSE file at http://angular.io/license
- */

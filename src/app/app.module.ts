@@ -2,6 +2,7 @@ import {NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
 import {OrderModule} from "ngx-order-pipe";
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 import {AppComponent} from "./app.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
@@ -25,7 +26,8 @@ import { TrainingComponent } from './training/training.component';
         FormsModule,
         AppRoutingModule,
         HttpModule,
-        OrderModule
+        OrderModule,
+        AngularMultiSelectModule
     ],
     declarations: [
         AppComponent,
