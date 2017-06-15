@@ -1,0 +1,22 @@
+.login {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 2%;
+    margin: 2%;
+    border-radius: 15px;
+}
+
+.btn-lg {
+    min-width: 15%;
+    margin: 2%;
+}
+
+input.form-control {
+    color: black;
+}
+
+input::placeholder {
+    color: rgba(0,0,0, 0.6);
+}
+
+.form-control {
+}
