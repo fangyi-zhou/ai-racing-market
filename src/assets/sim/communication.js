@@ -40,10 +40,6 @@
     });
     socket.on('raceFinish', function (info) {
         my.namespace.publicFunc();
-        while(container.children[0]){
-            container.removeChild(container.children[0]);
-        }
-        cars = {};
     });
   }
 

@@ -56,7 +56,7 @@ function addSim(id, mode, AI){
     let mapCopy = util.arrayCopy(current_map);
     simulations.addSimulation(id, mapCopy, this.io, mode);
     if(AI !== ''){
-        simulations.addAI(id,[AI,AI]);
+        simulations.addAI(id,[AI,AI,AI,AI]);
     }
 }
 
