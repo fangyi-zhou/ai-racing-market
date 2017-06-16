@@ -41,6 +41,18 @@ export class RaceComponent implements OnInit, OnDestroy {
                     return sim;
                 });
             });
+        if (this.auth.loggedIn()) {
+            this.scriptService
+                .getUserScript(this.auth.userName())
+                .then((scripts: Script[]) => {
+                    this.userScripts = scripts.map((script) => {
+                        return {
+                            id: script._id,
+                            itemName: script.scriptName
+                        }
+                    });
+                });
+        }
         communication.initGraphics();
         window['my'] = window['my'] || {};
         window['my'].namespace = window['my'].namespace || {};
@@ -71,31 +83,21 @@ export class RaceComponent implements OnInit, OnDestroy {
             communication.init(room.id);
         }
     }
-    createNewSim() {
-        if (this.auth.loggedIn()) {
-            this.scriptService
-                .getUserScript(this.auth.userName())
-                .then((scripts: Script[]) => {
-                this.userScripts = scripts.map((script) => {
-                    return {
-                        id: script._id,
-                        itemName: script.scriptName
-                    }
-                });
-            });
-        }
-    }
     runNewSim() {
-        const room: Room = {
-            id: this.rooms.length,
-            mode: 0,
-            name: 'bar',
-            AI: this.selectedItems.length !== 0 ? this.selectedItems[0].id : ''
-        };
-        this.raceService.createSim(room).then((newSim: Room) => {
-            this.rooms.push(room);
-        });
-        this.onSelect(room);
+        setTimeout(() => {
+            const room: Room = {
+                id: this.rooms.length,
+                mode: 0,
+                name: 'bar',
+                AI: this.selectedItems.length !== 0 ? this.selectedItems[0].id : ''
+            };
+            this.raceService.createSim(room).then((newSim: Room) => {
+                this.rooms.push(room);
+                this.onSelect(room);
+                this.switchCar();
+            });
+        }, 1000);
+
     }
     zoomIn(): void {
         communication.zoomIn();
