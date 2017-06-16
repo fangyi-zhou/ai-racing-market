@@ -33,7 +33,7 @@ class Simulations{
         };
         this.addAI = function(id, AI){
             let sim = this.simulations.get(id);
-            sim.runRace(50,[AI,AI]);
+            sim.runRace(70,AI);
         }
         this.checkCheckpoints = function() {
             this.simulations.forEach(function(sim, id) {
@@ -132,11 +132,11 @@ class Simulation{
                 this.AIs.forEach(function(child, id) {
                     child.kill();
                 });
-                this.io.emit('raceFinish',{
-                    id:id
-                });
             }
-            this.simulations.removeSimulation(id);
+            this.io.emit('raceFinish',{
+                id: this.id
+            });
+            this.simulations.removeSimulation(this.id);
         };
 
         this.step = function(timeStep) {

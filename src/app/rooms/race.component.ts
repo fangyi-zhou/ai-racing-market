@@ -86,18 +86,16 @@ export class RaceComponent implements OnInit, OnDestroy {
         }
     }
     runNewSim() {
-        if (this.rooms.length < 9) {
-            const room: Room = {
-                id: this.rooms.length,
-                mode: 0,
-                name: 'bar',
-                AI: this.selectedItems.length !== 0 ? this.selectedItems[0].id : ''
-            };
-            this.raceService.createSim(room).then((newSim: Room) => {
-                this.rooms.push(room);
-            });
-            this.onSelect(room);
-        }
+        const room: Room = {
+            id: this.rooms.length,
+            mode: 0,
+            name: 'bar',
+            AI: this.selectedItems.length !== 0 ? this.selectedItems[0].id : ''
+        };
+        this.raceService.createSim(room).then((newSim: Room) => {
+            this.rooms.push(room);
+        });
+        this.onSelect(room);
     }
     zoomIn(): void {
         communication.zoomIn();

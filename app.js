@@ -67,7 +67,7 @@ db.init(() => {
         socket.on('join',function (info) {
             simId = info.simId;
             let sim = raceBack.getSim(simId);
-            if (sim == undefined){
+            if (sim === undefined){
                 //TODO
             } else {
                 io.to(socket.id).emit('init', sim.initIO(socket.id));

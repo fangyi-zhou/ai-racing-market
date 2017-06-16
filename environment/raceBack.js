@@ -33,13 +33,6 @@ function init(io, maxSims) {
 
     let mapCopy = util.arrayCopy(current_map);
     simulations.addSimulation(1337, mapCopy, io, Simulation.SimMode.Training);
-    for (let i = 0; i < maxSims; i++) {
-        let mapCopy = util.arrayCopy(current_map);
-        simulations.addSimulation(i, mapCopy, io, Simulation.SimMode.ClientDrive);
-    }
-    // simulations.get(9).mode = Simulation.SimMode.RankedRacing;
-    // simulations.get(maxSims-1).train('5941a81569950300117904fb');
-
     // Loop the program
     setInterval(function() {
         simulations.stepAll(fixedTimeStep);
@@ -62,8 +55,8 @@ function getAllSims(){
 function addSim(id, mode, AI){
     let mapCopy = util.arrayCopy(current_map);
     simulations.addSimulation(id, mapCopy, this.io, mode);
-    if(AI != ''){
-        simulations.addAI(id,AI);
+    if(AI !== ''){
+        simulations.addAI(id,[AI,AI]);
     }
 }
 

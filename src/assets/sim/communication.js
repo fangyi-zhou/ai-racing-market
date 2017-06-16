@@ -39,9 +39,11 @@
       updateMap(info);
     });
     socket.on('raceFinish', function (info) {
-       disconnectOnSwap();
-       console.log('ok');
         my.namespace.publicFunc();
+        while(container.children[0]){
+            container.removeChild(container.children[0]);
+        }
+        cars = {};
     });
   }
 
