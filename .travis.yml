@@ -10,4 +10,7 @@ notifications:
 before_install:
   - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
+  - export CA="ca"
+  - export CERT="cert"
+  - export KEY="key"
   - sh -e /etc/init.d/xvfb start
