@@ -64,7 +64,9 @@ function processSetCommand(child, splatInput) {
         default:
             console.error(`Cannot set ${splatInput[1]} for Child ${carId}`)
     }
-    raceBack.getSim(child.simID).applyMove(control, child.carId);
+    let sim = raceBack.getSim(child.simID);
+    if (sim !== undefined)
+    sim.applyMove(control, child.carId);
 }
 
 function processSingleCommand(child, data) {
@@ -79,6 +81,7 @@ function processSingleCommand(child, data) {
             processGetCommand(child, splatInput);
             break;
         case "world":
+            //TODO not allow child step in ranked mode
             processWorldCommand(child, splatInput);
             break;
         default:
@@ -99,7 +102,9 @@ function childExit(child, io) {
         console.log('You must first call setIO on host');
     }
     return function () {
-        raceBack.getSim(child.simID).removeUser(child.carId);
+        let sim = raceBack.getSim(child.simID);
+        if (sim !== undefined)
+            sim.removeUser(child.carId);
         io.local.emit("dc", {
             id: child.carId
         });
