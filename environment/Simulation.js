@@ -8,6 +8,7 @@ const util = require('./util');
 const rays = require('./rays');
 const RaceCar = require('./RaceCar');
 const AIHost = require('../usercode/host');
+const mapFS = require('./mapSave');
 
 class Simulations{
     constructor (maxSims) {
@@ -55,10 +56,10 @@ class Simulations{
         this.currentSims = function(){
             let sims = [];
             this.simulations.forEach(function(sim, id){
-                if (sim.mode != 1){
+                if (sim.mode == 0){
                     sims.push({
                         id:id,
-                        mode: 2,
+                        mode: 0,
                         name: 'foo'
                         //TODO add more information;
                     })
@@ -72,7 +73,8 @@ class Simulations{
 const SimMode = {
     RankedRacing : 0,
     Training : 1,
-    ClientDrive: 2
+    ClientDrive: 2,
+    Challenges: 3
 };
 
 class Simulation{
@@ -96,9 +98,10 @@ class Simulation{
 
         this.maxSteer = 2;//Math.PI / 5;
 
-        this.rawMap = util.arrayCopy(map);
+        this.rawMap;
 
         this.setMap = function(map) {
+            this.rawMap = util.arrayCopy(map);
             this.map = new Map.Map(map[0], map[1], map[2]);
             this.map.createMap(this.world, this.raceCars);
         };
@@ -167,15 +170,11 @@ class Simulation{
         };
 
         // Change the map in the world
-        this.changeMap = function (info) {
-            let segments = info.map.segments;
-            let checkpoints = info.map.gates;
-            let startGate = info.map.startGate;
+        this.changeMap = function (map) {
             this.map.removeMap(this.world);
-            this.map = new Map.Map(segments, checkpoints, startGate);
-            this.map.createMap(this.world);
-            return this.save;
+            this.setMap(map);
         };
+        this.changeMap(this.rawMap);
 
         // Prepare graphical representation for front end
         this.packageGraphics = function() {
@@ -312,7 +311,30 @@ class Simulation{
             this.mode = SimMode.Training;
             let startingPosition = [0.5, 0.5];
             let child = AIHost.createCar(io, scriptID, this.id, startingPosition, AIHost.ChildModes.Training);
+            this.AIs.set(child.carId, child);
         };
+
+        // Challenge Mode
+        this.challenge1 = function(scriptID) {
+            console.log('Challenge 1');
+        };
+        this.challenge2 = function(scriptID) {
+            console.log('Challenge 2');
+        };
+        this.challenge3 = function(scriptID) {
+            console.log('Challenge 3');
+        };
+        this.challenges = [this.challenge1, this.challenge2, this.challenge3];
+
+        this.runChallenge = function(scriptID, userLevel) {
+            console.log('Running challenge')
+            map = mapFS.readMap('./maps/challenges/' + userLevel + '.json');
+            this.challenges[userLevel](scriptID);
+            let startingPosition = [0.5, 0.5];
+            let child = AIHost.createCar(io, scriptID, this.id, startingPosition, AIHost.ChildModes.RankedRacing);
+            let mapCopy = util.arrayCopy([map.segments, map.gates, map.startGate]);
+            this.changeMap(mapCopy);
+        }
     }
 }
 

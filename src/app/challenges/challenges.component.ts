@@ -13,6 +13,7 @@ declare var communication: any;
 })
 export class ChallengeComponent implements OnInit {
     scripts: Script[];
+    userLevel: number;
     selectedScript: Script;
     constructor(private trainingService: ScriptService, private auth: AuthService) {}
 
@@ -25,19 +26,22 @@ export class ChallengeComponent implements OnInit {
                         // TODO some mapping for raw script json
                         return script;
                     });
+                    this.userLevel = this.auth.userLevel()
+                    console.log('Level: ', this.userLevel)
                     console.log(this.scripts);
                 });
         }
         communication.initGraphics();
+        communication.initChallenge(this.trainingService);
     }
     onSelect(script: Script): void {
         this.selectedScript = script;
     }
-    trainAi(script: Script): void {
+    attemptChallenge(script: Script): void {
         // TODO: clear graphics
         communication.disconnectOnSwap();
-        communication.init(1337);
-        communication.train(script._id);
+        communication.init(1338);
+        communication.attemptChallenge(script._id, this.userLevel);//this.userLevel);
     }
 }
 

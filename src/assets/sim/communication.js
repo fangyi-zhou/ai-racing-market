@@ -22,6 +22,10 @@
       renderer.view.focus();
   };
 
+    function initChallenge(userLevel) {
+        initChallenge2(userLevel);
+    }
+
   function serverCallBack() {
     socket.on('updateClient', function (info) {
       updateAllGraphics(info);
@@ -97,6 +101,14 @@
       viewingCarID = carIDs[carViewCount];
   }
 
+    function attemptChallenge(scriptId, level) {
+        socket.emit('challenge', {
+            id:1338,
+            level: level,
+            scriptId : scriptId
+        });
+    }
+
   var communication = {
       'initGraphics':initGraphics,
       'init':init,
@@ -105,7 +117,9 @@
       'zoomIn':zoomIn,
       'zoomOut':zoomOut,
       'switchCar':switchCar,
-      'train':train
+      'train':train,
+      'initChallenge':initChallenge,
+      'attemptChallenge': attemptChallenge
   };
 
   root.communication = communication;

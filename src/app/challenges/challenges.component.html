@@ -1,8 +1,11 @@
-<div class="jumbotron">
+<div class="jumbotron" xmlns="http://www.w3.org/1999/html">
+
     <div class="row">
-        <title>Challenges</title>
+        <h1><b>Challenges</b></h1>
+        <progress id="progressbar" value="10" max="100"></progress>
+
         <div class="col s2">
-            <h3 class="semi-transparent center"> Choose your script </h3>
+            <h3> Choose your script </h3>
             <ul class="scripts">
                 <li *ngFor="let script of scripts"
                     [class.selected]="script === selectedScript"
@@ -11,9 +14,8 @@
                 </li>
             </ul>
             <div *ngIf="selectedScript">
-                <button class="btn btn-warning" (click)="trainAi(selectedScript)">Train this</button>
+                <button class="btn btn-warning" (click)="attemptChallenge(selectedScript)">Attempt</button>
             </div>
-
         </div>
 
         <div class="col s8">

@@ -26,8 +26,8 @@ class Creature:
         self.life = 0
         self.positive_life = 0
         self.scale = 0
-        self.max_engine_force = 1
-        self.max_steer_force = 2
+        self.max_engine_force = 5
+        self.max_steer_force = 5
 
         # Genome
         self.weights = self.create_weights(config)
@@ -157,55 +157,53 @@ def get_input():
     # sendCommand(sensory_input)
     return sensory_input;
 
-def train_AI():
-    down_count_max = 600
-    for i in range(number_of_episodes):
-        for creature in creatures:
-            sendCommand('world reset')
-            down_count = 0
-            for j in range(number_of_steps_per_episode):
-                sensory_input = get_input()
-                creature.step(sensory_input)
+down_count_max = 600
+for i in range(number_of_episodes):
+    for creature in creatures:
+        sendCommand('world reset')
+        down_count = 0
+        for j in range(number_of_steps_per_episode):
+            sensory_input = get_input()
+            creature.step(sensory_input)
 
-                sendCommand("get speed")
-                speed = float(sys.stdin.readline())
-                if (speed < 0.001):
-                    down_count += 1
-                    if (down_count >= down_count_max):
-                        break
-                else:
-                    down_count = 0
+            sendCommand("get speed")
+            speed = float(sys.stdin.readline())
+            if (speed < 0.001):
+                down_count += 1
+                if (down_count >= down_count_max):
+                    break
+            else:
+                down_count = 0
 
-                # if (i == number_of_episodes - 1):
-                #     time.sleep(0.02)
-            sendCommand('get totalReward')
-            creature.life = float(sys.stdin.readline())
+            # if (i == number_of_episodes - 1):
+            #     time.sleep(0.02)
+        sendCommand('get totalReward')
+        creature.life = float(sys.stdin.readline())
 
-        if (i % 5 == 0):
-            print_weights()
+    if (i % 5 == 0):
+        print_weights()
 
-        creatures = crossover_mutate(creatures, 0.05)
-        sendCommand('------------ Training epoch ' + str(i))
-        sendCommand("Best fitness: " + str(creatures[number_of_creatures - 1].life))
-        median_fitness = creatures[int(number_of_creatures / 2)].life
-        average_fitness = 0;
-        for c in creatures:
-          average_fitness += c.life
-          sendCommand(c.life)
-          c.life = 0
-        average_fitness /= number_of_creatures
-        average_scores.append(average_fitness)
+    creatures = crossover_mutate(creatures, 0.05)
+    sendCommand('------------ Training epoch ' + str(i))
+    sendCommand("Best fitness: " + str(creatures[number_of_creatures - 1].life))
+    median_fitness = creatures[int(number_of_creatures / 2)].life
+    average_fitness = 0;
+    for c in creatures:
+      average_fitness += c.life
+      sendCommand(c.life)
+      c.life = 0
+    average_fitness /= number_of_creatures
+    average_scores.append(average_fitness)
 
-        sendCommand("Average fitness: " + str(average_fitness))
-        sendCommand("Median fitness: " + str(median_fitness))
+    sendCommand("Average fitness: " + str(average_fitness))
+    sendCommand("Median fitness: " + str(median_fitness))
 
 
 
 # Get training mode
 # mode = sys.stdin.readline().split()[0]
-mode = 'Train'
-if (mode == 'Train') {
-    train_AI()
-} else if (mode == 'Race') {
-
-}
+# mode = 'Train'
+# if (mode == 'Train'):
+#     train_AI()
+# elif (mode == 'Race'):
+#     pass

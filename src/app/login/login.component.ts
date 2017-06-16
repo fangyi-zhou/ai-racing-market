@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
     credential: Credential = {
         username: "",
         password: "",
-        level: 0
+        level: 1
     };
 
     constructor(private auth: AuthService, private router: Router) {

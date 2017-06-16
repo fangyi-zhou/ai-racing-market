@@ -104,17 +104,23 @@ db.init(() => {
             raceBack.getSim(simId).updateMovement(info, socket.id);
         });
 
-        // ************** TODO: Change this to POST ************* //
-        socket.on('saveMap', function (info) {
-            /******** TODO: replace to save to database ********/
-            socket.broadcast.emit('newMap', {
-                map: raceBack.getSim(simID).changeMap(info)
-            });
-        });
+        // // ************** TODO: Change this to POST ************* //
+        // socket.on('saveMap', function (info) {
+        //     /******** TODO: replace to save to database ********/
+        //     socket.broadcast.emit('newMap', {
+        //         map: raceBack.getSim(simID).changeMap(info)
+        //     });
+        // });
         socket.on('train', function (info) {
             // let sim = raceBack.getSim(simId);
             // if(sim !== undefined)
             raceBack.getSim(info.id).train(info.scriptId);
+        });
+
+        socket.on('challenge', function (info) {
+            // let sim = raceBack.getSim(simId);
+            // if(sim !== undefined)
+            raceBack.getSim(info.id).runChallenge(info.scriptId, info.level);
         })
     });
 });

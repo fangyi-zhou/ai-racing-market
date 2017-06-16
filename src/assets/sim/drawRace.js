@@ -93,7 +93,12 @@ function updateAllGraphics(info) {
         cars[id].carGraphic.position.y = car.position[1];
         cars[id].carGraphic.rotation = car.angle;
 
+        if (viewingCarID === null) {
+            viewingCarID = car.clientID;
+        }
+
         // Centre client view on the car they control
+        console.log(viewingCarID)
         if (viewingCarID === car.clientID) {
             container.position.x = -cars[id].carGraphic.position.x * zoom + renderer.width / 2; // center at origin
             container.position.y = cars[id].carGraphic.position.y * zoom + renderer.height / 2;
@@ -116,7 +121,6 @@ function initWorld(info) {
     carHeight = info.carHeight;
     numRays = info.numRays;
     clientCarID = info.id;
-    viewingCarID = clientCarID;
     drawMap(info.map, info.checkpoints, info.startGate);
     updateAllGraphics(info.cars);
 }

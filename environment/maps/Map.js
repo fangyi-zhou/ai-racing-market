@@ -28,6 +28,7 @@ function checkStartGateResult(result, ray, raceCars){
 
 class Map {
     constructor(segments, checkpoints, startGate) {
+        // console.log(segments);
         this.segments = segments;
         this.checkpoints = checkpoints;
         this.startGate = startGate;
@@ -60,6 +61,7 @@ class Map {
         };
 
         this._createp2MapSegment = function (world, segment) {
+            // console.log(segment)
             let p2map = new p2.Body({
                 mass: 1,
                 position: [0, 0],

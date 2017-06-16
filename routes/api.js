@@ -91,6 +91,7 @@ router.post("/register", function(req, res) {
 router.post("/auth", function(req, res) {
     const username = req.body.username;
     const password = req.body.password;
+    const level = req.body.level;
     database.getUserByUsername(username, function (err, doc) {
         if (err){
             handleError(res, err.message, "Failed to authenticate user")
@@ -104,7 +105,7 @@ router.post("/auth", function(req, res) {
             hash.update(salt);
             if (hash.digest('hex') === pass) {
                 const token = jwt.sign({ username: username }, process.env.TOKEN_SECRET || TOKEN_SECRET);
-                res.json({id_token: token, username: username});
+                res.json({id_token: token, username: username , level: level});
             } else {
                 res.status(403).json({error: "Invalid login"});
             }

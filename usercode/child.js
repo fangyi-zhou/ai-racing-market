@@ -49,7 +49,8 @@ class Child extends EventEmitter {
         this.carId = carId;
         this.initPosition = initPosition;
         this.car = raceBack.getSim(simID).addRaceCar(this.carId, initPosition);
-        this.mode = mode;
+        // TODO: Change this back to: this.mode = mode
+        this.mode = ChildModes.Training//mode;
         children.set(this.carId, this);
         // Get script
         db.getScriptById(scriptId, (err, doc) => {

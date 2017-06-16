@@ -63,3 +63,10 @@
     border-radius: 15px;
     margin: 2%;
 }
+progress {
+    background-color: #f3f3f3;
+    border: 0;
+    height: 30px;
+    width: 100%;
+    border-radius: 9px;
+}

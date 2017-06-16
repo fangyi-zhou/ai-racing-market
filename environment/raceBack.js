@@ -31,8 +31,12 @@ function init(io, maxSims) {
 
     simulations = new Simulation.Simulations(maxSims);
 
+    // This simulation is reserved for AI training mode
     let mapCopy = util.arrayCopy(current_map);
     simulations.addSimulation(1337, mapCopy, io, Simulation.SimMode.Training);
+    mapCopy = util.arrayCopy(current_map);
+    simulations.addSimulation(1338, mapCopy, io, Simulation.SimMode.Challenges);
+
     // Loop the program
     setInterval(function() {
         simulations.stepAll(fixedTimeStep);

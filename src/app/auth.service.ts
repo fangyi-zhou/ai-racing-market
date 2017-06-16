@@ -67,4 +67,8 @@ export class AuthService {
         const token = JSON.parse(localStorage.getItem('id_token'));
         return token.username;
     }
+    userLevel() {
+        const token = JSON.parse(localStorage.getItem('id_token'));
+        return token.level;
+    }
 }
