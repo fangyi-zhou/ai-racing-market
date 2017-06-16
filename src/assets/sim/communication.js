@@ -39,6 +39,8 @@
       updateMap(info);
     });
     socket.on('raceFinish', function (info) {
+        console.log("race finsihed");
+
        disconnectOnSwap();
     });
   }

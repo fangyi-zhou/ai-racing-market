@@ -8,6 +8,7 @@ const util = require('./util');
 const rays = require('./rays');
 const RaceCar = require('./RaceCar');
 const AIHost = require('../usercode/host');
+const sleep = require('sleep');
 
 class Simulations{
     constructor (maxSims) {
@@ -125,18 +126,19 @@ class Simulation{
         this.endRace = function() {
             if (this.raceCars.count() === 0) {
                 console.log('Race ran between 0 cars');
-                return;
+            }else{
+                let winner = this.findFirstPlaceCar();
+                /********** Removed since winner is sometimes null *************/
+                console.log('Race ended. In first place is: ', winner.clientID, ' breaking ', winner.lastGate, ' gates!');
+                this.AIs.forEach(function(child, id) {
+                    child.kill();
+                });
+                sleep.sleep(3);
+                this.io.emit('raceFinish',{
+                    id:id
+                });
             }
-            let winner = this.findFirstPlaceCar();
-            /********** Removed since winner is sometimes null *************/
-            console.log('Race ended. In first place is: ', winner.clientID, ' breaking ', winner.lastGate, ' gates!');
-            this.AIs.forEach(function(child, id) {
-                child.kill();
-            });
             this.simulations.removeSimulation(id);
-            this.io.emit('raceFinish',{
-                id:id
-            });
         };
 
         this.step = function(timeStep) {

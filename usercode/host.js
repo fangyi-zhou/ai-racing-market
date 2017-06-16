@@ -10,15 +10,17 @@ function processWorldCommand(child, splatInput) {
         console.error(`Cannot find car with carId ${child.carId}`);
     }
     let sim = raceBack.getSim(child.simID);
-    switch (splatInput[1]) {
-        case "step":
-            sim.step(timeInterval);
-            break;
-        case "reset":
-            sim.childReset(child);
-            break;
-        default:
-            console.error(`Cannot get ${splatInput[1]} for Child ${child.carId}`)
+    if (sim !== undefined) {
+        switch (splatInput[1]) {
+            case "step":
+                sim.step(timeInterval);
+                break;
+            case "reset":
+                sim.childReset(child);
+                break;
+            default:
+                console.error(`Cannot get ${splatInput[1]} for Child ${child.carId}`)
+        }
     }
 }
 
