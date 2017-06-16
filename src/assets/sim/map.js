@@ -25,7 +25,7 @@ function Gate(start, end, colour) {
     this.gateGraphic = new PIXI.Graphics();
 
     this.drawGate = function (container, thickness) {
-        this.gateGraphic.lineStyle(thickness, this.colour, 0.8);
+        this.gateGraphic.lineStyle(thickness, this.colour, 0.2);
         this.gateGraphic.moveTo(this.startPoint[0], this.startPoint[1]);
         this.gateGraphic.lineTo(this.endPoint[0], this.endPoint[1]);
         container.addChild(this.gateGraphic);

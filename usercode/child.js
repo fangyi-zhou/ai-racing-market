@@ -1,5 +1,6 @@
 const child_process = require('child_process');
 const Hashmap = require('hashmap');
+const tempWrite = require('temp-write');
 const raceBack = require('../environment/raceBack');
 const host = require('./host');
 const EventEmitter = require('events');
@@ -7,6 +8,7 @@ const db = require('../db');
 const Docker = require('dockerode');
 const tempDir = require('tempdir');
 const fs = require('fs-extra');
+
 const docker = new Docker({
     host: process.env.DOCKER_HOST || "ec2-34-248-157-198.eu-west-1.compute.amazonaws.com",
     port: process.env.DOCKER_PORT || 2375,
@@ -17,13 +19,20 @@ const docker = new Docker({
 
 let children = new Hashmap.HashMap();
 
+const ChildModes = {
+    Racing: 0,
+    Training: 1
+};
+
 class Child extends EventEmitter {
-    constructor(scriptId, carId, initPosition, simID) {
+
+    constructor(scriptId, carId, initPosition, simID, mode) {
         super();
         this.simID = simID;
         this.carId = carId;
         this.initPosition = initPosition;
         this.car = raceBack.getSim(simID).addRaceCar(this.carId, initPosition);
+        this.mode = mode;
         children.set(this.carId, this);
         // Get script
         db.getScriptById(scriptId, (err, doc) => {
@@ -31,7 +40,7 @@ class Child extends EventEmitter {
                 console.log("Cannot get script");
                 this.write = (_) => {};
                 this.kill = () => {};
-            } else {
+            } else if (this.mode === ChildModes.Racing) {
                 const dockerTag = `user-code-${Date.now()}`;
                 this.script = doc.code;
                 const tempDirectory = tempDir.sync();
@@ -53,6 +62,43 @@ class Child extends EventEmitter {
                         });
                     }
                 );
+            } else if (this.mode === ChildModes.Training) {
+                this.script = doc.code;
+                const filePath = tempWrite.sync(this.script);
+                const process = child_process.spawn("python", [filePath], {
+                    stdio: ['pipe', 'pipe', 'pipe']
+                });
+                this.writable = true;
+                this.write = function (data) {
+                    if (this.writable) process.stdin.write(data + "\n");
+                };
+                // this.car = raceBack.getSim(simID).addRaceCar(this.carId, initPosition);
+                process.on("exit", () => {
+                    console.log(`child ${this.carId} exited`);
+                    this.emit("exit");
+                });
+                process.stdout.on("data", (data) => {
+                    host.processUserOutput(this, data);
+                });
+                process.stdout.on("error", (err) => {
+                    console.error(err);
+                    this.emit("exit");
+                });
+                process.stderr.on("data", (data) => {
+                    console.log(`Child ${this.carId} printed error ${data}`);
+                });
+                process.stdin.on("close", () => {
+                    this.writable = false;
+                });
+                process.stdin.on("error", (err) => {
+                    this.writable = false;
+                    console.error(err);
+                    this.emit("exit");
+                });
+                this.kill = () => {
+                    process.kill("SIGKILL");
+                    this.emit("exit");
+                }
             }
         });
     }
@@ -160,3 +206,4 @@ function handlePayload(child, stream_type, payload) {
 module.exports.Child = Child;
 module.exports.removeChild = removeChild;
 module.exports.getChildByCarId = getChildByCarId;
+module.exports.ChildModes = ChildModes;

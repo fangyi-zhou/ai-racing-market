@@ -268,7 +268,7 @@ class Simulation{
                 clientCar.frontWheel.steerValue = steerValue;
             }
             if (control["engineForce"] !== undefined && control["engineForce"] !== null) {
-                let engineForce = Math.min(Math.max(control["engineForce"], -0.5), 2);
+                let engineForce = Math.min(Math.max(control["engineForce"], -2), 4);
                 clientCar.backWheel.engineForce = engineForce;
                 let breaking = (clientCar.backWheel.getSpeed() > 0.1 && engineForce < 0)
                     || (clientCar.backWheel.getSpeed() < -0.1 && engineForce > 0);
@@ -311,7 +311,7 @@ class Simulation{
             this.paused = true;
             for (let i = 0; i < scriptIDs.length; i++) {
                 let startingPosition = [0, 0];
-                let child = AIHost.createCar(io, scriptIDs[i], this.id, startingPosition);
+                let child = AIHost.createCar(io, scriptIDs[i], this.id, startingPosition, AIHost.ChildModes.Racing);
                 // this.AIs.set(child.carId, child);
                 this.AIs.set(child.carId, child);
                 this.raceCars.set(child.carId, child.car);
@@ -340,7 +340,7 @@ class Simulation{
         this.train = function(scriptID) {
             this.mode = SimMode.Training;
             let startingPosition = [0.5, 0.5];
-            let child = AIHost.createCar(io, scriptID, this.id, startingPosition);
+            let child = AIHost.createCar(io, scriptID, this.id, startingPosition, AIHost.ChildModes.Training);
         };
     }
 }

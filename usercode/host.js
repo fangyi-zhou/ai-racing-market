@@ -2,7 +2,7 @@ const child_process = require('child_process');
 const Child = require("./child");
 const raceBack = require("../environment/raceBack");
 
-let timeInterval = 0.05;
+let timeInterval = 0.02;
 
 function processWorldCommand(child, splatInput) {
     const car = child.car;
@@ -107,9 +107,9 @@ function childExit(child, io) {
     }
 }
 
-function createCar(io, scriptId, simID, initPosition) {
+function createCar(io, scriptId, simID, initPosition, mode=Child.ChildModes.Racing) {
     const carId = `Child_${Date.now()}`;
-    const child = new Child.Child(scriptId, carId, initPosition, simID);
+    const child = new Child.Child(scriptId, carId, initPosition, simID, mode);
     child.on("exit", childExit(child, io));
     console.log(`Spawn child ${carId}`);
     return child;
@@ -118,3 +118,4 @@ function createCar(io, scriptId, simID, initPosition) {
 module.exports.createCar = createCar;
 module.exports.processUserOutput = processUserOutput;
 module.exports.childExit = childExit;
+module.exports.ChildModes = Child.ChildModes;

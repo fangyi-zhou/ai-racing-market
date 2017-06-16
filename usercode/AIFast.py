@@ -26,7 +26,7 @@ class Creature:
         self.life = 0
         self.positive_life = 0
         self.scale = 0
-        self.max_engine_force = 4
+        self.max_engine_force = 20
         self.max_steer_force = 4
 
         # Genome
@@ -104,7 +104,7 @@ def crossover_mutate(creatures, mutation_rate):
   return new_creatures
 
 
-number_of_steps_per_episode = 400
+number_of_steps_per_episode = 200
 number_of_episodes = 250
 total_learning_steps = number_of_episodes * number_of_steps_per_episode
 number_of_creatures = 25
@@ -157,7 +157,7 @@ def get_input():
     # sendCommand(sensory_input)
     return sensory_input;
 
-down_count_max = 600
+down_count_max = 15
 for i in range(number_of_episodes):
     for creature in creatures:
         sendCommand('world reset')
@@ -168,7 +168,7 @@ for i in range(number_of_episodes):
 
             sendCommand("get speed")
             speed = float(sys.stdin.readline())
-            if (speed < 0.001):
+            if (speed < 0.01):
                 down_count += 1
                 if (down_count >= down_count_max):
                     break

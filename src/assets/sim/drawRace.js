@@ -24,6 +24,7 @@ function initDraw() {
     console.log(document.body.childElementCount);
 
     canvas = document.getElementById('PIXIcanvas');
+
     renderer = PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas}, true, true);
     // Make the canvas focusable
     renderer.view.tabIndex = 0;
@@ -32,6 +33,16 @@ function initDraw() {
     container = new PIXI.DisplayObjectContainer();
     stage.addChild(container);
     renderer.view.focus();
+
+    // PIXI.extras.TilingSprite.fromImage(, 300, 300);
+    // var background, backgroundTexture = new PIXI.Texture.fromImage('../img/grid.png');
+    // background = new PIXI.extras.TilingSprite(backgroundTexture, 300, 300);
+
+    //backgroundTexture.baseTexture.width = stageWidth;
+    //backgroundTexture.update();
+
+
+
 
     // Add transform to the container
     container.position.x = renderer.width / 2; // center at origin
@@ -76,7 +87,6 @@ function updateAllGraphics(info) {
         if (!info.hasOwnProperty(id)) continue;
         let car = info[id];
         if (cars[id] === undefined) {
-            console.log('ID I DI DI DI DI ', id)
             cars[id] = new RaceCarGraphic(car.colour);
         }
         cars[id].carGraphic.position.x = car.position[0];
