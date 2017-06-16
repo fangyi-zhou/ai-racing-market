@@ -96,7 +96,7 @@ export class RaceComponent implements OnInit, OnDestroy {
                 this.onSelect(room);
                 this.switchCar();
             });
-        }, 1000);
+        }, 3000);
 
     }
     zoomIn(): void {
