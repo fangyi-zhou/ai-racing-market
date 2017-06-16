@@ -9,3 +9,8 @@
     border-radius: 15px;
     margin: 2%;
 }
+
+.cheatImg {
+    max-width:100%;
+    max-height:100%;
+}
