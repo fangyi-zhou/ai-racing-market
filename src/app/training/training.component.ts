@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ScriptService} from '../scripts/script.service';
 import { Script } from '../scripts/script';
-import { CodeEditorService } from '../code-editor.service';
 import { AuthService } from '../auth.service';
 
 declare var communication: any;
@@ -10,12 +9,12 @@ declare var communication: any;
     selector: 'app-training',
     templateUrl: './training.component.html',
     styleUrls: ['./training.component.css'],
-    providers: [ScriptService, CodeEditorService, AuthService]
+    providers: [ScriptService, AuthService]
 })
 export class TrainingComponent implements OnInit {
     scripts: Script[];
     selectedScript: Script;
-    constructor(private trainingService: ScriptService, private codeEditorService: CodeEditorService, private auth: AuthService) {}
+    constructor(private trainingService: ScriptService, private auth: AuthService) {}
 
     ngOnInit(): void {
         if (this.auth.loggedIn()) {
@@ -30,7 +29,6 @@ export class TrainingComponent implements OnInit {
                 });
         }
         communication.initGraphics();
-        this.codeEditorService.loadCodeEditor();
     }
     onSelect(script: Script): void {
         this.selectedScript = script;

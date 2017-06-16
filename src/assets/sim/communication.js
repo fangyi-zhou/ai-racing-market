@@ -37,7 +37,10 @@
     });
     socket.on('newMap', function (info) {
       updateMap(info);
-    })
+    });
+    socket.on('raceFinish', function (info) {
+       disconnectOnSwap();
+    });
   }
 
   function syncServerWithMovement() {

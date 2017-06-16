@@ -66,9 +66,14 @@ db.init(() => {
         io.to(socket.id).emit('connected');
         socket.on('join',function (info) {
             simId = info.simId;
-            io.to(socket.id).emit('init', raceBack.getSim(simId).initIO(socket.id));
-            raceBack.getSim(simId).addClient(socket.id);
-        })
+            let sim = raceBack.getSim(simId);
+            if (sim == undefined){
+                //TODO
+            } else {
+                io.to(socket.id).emit('init', sim.initIO(socket.id));
+                sim.addClient(socket.id);
+            }
+        });
 
 
         //send back the number of cars need to be rendered
@@ -78,13 +83,15 @@ db.init(() => {
 
         //iterate physics
         setInterval(function () {
-            if(simId !== undefined)
-                socket.emit('updateClient', raceBack.getSim(simId).packageGraphics());
+            let sim = raceBack.getSim(simId);
+            if(sim !== undefined)
+                socket.emit('updateClient', sim.packageGraphics());
         }, 1000 / 30);
 
         socket.on('disconnect', function () {
             console.log('user disconnected, socket id = ' + socket.id);
-            if (simId !== undefined)
+            let sim = raceBack.getSim(simId);
+            if(sim !== undefined)
                 raceBack.getSim(simId).removeUser(socket.id);
             socket.broadcast.emit('dc', {
                 id: socket.id
@@ -92,6 +99,8 @@ db.init(() => {
         });
 
         socket.on('movement', function (info) {
+            let sim = raceBack.getSim(simId);
+            if(sim !== undefined)
             raceBack.getSim(simId).updateMovement(info, socket.id);
         });
 
@@ -103,6 +112,8 @@ db.init(() => {
             });
         });
         socket.on('train', function (info) {
+            // let sim = raceBack.getSim(simId);
+            // if(sim !== undefined)
             raceBack.getSim(info.id).train(info.scriptId);
         })
     });

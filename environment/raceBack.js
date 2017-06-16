@@ -42,7 +42,6 @@ function init(io, maxSims) {
 
     // Loop the program
     setInterval(function() {
-        // simulations.runNewRaces(raceDuration, numAIinRace);
         simulations.stepAll(fixedTimeStep);
         simulations.checkCheckpoints();
         // current_map.checkCheckpoints();
@@ -62,7 +61,7 @@ function getAllSims(){
 
 function addSim(id, mode, AI){
     let mapCopy = util.arrayCopy(current_map);
-    simulations.addSimulation(id, mapCopy, io, mode);
+    simulations.addSimulation(id, mapCopy, this.io, mode);
     if(AI != ''){
         simulations.addAI(id,AI);
     }

@@ -15,7 +15,7 @@ class Simulations{
         this.simulations = new hashMap.HashMap();
 
         this.addSimulation = function(simId, map, io, mode) {
-            var newSim = new Simulation(simId, map, io, mode);
+            let newSim = new Simulation(simId, map, io, mode, this);
             this.simulations.set(newSim.id, newSim);
         };
         this.removeSimulation = function(simulationId) {
@@ -33,7 +33,7 @@ class Simulations{
         };
         this.addAI = function(id, AI){
             let sim = this.simulations.get(id);
-            sim.runRace(100,[AI]);
+            sim.runRace(50,[AI,AI]);
         }
         this.checkCheckpoints = function() {
             this.simulations.forEach(function(sim, id) {
@@ -51,29 +51,6 @@ class Simulations{
                 });
             });
         };
-
-        // Runs races on all available Simulations
-        this.runNewRaces = function(raceDuration, numAI) {
-            // this.simulations.forEach(function (sim, id) {
-            //     if (!sim.runningRace) {
-            //         sim.runRandomRace(raceDuration, numAI);
-            //     }
-            // })
-            // console.log(!this.simulations.get(0).runningRace);
-
-            /*
-                CURRENTLY JUST RUNNING RACES ON ROOM 9
-             */
-
-            // if (!this.simulations.get(9).runningRace) {
-            //     this.simulations.get(9).runRandomRace(raceDuration, numAI);
-            // }
-            this.simulations.forEach(function(sim, id) {
-                if (!sim.runningRace && sim.mode === SimMode.RankedRacing) {
-                    sim.runRandomRace(raceDuration, numAI);
-                }
-            })
-        }
 
         this.currentSims = function(){
             let sims = [];
@@ -99,10 +76,11 @@ const SimMode = {
 };
 
 class Simulation{
-    constructor (id, map, io, mode) {
+    constructor (id, map, io, mode,simulations) {
         this.id = id;
         this.io = io;
         this.mode = mode;//SimMode.ClientDrive;
+        this.simulations = simulations;
 
         this.raceCars = new hashMap.HashMap();
         this.AIs = new hashMap.HashMap();
@@ -134,11 +112,11 @@ class Simulation{
 
         this.findFirstPlaceCar = function() {
             let bestCar = undefined;
-            let bestProgress = -Number.MAX_VALUE;
+            let bestLastGate = -Number.MAX_VALUE;
             this.raceCars.forEach(function(car, id) {
-                if (car.progress > bestProgress) {
+                if (car.lastGate > bestLastGate) {
                     bestCar = car;
-                    bestProgress = car.progress;
+                    bestLastGate = car.lastGate;
                 }
             });
             return bestCar;
@@ -149,15 +127,20 @@ class Simulation{
                 console.log('Race ran between 0 cars');
                 return;
             }
-            // let winner = this.findFirstPlaceCar();
-            // /********** Removed since winner is sometimes null *************/
-            // console.log('Race ended. In first place is: ', winner.clientID, ' breaking ', winner.progress, ' gates!');
+            let winner = this.findFirstPlaceCar();
+            /********** Removed since winner is sometimes null *************/
+            console.log('Race ended. In first place is: ', winner.clientID, ' breaking ', winner.lastGate, ' gates!');
+            this.AIs.forEach(function(child, id) {
+                child.kill();
+            });
+            this.simulations.removeSimulation(id);
+            this.io.emit('raceFinish',{id:id});
         };
 
         this.step = function(timeStep) {
             if (!this.paused) {
                 this.world.step(timeStep);
-                var wasRunning = this.runningRace;
+                let wasRunning = this.runningRace;
                 this.runningRace = (this.world.time - this.raceStartTime) <= this.currentRaceDuration;
                 if (wasRunning && !this.runningRace) { // i.e. Race has ended
                     this.endRace();
@@ -291,19 +274,6 @@ class Simulation{
             this.rawMap = newRaw;
         };
 
-        // Run a race between random AI
-        this.runRandomRace = function (timeLength, numCars) {
-            console.log('RUNNING RANDOM RACE')
-            var scriptIDList = [0, 1, 2, 3, 4, 5];
-            var scriptIDListCopy = util.arrayCopy(scriptIDList); // Dummy List
-            var raceScriptIDs = [], randomlySelectedScriptID;
-            for (let i = 0; i < numCars; i++) {
-                randomlySelectedScriptID = '593fcaeea968db0011d55e16';//Math.floor(Math.random() * scriptIDList.length);
-                raceScriptIDs.push(randomlySelectedScriptID);
-            }
-            this.runRace(timeLength, raceScriptIDs);
-        };
-
         // Runs a race on this Simulation
         //TODO: Give timeout signal to script when race ends
         this.runRace = function (timeLength, scriptIDs) {
@@ -312,7 +282,6 @@ class Simulation{
             for (let i = 0; i < scriptIDs.length; i++) {
                 let startingPosition = [0, 0];
                 let child = AIHost.createCar(io, scriptIDs[i], this.id, startingPosition, AIHost.ChildModes.Racing);
-                // this.AIs.set(child.carId, child);
                 this.AIs.set(child.carId, child);
                 this.raceCars.set(child.carId, child.car);
             }
