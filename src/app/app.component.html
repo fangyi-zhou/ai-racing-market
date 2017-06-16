@@ -5,15 +5,7 @@
             class="black-text"><i class="fa fa-first-order fa-fw"></i>{{title}}</span></a>
         <ul class="right hide-on-med-and-do-l">
             <li *ngIf="auth.loggedIn()">
-                <span class="black-text">{{greetingMessage()}}, {{auth.userName()}}</span>
-            </li>
-            <li *ngIf="auth.loggedIn()">
-                <a class="nav-link" routerLink="/app-dashboard" routerLinkActive="active">
-                    <span class="black-text"><i class="fa fa-dashboard fa-fw"></i>Dashboard</span></a>
-            </li>
-            <li>
-                <a class="nav-link" routerLink="/app-race" routerLinkActive="active">
-                    <span class="black-text"><i class="fa fa-flag-checkered fa-fw"></i>Simulation Rooms</span></a>
+                <span class="black-text">{{greetingMessage()}}, <b>{{auth.userName()}}</b> ...</span>
             </li>
             <li *ngIf="auth.loggedIn(); else elseBlock">
                 <a class="nav-link">
@@ -25,6 +17,16 @@
                         <span class="black-text"><i class="fa  fa-key fa-fw"></i>Login</span></a>
                 </li>
             </ng-template>
+            <li *ngIf="auth.loggedIn()">
+                <a class="nav-link" routerLink="/app-dashboard" routerLinkActive="active">
+                    <span class="black-text"><i class="fa fa-dashboard fa-fw"></i>Dashboard</span></a>
+            </li>
+
+            <li>
+                <a class="nav-link" routerLink="/app-race" routerLinkActive="active">
+                    <span class="black-text"><i class="fa fa-flag-checkered fa-fw"></i>Simulation Rooms</span></a>
+            </li>
+
             <li>
                 <a class="nav-link" routerLink="/app-leaderboard" routerLinkActive="active">
                     <span class="black-text"><i class="fa  fa-list-ol fa-fw"></i>leaderboard</span></a>

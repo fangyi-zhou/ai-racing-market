@@ -8,7 +8,7 @@
                 <span>room {{room.id}}<i class="fa-li fa fa-spinner fa-spin"></i> </span>
             </li>
         </ul>
-        <button class="btn btn-warning" (click)="createNewSim()">New Sim</button>
+        <button class="btn btn-warning" (click)="createNewSim()">Play Ranked</button>
         <div *ngIf="auth.loggedIn();else notLoggedIn">
                 <label>Scripts</label>
                 <angular2-multiselect [data]="userScripts"  [(ngModel)]="selectedItems"
