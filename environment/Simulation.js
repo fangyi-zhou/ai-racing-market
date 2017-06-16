@@ -134,7 +134,9 @@ class Simulation{
                 child.kill();
             });
             this.simulations.removeSimulation(id);
-            this.io.emit('raceFinish',{id:id});
+            this.io.emit('raceFinish',{
+                id:id
+            });
         };
 
         this.step = function(timeStep) {
