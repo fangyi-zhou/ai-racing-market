@@ -40,8 +40,8 @@ function getAllUsers(callback){
     db.collection(USER_COLLECTION).find({}).toArray(callback);
 }
 
-function createUser(username, saltedPass, salt, callback) {
-    db.collection(USER_COLLECTION).insertOne({username: username, saltedPass: saltedPass, salt: salt}, callback);
+function createUser(username, level, saltedPass, salt, callback) {
+    db.collection(USER_COLLECTION).insertOne({username: username, level: level, saltedPass: saltedPass, salt: salt}, callback);
 }
 
 function getUserScripts(username, callback) {

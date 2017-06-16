@@ -62,6 +62,8 @@ router.post("/script", function(req, res) {
 router.post("/register", function(req, res) {
     const username = req.body.username;
     const passwordHashed = req.body.password;
+    const level = req.body.level;
+    console.log('level', level)
     console.log(passwordHashed);
     const salt = crypto.randomBytes(48).toString('hex');
     database.getUserByUsername(username, function (err, doc) {
@@ -74,7 +76,7 @@ router.post("/register", function(req, res) {
             hash.update(passwordHashed);
             hash.update(salt);
             const saltedPass = hash.digest('hex');
-            database.createUser(username, saltedPass, salt, function (err, doc) {
+            database.createUser(username, level, saltedPass, salt, function (err, doc) {
                 if (err) {
                     handleError(res, err.message, "Failed to create new user")
                 } else {

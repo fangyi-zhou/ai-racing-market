@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 interface Credential {
     username: string;
     password: string;
+    level: number;
 }
 
 @Component({
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
 
     credential: Credential = {
         username: "",
-        password: ""
+        password: "",
+        level: 0
     };
 
     constructor(private auth: AuthService, private router: Router) {

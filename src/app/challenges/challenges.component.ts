@@ -6,12 +6,12 @@ import { AuthService } from '../auth.service';
 declare var communication: any;
 
 @Component({
-    selector: 'app-training',
+    selector: 'challenges',
     templateUrl: './challenges.component.html',
     styleUrls: ['./challenges.component.css'],
     providers: [ScriptService, AuthService]
 })
-export class TrainingComponent implements OnInit {
+export class ChallengeComponent implements OnInit {
     scripts: Script[];
     selectedScript: Script;
     constructor(private trainingService: ScriptService, private auth: AuthService) {}
@@ -38,15 +38,6 @@ export class TrainingComponent implements OnInit {
         communication.disconnectOnSwap();
         communication.init(1337);
         communication.train(script._id);
-    }
-    zoomIn(): void {
-        communication.zoomIn();
-    }
-    zoomOut(): void {
-        communication.zoomOut();
-    }
-    switchCar(): void {
-        communication.switchCar();
     }
 }
 

@@ -12,6 +12,7 @@ import { LandingComponent } from './landing/landing.component';
 import { StatisticsComponent} from './statistics/statistics.component';
 import { TutorialComponent} from './tutorial/tutorial.component';
 import { TrainingComponent} from './training/training.component';
+import { ChallengeComponent } from './challenges/challenges.component'
 
 const routes: Routes = [
     { path: '', redirectTo: '/app-landing', pathMatch: 'full' },
@@ -24,7 +25,8 @@ const routes: Routes = [
     { path: 'app-landing', component: LandingComponent},
     { path: 'app-statistics', component: StatisticsComponent},
     { path: 'app-tutorial', component: TutorialComponent},
-    { path: 'app-training', component: TrainingComponent}
+    { path: 'app-training', component: TrainingComponent},
+    { path: 'challenges', component: ChallengeComponent}
 ];
 
 @NgModule({

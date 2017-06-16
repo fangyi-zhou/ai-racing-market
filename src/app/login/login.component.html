@@ -3,7 +3,7 @@
 <div class="login" *ngIf="!auth.loggedIn()">
     <h1>Login to AI Racing Market</h1>
     <form #f="ngForm">
-        <p><input class="form-control" type="text" name="username" [(ngModel)]="credential.username" placeholder="Username"></p>
+        <p><input autofocus class="form-control" type="text" name="username" [(ngModel)]="credential.username" placeholder="Username"></p>
         <p><input class="form-control" type="password" name="password" [(ngModel)]="credential.password"  placeholder="Password"></p>
         <button class="btn btn-lg btn-default" (click)="onLogin()">Login</button>
         <button class="btn btn-lg btn-default" (click)="onRegister()">Register</button>

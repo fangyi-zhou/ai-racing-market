@@ -18,7 +18,8 @@ export class AuthService {
         const hashedPass = asmCrypto.SHA256.hex(credential.password + AuthService.SALT);
         return {
             username: credential.username,
-            password: hashedPass
+            password: hashedPass,
+            level: credential.level
         };
     }
 
