@@ -8,7 +8,6 @@ const util = require('./util');
 const rays = require('./rays');
 const RaceCar = require('./RaceCar');
 const AIHost = require('../usercode/host');
-const sleep = require('sleep');
 
 class Simulations{
     constructor (maxSims) {
@@ -133,7 +132,6 @@ class Simulation{
                 this.AIs.forEach(function(child, id) {
                     child.kill();
                 });
-                sleep.sleep(3);
                 this.io.emit('raceFinish',{
                     id:id
                 });

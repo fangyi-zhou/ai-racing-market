@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, NgZone, OnDestroy} from '@angular/core';
 import {RaceService} from './race.service';
 import {ScriptService} from '../scripts/script.service';
 import {AuthService} from '../auth.service';
@@ -19,7 +19,7 @@ declare var communication: any;
     styleUrls: ['./race.component.css'],
     providers: [RaceService, ScriptService, AuthService]
 })
-export class RaceComponent implements OnInit{
+export class RaceComponent implements OnInit, OnDestroy {
     title = 'AI racing rooms';
     rooms: Room[];
     selectedRoom: Room;
@@ -29,7 +29,8 @@ export class RaceComponent implements OnInit{
     };
     selectedItems = [];
     userScripts = [];
-    constructor(private raceService: RaceService, private scriptService: ScriptService, private auth: AuthService) {}
+    constructor(private raceService: RaceService, private scriptService: ScriptService,
+                private auth: AuthService, private ngZone: NgZone) {}
 
     ngOnInit(): void {
         this.raceService
@@ -41,8 +42,27 @@ export class RaceComponent implements OnInit{
                 });
             });
         communication.initGraphics();
+        window['my'] = window['my'] || {};
+        window['my'].namespace = window['my'].namespace || {};
+        window['my'].namespace.publicFunc = this.publicFunc.bind(this);
+    }
+    ngOnDestroy() {
+        window['my'].namespace.publicFunc = null;
+    }
+    publicFunc() {
+        this.ngZone.run(() => this.privateFunc());
     }
 
+    privateFunc() {
+        this.raceService
+            .getSims()
+            .then((sim: Room[]) => {
+                this.rooms = sim.map((sim) => {
+                    // TODO some mapping for raw sim json
+                    return sim;
+                });
+            });
+    }
     onSelect(room: Room): void {
         if (this.selectedRoom === room) {
         }else {
@@ -57,7 +77,6 @@ export class RaceComponent implements OnInit{
                 .getUserScript(this.auth.userName())
                 .then((scripts: Script[]) => {
                 this.userScripts = scripts.map((script) => {
-                    console.log(script);
                     return {
                         id: script._id,
                         itemName: script.scriptName
