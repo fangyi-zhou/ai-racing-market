@@ -8,21 +8,12 @@ const Docker = require('dockerode');
 const tempDir = require('tempdir');
 const fs = require('fs-extra');
 const docker = new Docker({
-    host: process.env.DOCKER_HOST,
-    port: process.env.DOCKER_PORT,
-    ca: process.env.CA,
-    cert: process.env.CERT,
-    key: process.env.KEY
+    host: process.env.DOCKER_HOST || "ec2-34-248-157-198.eu-west-1.compute.amazonaws.com",
+    port: process.env.DOCKER_PORT || 2375,
+    ca: process.env.CA || fs.readFileSync(__dirname +'/ca.pem'),
+    cert: process.env.CERT || fs.readFileSync(__dirname + '/cert.pem'),
+    key: process.env.KEY || fs.readFileSync(__dirname + '/key.pem')
 });
-
-/*
-const docker = new Docker({
-    host: "ec2-34-248-157-198.eu-west-1.compute.amazonaws.com",
-    port: 2375,
-    ca: fs.readFileSync(__dirname +'/ca.pem'),
-    cert: fs.readFileSync(__dirname + '/cert.pem'),
-    key: fs.readFileSync(__dirname + '/key.pem')
-});*/
 
 let children = new Hashmap.HashMap();
 
