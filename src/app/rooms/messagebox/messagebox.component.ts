@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, OnDestroy} from '@angular/core';
+import {Component, OnInit, NgZone, OnDestroy} from '@angular/core';
 
 declare var communication: any;
 
@@ -8,12 +8,13 @@ declare var communication: any;
   styleUrls: ['./messagebox.component.css']
 })
 
-export class MessageboxComponent implements OnInit, OnDestroy {
+export class MessageboxComponent implements OnInit, OnDestroy{
 
     messages: Array<String>;
     chatBox: String;
     throttle = 300;
     scrollDistance = 2;
+    scrolled = false;
 
     constructor(private ngZone: NgZone) {
         this.messages = [];
@@ -22,15 +23,30 @@ export class MessageboxComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         window['my'].namespace.updateMsg = null;
     }
+
     ngOnInit(): void {
         window['my'] = window['my'] || {};
         window['my'].namespace = window['my'].namespace || {};
         window['my'].namespace.updateMsg = this.updateMsg.bind(this);
+        this.messages.push(' ');
     }
     updateMsg(msg: string) {
         this.ngZone.run(() => this.messages.push(msg));
+        setTimeout(() => { this.updateScroll()}, 100); //Hacky solution
+    }
+
+    onScrollUp() {
+        this.scrolled = true;
     }
     onScrollDown() {
-        console.log('Scrolled');
+        this.scrolled = false;
+    }
+
+    updateScroll() {
+        if (!this.scrolled) {
+            const element = document.getElementById("msgbox");
+            console.log(element.scrollHeight);
+            element.scrollTop = element.scrollHeight;
+        }
     }
 }
