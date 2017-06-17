@@ -44,6 +44,9 @@
     socket.on('raceFinish', function (info) {
         my.namespace.publicFunc();
     });
+    socket.on('updateRace', function (info) {
+        my.namespace.updateMsg(info);
+    })
   }
 
   function syncServerWithMovement() {
