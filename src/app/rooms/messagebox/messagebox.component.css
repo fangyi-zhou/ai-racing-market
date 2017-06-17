@@ -7,6 +7,7 @@
 .messages li:nth-child(odd) {
     background: #eee;
 }
-.msgbox {
-
+.search-results {
+    height: 300px;
+    overflow: scroll;
 }

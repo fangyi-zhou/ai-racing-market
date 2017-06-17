@@ -12,11 +12,12 @@ export class MessageboxComponent implements OnInit, OnDestroy {
 
     messages: Array<String>;
     chatBox: String;
+    throttle = 300;
+    scrollDistance = 2;
 
     constructor(private ngZone: NgZone) {
         this.messages = [];
         this.chatBox = 'Welcome friend';
-        this.messages.push('yolo no?');
     }
     ngOnDestroy() {
         window['my'].namespace.updateMsg = null;
@@ -25,9 +26,14 @@ export class MessageboxComponent implements OnInit, OnDestroy {
         window['my'] = window['my'] || {};
         window['my'].namespace = window['my'].namespace || {};
         window['my'].namespace.updateMsg = this.updateMsg.bind(this);
+            for (let i = 0; i < 100; ++i) {
+                this.messages.push('YOLO');
+            }
     }
     updateMsg(msg: string) {
         this.ngZone.run(() => this.messages.push(msg));
     }
-
+    onScrollDown() {
+        console.log('Scrolled');
+    }
 }
