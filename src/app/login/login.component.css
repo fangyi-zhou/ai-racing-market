@@ -1,8 +1,14 @@
+.overall {
+    display: flex;
+}
+
 .login {
     background: rgba(255, 255, 255, 0.5);
     padding: 2%;
     margin: 2%;
     border-radius: 15px;
+    flex: 1;
+    border-style: solid;
 }
 
 .btn-lg {

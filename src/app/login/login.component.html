@@ -1,15 +1,21 @@
 <title>User Login</title>
 
-<div class="login" *ngIf="!auth.loggedIn()">
-    <h1>Login to AI Racing Market</h1>
-    <form #f="ngForm">
-        <p><input autofocus class="form-control" type="text" name="username" [(ngModel)]="credential.username" placeholder="Username"></p>
-        <p><input class="form-control" type="password" name="password" [(ngModel)]="credential.password"  placeholder="Password"></p>
-        <button class="btn btn-lg btn-default" (click)="onLogin()">Login</button>
-        <button class="btn btn-lg btn-default" (click)="onRegister()">Register</button>
-    </form>
-    <div class="error" *ngIf="hasError()">
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-        {{errMsg}}
+<div *ngIf="!auth.loggedIn()" class="overall">
+    <div class="login" id="column1" style="float:left; margin:0; width:70%;">
+        <h3>Login or Register</h3>
+        <form #f="ngForm">
+            <p><input autofocus class="form-control" type="text" name="username" [(ngModel)]="credential.username" placeholder="Username"></p>
+            <p><input class="form-control" type="password" name="password" [(ngModel)]="credential.password"  placeholder="Password"></p>
+            <button class="btn btn-lg btn-default" (click)="onLogin()">Login</button>
+            <button class="btn btn-lg btn-default" (click)="onRegister()">Register</button>
+        </form>
+        <div class="error" *ngIf="hasError()">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            {{errMsg}}
+        </div>
+    </div>
+    <div align="center" class="login" id="column1" style="float:left; margin:0; width:30%;">
+        Play as a <b>guest</b> to try it out<br>
+        <button class="btn btn-lg btn-default" (click)="onGuest()">Guest</button>
     </div>
 </div>

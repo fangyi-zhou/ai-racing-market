@@ -18,6 +18,11 @@
 </div>
 <div id="Tutorial1" class="jumbotron">
     <h1><i class="fa fa-car" aria-hidden="true"></i>Step 1 - Drive</h1>
+    <a class="btn btn-primary btn-lg" (click)="tryTutorial1()" role="button">
+        Try it out    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+    </a>
+    <canvas *ngIf="tutorial1()" id="Tutorial1Canvas" width="400" height="300" tabindex="0"
+            style="touch-action: none; cursor: inherit;" class="pixiCanvas"></canvas>
 </div>
 <div id="Tutorial2" class="jumbotron">
     <h1><i class="fa fa-wifi" aria-hidden="true"></i>Step 2 - Sense</h1>

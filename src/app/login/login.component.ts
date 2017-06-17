@@ -41,6 +41,11 @@ export class LoginComponent implements OnInit {
         this.auth.login(this.credential, this.successCallback(this), this.failureCallback(this));
     }
 
+    onGuest() {
+        //TODO: Implement guest login (just give them a login username)
+        this.auth.login(this.credential, this.successCallback(this), this.failureCallback(this));
+    }
+
     onRegister() {
         if (this.credential.username === "" || this.credential.password === "") {
             this.failureCallback(this)("Username and password must not be empty")

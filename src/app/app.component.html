@@ -22,7 +22,7 @@
                     <span class="black-text"><i class="fa fa-dashboard fa-fw"></i>Dashboard</span></a>
             </li>
 
-            <li>
+            <li *ngIf="auth.loggedIn()">
                 <a class="nav-link" routerLink="/app-race" routerLinkActive="active">
                     <span class="black-text"><i class="fa fa-flag-checkered fa-fw"></i>Simulation Rooms</span></a>
             </li>

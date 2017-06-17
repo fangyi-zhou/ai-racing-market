@@ -3,9 +3,23 @@
     margin: 2%;
 }
 
+.btn-lg {
+    min-width: 20%;
+    margin: 2%;
+}
+
 .jumbotron {
     background-color: rgba(255, 255, 255, 0.5);
     padding: 2%;
     border-radius: 15px;
     margin: 2%;
+}
+#contentBox .column {
+    float: left;
+    margin: 0;
+    width: 50%;
+}
+
+.hidden {
+    visibility: hidden;
 }

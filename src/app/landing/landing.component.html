@@ -1,14 +1,40 @@
-<div class="jumbotron">
-    <h1>AI Racing Market</h1>
-        <img src="./assets/img/landing.gif">
+<div id="contentBox" align="center" class="jumbotron" xmlns="http://www.w3.org/1999/html">
+    <h1 align="center" >AI Racing Market</h1>
+    <img src="./assets/img/landing.gif">
 
-        <p>Make AIs for race cars and race against other AI developers around the world!</p>
-        <p>
-            <a class="btn btn-primary btn-lg" routerLink="/app-tutorial" routerLinkActive="active" role="button">
-                <i class="fa fa-list-ol fa-fw"></i>Tutorial
-            </a>
-            <a class="btn btn-primary btn-lg" routerLink="/app-login" routerLinkActive="active" role="button">
-                <i class="fa fa-key fa-fw"></i>Login
-            </a>
-        </p>
+    <p>Program your race car to compete and race against other AI beginners from around the world!</p>
+    <!--<div class="column">-->
+        <!--<a class="btn btn-primary btn-lg" routerLink="/app-tutorial" routerLinkActive="active" role="button">-->
+            <!--<i class="fa fa-list-ol fa-fw"></i>Tutorial-->
+        <!--</a>-->
+    <!--</div>-->
+    <!--<div class="column">-->
+        <!--<a class="btn btn-primary btn-lg" routerLink="/app-login" routerLinkActive="active" role="button">-->
+            <!--<i class="fa fa-key fa-fw"></i>Login-->
+        <!--</a>-->
+    <!--</div>-->
+    <!-- columns divs, float left, no margin so there is no space between column, width=1/3 -->
+    <div align="center">
+        <a align="center" class="btn btn-primary btn-lg" (click)="scrollLanding()"><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></a>
+    </div>
+    <div id="hiddenDiv">
+        <div id="column1" style="float:left; margin:0; width:50%;">
+
+            <div align="center" class="jumbotron">
+                <a class="btn btn-primary btn-lg" routerLink="/app-tutorial" routerLinkActive="active" role="button">
+                    <i class="fa fa-list-ol fa-fw"></i>Tutorial
+                </a> <br>
+                Learn how to control a car in a race.
+            </div>
+        </div>
+
+        <div id="column2" style="float:left; margin:0;width:50%;">
+            <div align="center" class="jumbotron">
+                <a class="btn btn-primary btn-lg" routerLink="/app-login" routerLinkActive="active" role="button">
+                    <i class="fa fa-key fa-fw"></i>Login
+                </a> <br>
+                Login for:
+            </div>
+        </div>
+    </div>
 </div>
