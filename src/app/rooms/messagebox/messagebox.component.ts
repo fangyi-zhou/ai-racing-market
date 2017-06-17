@@ -26,9 +26,6 @@ export class MessageboxComponent implements OnInit, OnDestroy {
         window['my'] = window['my'] || {};
         window['my'].namespace = window['my'].namespace || {};
         window['my'].namespace.updateMsg = this.updateMsg.bind(this);
-            for (let i = 0; i < 100; ++i) {
-                this.messages.push('YOLO');
-            }
     }
     updateMsg(msg: string) {
         this.ngZone.run(() => this.messages.push(msg));

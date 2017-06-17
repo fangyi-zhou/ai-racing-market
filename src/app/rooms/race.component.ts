@@ -1,8 +1,9 @@
-import {Component, OnInit, NgZone, OnDestroy} from '@angular/core';
+import {Component, OnInit, NgZone, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
 import {RaceService} from './race.service';
 import {ScriptService} from '../scripts/script.service';
 import {AuthService} from '../auth.service';
 import {Script} from '../scripts/script';
+import {MessageboxComponent } from './messagebox/messagebox.component';
 
 export class Room {
     AI?: string;
@@ -19,7 +20,9 @@ declare var communication: any;
     styleUrls: ['./race.component.css'],
     providers: [RaceService, ScriptService, AuthService]
 })
-export class RaceComponent implements OnInit, OnDestroy {
+export class RaceComponent implements OnInit, OnDestroy, AfterViewInit {
+    @ViewChild(MessageboxComponent)
+    private messagebox: MessageboxComponent;
     title = 'AI racing rooms';
     rooms: Room[];
     selectedRoom: Room;
@@ -29,6 +32,7 @@ export class RaceComponent implements OnInit, OnDestroy {
     };
     selectedItems = [];
     userScripts = [];
+    ngAfterViewInit() {}
     constructor(private raceService: RaceService, private scriptService: ScriptService,
                 private auth: AuthService, private ngZone: NgZone) {}
 
@@ -84,20 +88,27 @@ export class RaceComponent implements OnInit, OnDestroy {
         }
     }
     runNewSim() {
+        this.messagebox.updateMsg('New Race due to start in 3.....');
         setTimeout(() => {
-            const room: Room = {
-                id: this.rooms.length,
-                mode: 0,
-                name: 'bar',
-                AI: this.selectedItems.length !== 0 ? this.selectedItems[0].id : ''
-            };
-            this.raceService.createSim(room).then((newSim: Room) => {
-                this.rooms.push(room);
-                this.onSelect(room);
-                this.switchCar();
-            });
-        }, 3000);
-
+            this.messagebox.updateMsg('2.....');
+            setTimeout(() => {
+                this.messagebox.updateMsg('1.....');
+                setTimeout(() => {
+                    this.messagebox.updateMsg('Start!');
+                    const room: Room = {
+                        id: this.rooms.length,
+                        mode: 0,
+                        name: 'bar',
+                        AI: this.selectedItems.length !== 0 ? this.selectedItems[0].id : ''
+                    };
+                    this.raceService.createSim(room).then((newSim: Room) => {
+                        this.rooms.push(room);
+                        this.onSelect(room);
+                        this.switchCar();
+                    });
+                }, 1000);
+            }, 1000);
+        }, 1000);
     }
     zoomIn(): void {
         communication.zoomIn();

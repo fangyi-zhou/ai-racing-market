@@ -8,6 +8,12 @@
     background: #eee;
 }
 .search-results {
-    height: 300px;
+    height: 100px;
     overflow: scroll;
+}
+.jumbotron {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 2%;
+    border-radius: 15px;
+    margin: 2%;
 }

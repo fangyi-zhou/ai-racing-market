@@ -126,8 +126,10 @@ class Simulation{
         };
 
         this.endRace = function() {
+            let result;
             if (this.raceCars.count() === 0) {
                 console.log('Race ran between 0 cars');
+                result = 'Race ran between 0 cars';
             }else{
                 let winner = this.findFirstPlaceCar();
                 /********** Removed since winner is sometimes null *************/
@@ -135,9 +137,11 @@ class Simulation{
                 this.AIs.forEach(function(child, id) {
                     child.kill();
                 });
+                result = 'Race ended. In first place is: '+ winner.clientID + ' breaking '+ winner.lastGate+ ' gates!';
             }
-            this.io.emit('raceFinish',{
-                id: this.id
+            this.io.emit('raceFinish', {
+                id: this.id,
+                winner: result
             });
             this.simulations.removeSimulation(this.id);
         };
