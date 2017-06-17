@@ -121,7 +121,11 @@ db.init(() => {
             // let sim = raceBack.getSim(simId);
             // if(sim !== undefined)
             raceBack.getSim(info.id).runChallenge(info.scriptId, info.level);
-        })
+        });
+
+        socket.on('tutorial', function (info) {
+            raceBack.runTutorial(info.code, info.tutorialNumber);
+        });
     });
 });
 

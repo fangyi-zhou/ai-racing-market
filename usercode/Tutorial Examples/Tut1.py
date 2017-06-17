@@ -16,15 +16,15 @@ def sendCommand(command):
     sys.stdout.flush()
 
 # Now rev up the car's engine to make it move forward
-sendCommand("set engineForce 1.0")
+sendCommand("set engineForce 0.35")
+time.sleep(1.0)
 
 # Now move the steering wheel to the left
-sendCommand("set steerForce 1.0")
-
-# Let the car wait for a second
+sendCommand("set steerValue 0.5")
 time.sleep(1.0)
 
 # Now move the steering wheel to the right
-sendCommand("set steerForce -1.0")
+sendCommand("set steerValue -0.5")
+time.sleep(1.0)
 
-# And that's it, you're done! Run this in Train mode and you'll see your car move forward!
+# And that's it, you're done! Run this and you'll see your car drive on it's own!

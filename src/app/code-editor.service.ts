@@ -7,8 +7,8 @@ export class CodeEditorService {
 
     editor: any;
 
-    loadCodeEditor() : void {
-        this.editor = ace.edit("editor");
+    loadCodeEditor(editor="editor") : void {
+        this.editor = ace.edit(editor);
         this.editor.setTheme("ace/theme/monokai");
         this.editor.getSession().setMode("ace/mode/python");
     }

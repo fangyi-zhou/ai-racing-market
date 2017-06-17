@@ -114,9 +114,9 @@ function childExit(child, io) {
     }
 }
 
-function createCar(io, scriptId, simID, initPosition, mode=Child.ChildModes.Racing) {
+function createCar(io, scriptId, simID, initPosition, mode=Child.ChildModes.Racing, rawCode="") {
     const carId = `Child_${Date.now()}`;
-    const child = new Child.Child(scriptId, carId, initPosition, simID, mode);
+    const child = new Child.Child(scriptId, carId, initPosition, simID, mode, rawCode);
     child.on("exit", childExit(child, io));
     console.log(`Spawn child ${carId}`);
     return child;

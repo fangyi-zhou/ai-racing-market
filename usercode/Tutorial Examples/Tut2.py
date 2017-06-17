@@ -1,17 +1,3 @@
-### Introduction:
-# You know how to move the car
-# Now we're going to look at the car's sensors
-
-# Cars have 10 sensors
-number_sensors = 10
-# The range of the sensors is 3
-sensor_range = 3
-
-### Objectives:
-# When you drive a car, you use your eyes to avoid obstacles
-# We're going to decide how to drive based on the car's sensors
-# We'll stop the car if there's an obstacle coming up
-
 # Make sure to import these packages for communication
 import sys
 import time
@@ -21,6 +7,11 @@ def sendCommand(command):
     print command
     sys.stdout.flush()
 
+# Cars have 10 sensors
+number_sensors = 10
+# The range of the sensors is 3
+sensor_range = 3
+
 # Rev up the car's engine to make it move forward
 sendCommand("set engineForce 1.0")
 
@@ -28,7 +19,6 @@ sendCommand("set engineForce 1.0")
 def get_sensor_output():
     sendCommand("get rays") # This requests the ray distances from the race car
     sensor_output = []
-    sendCommand("get rays")
     for i in range(number_sensors):
         next_ray = sys.stdin.readline() # Each ray distance is read from standard input
         sensor_output += [next_ray.split()[1]] # Add the ray distance to our collection
@@ -37,12 +27,12 @@ def get_sensor_output():
 # The definition for when an object is too close
 min_object_distance = sensor_range / 5
 def object_too_close(sensor_a, sensor_b):
-    return sensor_a < min_object_distance && sensor_b < min_object_distance
+    return (sensor_a < min_object_distance) and (sensor_b < min_object_distance)
 
-while (true):
+while (True):
     # Get the sensor input
     sensor_output = get_sensor_output()
-    if (object_too_close(sensor_output[4], sensor_output[5]):
+    if object_too_close(sensor_output[4], sensor_output[5]):
         # There is an obstacle in the way, reverse!
         sendCommand("set engineForce -1.0")
     else:

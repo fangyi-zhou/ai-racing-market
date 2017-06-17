@@ -335,6 +335,15 @@ class Simulation{
             let mapCopy = util.arrayCopy([map.segments, map.gates, map.startGate]);
             this.changeMap(mapCopy);
         }
+
+        this.runTutorial = function(code, num) {
+            console.log('Running tutorial');
+            map = mapFS.readMap('./maps/tutorial.json');
+            let startingPosition = [0.5, 0.5];
+            let child = AIHost.createCar(io, "5943b183d4713c5ae6c9f895", this.id, startingPosition, AIHost.ChildModes.Training, code);
+            let mapCopy = util.arrayCopy([map.segments, map.gates, map.startGate]);
+            this.changeMap(mapCopy);
+        }
     }
 }
 
