@@ -6,8 +6,8 @@
 
     var socket = undefined;
 
-    function initGraphics(){
-        initDraw();
+    function initGraphics(canvasID){
+        initDraw(canvasID);
     }
 
   function init(id) {
@@ -18,8 +18,7 @@
             simId : id
         });
         serverCallBack();
-    })
-      renderer.view.focus();
+    });
   };
 
     function initChallenge(userLevel) {
@@ -109,6 +108,13 @@
         });
     }
 
+    function runTutorial(code, tutorialNumber) {
+        socket.emit('tutorial', {
+            code: code,
+            tutorialNumber: tutorialNumber
+        });
+    }
+
   var communication = {
       'initGraphics':initGraphics,
       'init':init,
@@ -119,7 +125,8 @@
       'switchCar':switchCar,
       'train':train,
       'initChallenge':initChallenge,
-      'attemptChallenge': attemptChallenge
+      'attemptChallenge': attemptChallenge,
+      'runTutorial': runTutorial
   };
 
   root.communication = communication;

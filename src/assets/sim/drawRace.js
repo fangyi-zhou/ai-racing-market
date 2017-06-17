@@ -16,14 +16,14 @@ var container;
 var currentMap;
 var carViewCount = 0;
 
-function initDraw() {
+function initDraw(canvasID="PIXIcanvas") {
     //Map
     currentMap = new _Map();
 
     // Create the PIXI renderer
     console.log(document.body.childElementCount);
 
-    canvas = document.getElementById('PIXIcanvas');
+    canvas = document.getElementById(canvasID);
 
     renderer = PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas}, true, true);
     // Make the canvas focusable

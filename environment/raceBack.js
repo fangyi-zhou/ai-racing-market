@@ -9,6 +9,7 @@ const mapFS = require('./mapSave');
 
 // Globals
 let fixedTimeStep, raceDuration, numAIinRace;
+let numTutorialSteps, baseTutorial;
 
 // Default map
 let defaultMap, current_map;
@@ -28,14 +29,20 @@ function init(io, maxSims) {
     fixedTimeStep = 0.06;
     raceDuration = 10;
     numAIinRace = 3;
+    numTutorialSteps = 3;
+    baseTutorial = 100;
+
 
     simulations = new Simulation.Simulations(maxSims);
 
     // This simulation is reserved for AI training mode
     let mapCopy = util.arrayCopy(current_map);
     simulations.addSimulation(1337, mapCopy, io, Simulation.SimMode.Training);
-    mapCopy = util.arrayCopy(current_map);
-    simulations.addSimulation(1338, mapCopy, io, Simulation.SimMode.Challenges);
+
+    for (let i = 0; i < numTutorialSteps; i++) {
+        mapCopy = util.arrayCopy(current_map);
+        simulations.addSimulation(baseTutorial + i + 1, mapCopy, io, Simulation.SimMode.Challenges);
+    }
 
     // Loop the program
     setInterval(function() {
@@ -64,8 +71,13 @@ function addSim(id, mode, AI){
     }
 }
 
+function runTutorial(code, tutorialNumber) {
+    getSim(baseTutorial + tutorialNumber).runTutorial(code, tutorialNumber);
+}
+
 module.exports.getSim = getSim;
 module.exports.init = init;
 module.exports.fixedTimeStep = fixedTimeStep;
 module.exports.getAllSims = getAllSims;
 module.exports.addSim = addSim;
+module.exports.runTutorial = runTutorial;

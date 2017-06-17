@@ -43,7 +43,7 @@ const ChildModes = {
 
 class Child extends EventEmitter {
 
-    constructor(scriptId, carId, initPosition, simID, mode) {
+    constructor(scriptId, carId, initPosition, simID, mode, rawCode) {
         super();
         this.simID = simID;
         this.carId = carId;
@@ -54,7 +54,7 @@ class Child extends EventEmitter {
         children.set(this.carId, this);
         // Get script
         db.getScriptById(scriptId, (err, doc) => {
-            if (err || doc === null) {
+            if (!(mode === ChildModes.Training) && (err || doc) === null) {
                 console.log("Cannot get script");
                 this.write = (_) => {};
                 this.kill = () => {};
@@ -81,7 +81,13 @@ class Child extends EventEmitter {
                     }
                 );
             } else if (this.mode === ChildModes.Training) {
-                this.script = doc.code;
+                if (rawCode == "") {
+                    this.script = doc.code;
+                } else {
+                    console.log('RAW CODE')
+                    this.script = rawCode;
+                }
+                console.log(this.script);
                 const filePath = tempWrite.sync(this.script);
                 const process = child_process.spawn("python", [filePath], {
                     stdio: ['pipe', 'pipe', 'pipe']

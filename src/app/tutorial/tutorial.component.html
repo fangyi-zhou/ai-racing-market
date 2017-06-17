@@ -16,19 +16,63 @@
         </a> <br>
     </p>
 </div>
-<div id="Tutorial1" class="jumbotron">
+<div align="center" id="Tutorial1" class="jumbotron">
     <h1><i class="fa fa-car" aria-hidden="true"></i>Step 1 - Drive</h1>
-    <a class="btn btn-primary btn-lg" (click)="tryTutorial1()" role="button">
+    <div align="center" class="objectives">
+        <h4>Introduction</h4>
+        <ol align="left">
+            <li> Let's dive straight in and drive the car </li>
+            <li> You can play with the code below and run it </li>
+        </ol>
+        <h4>Objectives</h4>
+        <ol align="left">
+            <li> Make the car move forward by <u>powering up the engine</u></li>
+            <li> Then <u>turn it left</u>, and then <u>turn it right</u></li>
+        </ol>
+    </div>
+
+    <div id="tut1Editor" class="container left-align" style="height: 300px;">{{tutorial1Code}}</div>
+    <br>
+    <a class="btn btn-primary btn-lg" (click)="tryTutorial(1)" role="button">
         Try it out    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
     </a>
-    <canvas *ngIf="tutorial1()" id="Tutorial1Canvas" width="400" height="300" tabindex="0"
+    <br>
+    <canvas id="TutorialCanvas1" width="500" height="500" tabindex="0"
             style="touch-action: none; cursor: inherit;" class="pixiCanvas"></canvas>
+    <br>
 </div>
-<div id="Tutorial2" class="jumbotron">
+<div align="center" id="Tutorial2" class="jumbotron">
     <h1><i class="fa fa-wifi" aria-hidden="true"></i>Step 2 - Sense</h1>
+    <div align="center" class="objectives">
+        <h4>Introduction</h4>
+        <ol align="left">
+            <li> When you drive a car, you use your eyes to avoid obstacles </li>
+            <li> Now we're going to decide how to drive using the car's sensors </li>
+        </ol>
+        <h4>Objectives</h4>
+        <ol align="left">
+            <li> Make the car move forward by <u>powering up the engine</u></li>
+            <li> Make it <u>reverse</u> when there's an <u>obstacle in the way</u></li>
+        </ol>
+
+    </div>
+
+    <div id="tut2Editor" class="container left-align" style="height: 300px;">{{tutorial1Code}}</div>
+    <br>
+    <a class="btn btn-primary btn-lg" (click)="tryTutorial(2)" role="button">
+        Try it out    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+    </a>
+    <br>
+    <canvas id="TutorialCanvas2" width="500" height="500" tabindex="0"
+            style="touch-action: none; cursor: inherit;" class="pixiCanvas"></canvas>
+    <br>
 </div>
 <div id="Tutorial3" class="jumbotron">
     <h1><i class="fa fa-line-chart" aria-hidden="true"></i>Step 3 - Learn (AI)</h1>
+    <br>
+    <a class="btn btn-primary btn-lg" (click)="tryTutorial(3)" role="button">
+        Try it out    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+    </a>
 </div>
 <div id="CheatSheet" class="jumbotron">
     <h1>Cheat Sheet</h1>
