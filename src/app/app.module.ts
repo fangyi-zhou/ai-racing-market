@@ -18,7 +18,8 @@ import {HttpModule} from "@angular/http";
 import { StatisticsComponent } from './statistics/statistics.component';
 import { TutorialComponent } from './tutorial/tutorial.component';
 import { TrainingComponent } from './training/training.component';
-import { ChallengeComponent } from './challenges/challenges.component'
+import { ChallengeComponent } from './challenges/challenges.component';
+import { MessageboxComponent } from './rooms/messagebox/messagebox.component'
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { ChallengeComponent } from './challenges/challenges.component'
         StatisticsComponent,
         TutorialComponent,
         TrainingComponent,
-        ChallengeComponent
+        ChallengeComponent,
+        MessageboxComponent
     ],
     bootstrap: [AppComponent]
 })

@@ -3,6 +3,7 @@ import {RaceService} from './race.service';
 import {ScriptService} from '../scripts/script.service';
 import {AuthService} from '../auth.service';
 import {Script} from '../scripts/script';
+import {MessageboxComponent} from './messagebox/messagebox.component';
 
 export class Room {
     AI?: string;

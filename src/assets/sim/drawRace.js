@@ -98,7 +98,6 @@ function updateAllGraphics(info) {
         }
 
         // Centre client view on the car they control
-        console.log(viewingCarID)
         if (viewingCarID === car.clientID) {
             container.position.x = -cars[id].carGraphic.position.x * zoom + renderer.width / 2; // center at origin
             container.position.y = cars[id].carGraphic.position.y * zoom + renderer.height / 2;
