@@ -7,16 +7,16 @@
     margin: 0 0 3em 0;
     list-style-type: none;
     padding: 0;
-    width: 15em;
+    width: 100%;
 }
 .scripts li {
     cursor: pointer;
     position: relative;
     left: 0;
     background-color: #EEE;
-    margin: .5em;
-    padding: .3em 0;
-    height: 3.5em;
+    margin: 0.5em 0 0.5em 0;
+    padding: 0.3em;
+    height: inherit;
     border-radius: 4px;
 }
 .scripts li.selected:hover {
@@ -50,4 +50,19 @@
     position: relative;
     width: 85%;
     min-width: 70%;
+}
+.semi-transparent-block {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 2%;
+    border-radius: 15px;
+    width: 100%;
+}
+
+.btn {
+    width: 100%;
+}
+
+.vert-padding {
+    padding: 5% 0 5% 0;
+    margin: 10% 0 10% 0;
 }
