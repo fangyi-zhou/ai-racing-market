@@ -9,6 +9,7 @@ const rays = require('./rays');
 const RaceCar = require('./RaceCar');
 const AIHost = require('../usercode/host');
 const mapFS = require('./mapSave');
+const db = require('../db');
 
 class Simulations{
     constructor (maxSims) {
@@ -86,6 +87,7 @@ class Simulation{
 
         this.raceCars = new hashMap.HashMap();
         this.AIs = new hashMap.HashMap();
+        this.carScripts = new hashMap.HashMap();
 
         this.world =  new p2.World();
 
@@ -134,16 +136,18 @@ class Simulation{
                 let winner = this.findFirstPlaceCar();
                 /********** Removed since winner is sometimes null *************/
                 console.log('Race ended. In first place is: ', winner.clientID, ' breaking ', winner.lastGate, ' gates!');
-                this.AIs.forEach(function(child, id) {
+                this.AIs.forEach(function(id, child) {
                     child.kill();
                 });
-                result = 'Race ended. In first place is: '+ winner.clientID + ' breaking '+ winner.lastGate+ ' gates!';
+                db.getScriptById(this.carScripts.get(winner.clientID), (err,res) =>{
+                    result = 'Race ended. In first place is: '+ res.scriptName +' of '+res.username + ', breaking '+ winner.lastGate+ ' gates!';
+                    this.io.emit('raceFinish', {
+                        id: this.id,
+                        winner: result
+                    });
+                    this.simulations.removeSimulation(this.id);
+                });
             }
-            this.io.emit('raceFinish', {
-                id: this.id,
-                winner: result
-            });
-            this.simulations.removeSimulation(this.id);
         };
 
         this.step = function(timeStep) {
@@ -266,7 +270,7 @@ class Simulation{
 
         // Clears the world and then adds the map again
         this.reset = function() {
-            this.AIs.forEach(function(child, id) {
+            this.AIs.forEach(function(id, child) {
                 child.kill();
             });
             this.world.clear();
@@ -274,6 +278,7 @@ class Simulation{
             this.AIs = new hashMap.HashMap();
             /************* VERY DODGY - Need to keep pointer ***************/
             this.raceCars = this.raceCars.clear();
+            this.carScripts = new hashMap.HashMap();
             let newRaw = util.arrayCopy(this.rawMap);
             this.setMap(this.rawMap);
             this.rawMap = newRaw;
@@ -287,7 +292,8 @@ class Simulation{
             for (let i = 0; i < scriptIDs.length; i++) {
                 let startingPosition = [0, 0];
                 let child = AIHost.createCar(io, scriptIDs[i], this.id, startingPosition, AIHost.ChildModes.Racing);
-                this.AIs.set(child.carId, child);
+                this.AIs.set(child, scriptIDs[i]);
+                this.carScripts.set(child.carId, scriptIDs[i]);
             }
             // Begin the race
             this.currentRaceDuration = timeLength;
@@ -313,7 +319,7 @@ class Simulation{
             this.mode = SimMode.Training;
             let startingPosition = [0.5, 0.5];
             let child = AIHost.createCar(io, scriptID, this.id, startingPosition, AIHost.ChildModes.Training);
-            this.AIs.set(child.carId, child);
+            this.AIs.set(child.clientID, scriptID);
         };
 
         // Challenge Mode
