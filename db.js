@@ -49,7 +49,7 @@ function getUserScripts(username, callback) {
 }
 
 function getRandomScripts(callback) {
-    db.collection(SCRIPT_COLLECTION).find({}).toArray(callback);
+    db.collection(SCRIPT_COLLECTION).find({ "username": { $ne: "presentation" }}).toArray(callback);
 }
 
 module.exports.getScriptById = getScriptById;
