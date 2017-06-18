@@ -97,3 +97,4 @@ module.exports.fixedTimeStep = fixedTimeStep;
 module.exports.getAllSims = getAllSims;
 module.exports.addSim = addSim;
 module.exports.runTutorial = runTutorial;
+module.exports.SimMode = Simulation.SimMode;

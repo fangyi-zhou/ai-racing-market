@@ -68,7 +68,14 @@ function processSetCommand(child, splatInput) {
     }
     let sim = raceBack.getSim(child.simID);
     if (sim !== undefined)
-    sim.applyMove(control, child.carId);
+        sim.applyMove(control, child.carId);
+}
+
+function processStatCommand(child, splatInput) {
+    let control = {};
+    const carId = child.carId;
+
+    let newPoint = splatInput[1];
 }
 
 function processSingleCommand(child, data) {
@@ -85,6 +92,9 @@ function processSingleCommand(child, data) {
         case "world":
             //TODO not allow child step in ranked mode
             processWorldCommand(child, splatInput);
+            break;
+        case "stat":
+            processStatCommand(child, splatInput);
             break;
         default:
             // console.error(`Cannot decode ${data} from Child ${carId}`);

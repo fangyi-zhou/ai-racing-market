@@ -84,10 +84,8 @@ class Child extends EventEmitter {
                 if (rawCode == "") {
                     this.script = doc.code;
                 } else {
-                    console.log('RAW CODE')
                     this.script = rawCode;
                 }
-                console.log(this.script);
                 const filePath = tempWrite.sync(this.script);
                 const process = child_process.spawn("python", [filePath], {
                     stdio: ['pipe', 'pipe', 'pipe']

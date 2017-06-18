@@ -310,6 +310,7 @@ class Simulation{
         };
 
         this.train = function(scriptID) {
+            this.reset();
             this.mode = SimMode.Training;
             let startingPosition = [0.5, 0.5];
             let child = AIHost.createCar(io, scriptID, this.id, startingPosition, AIHost.ChildModes.Training);

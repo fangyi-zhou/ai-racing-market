@@ -17,7 +17,7 @@
     </p>
 </div>
 <div align="center" id="Tutorial1" class="jumbotron">
-    <h1><i class="fa fa-car" aria-hidden="true"></i>Step 1 - Drive</h1>
+    <h2>Step 1 - <i class="fa fa-car" aria-hidden="true"></i> Drive [<b>Beginner</b>]</h2>
     <div align="center" class="objectives">
         <h4>Introduction</h4>
         <ol align="left">
@@ -42,7 +42,7 @@
     <br>
 </div>
 <div align="center" id="Tutorial2" class="jumbotron">
-    <h1><i class="fa fa-wifi" aria-hidden="true"></i>Step 2 - Sense</h1>
+    <h2>Step 2 - <i class="fa fa-wifi" aria-hidden="true"></i> Sense [<b>Intermediate</b>]</h2>
     <div align="center" class="objectives">
         <h4>Introduction</h4>
         <ol align="left">
@@ -68,31 +68,47 @@
     <br>
 </div>
 <div align="center" id="Tutorial3" class="jumbotron">
-    <h1><i class="fa fa-line-chart" aria-hidden="true"></i>Step 3 - Learn (AI)</h1>
-    <div align="center" class="objectives">
-        <h4>Introduction</h4>
-        <ol align="left">
-            <li> <i color="red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                    This is an <u>advanced tutorial</u> for when you're comfortable with car control </li>
-            <li> It is just <u>one way you could make your AI</u> for the races </li>
-        </ol>
-        <h4>Objectives</h4>
-        <ol align="left">
-            <li> Make the car move forward by <u>powering up the engine</u></li>
-            <li> Make it <u>reverse</u> when there's an <u>obstacle in the way</u></li>
-        </ol>
-
-    </div>
-
-    <div id="tut3Editor" class="container left-align" style="height: 300px;">{{tutorial1Code}}</div>
-    <br>
-    <a class="btn btn-primary btn-lg" (click)="tryTutorial(3)" role="button">
-        Try it out    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+    <h2>Step 3 - <i class="fa fa-line-chart" aria-hidden="true"></i> Train [<b>Advanced</b>]</h2>
+    <h3>(Artificial Intelligence)</h3>
+    <a *ngIf="!checkTutorial3Revealed()" class="btn btn-primary btn-lg" (click)="revealTutorial3()" role="button">
+        <i style="color:red; font-size: 25px" class="fa fa-exclamation-triangle" aria-hidden="true"></i> Reveal Tutorial 3
+        <i style="color:red; font-size: 25px" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
     </a>
-    <br>
-    <canvas id="TutorialCanvas3" width="500" height="1" tabindex="0"
-            style="touch-action: none; cursor: inherit;" class="pixiCanvas"></canvas>
-    <br>
+    <a *ngIf="checkTutorial3Revealed()" class="btn btn-primary btn-lg" (click)="revealTutorial3()" role="button">
+        Hide Tutorial 3
+    </a>
+    <div *ngIf="checkTutorial3Revealed()">
+        <div align="center" class="objectives">
+            <h4>Introduction</h4>
+            <ol align="left">
+                <li> <i style="color:red; font-size: 25px" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        Warning: This is an <u>advanced tutorial</u> for when you're comfortable with car control </li>
+                <li> It is just <u>one way you could make your AI</u> for the races </li>
+            </ol>
+            <h4>Objectives</h4>
+            <ol align="left">
+                <li> Make a population of cars, each with a neural network</li>
+                <li> Make the neural networks have the number of inputs equal to the number of car sensors (10)
+                     and the number of outputs equal to the number of car actions (2) </li>
+                <li> Each epoch, race all the cars. Rank them by their performance on the track, and use a
+                     Genetic Algorithm to produce the next generation.</li>
+                <li> When the AI is trained, save the weights! </li>
+            </ol>
+
+        </div>
+    </div>
+    <div id="tut3Editor" class="container left-align" style="height: 300px;">{{tutorial1Code}}</div>
+
+    <div *ngIf="checkTutorial3Revealed()">
+        <br>
+        <a class="btn btn-primary btn-lg" (click)="tryTutorial(3)" role="button">
+            Try it out    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+        </a>
+        <br>
+        <canvas id="TutorialCanvas3" width="500" height="1" tabindex="0"
+                style="touch-action: none; cursor: inherit;" class="pixiCanvas"></canvas>
+        <br>
+    </div>
 </div>
 <div id="CheatSheet" class="jumbotron">
     <h1>Cheat Sheet</h1>
