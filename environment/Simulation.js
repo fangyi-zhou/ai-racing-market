@@ -341,6 +341,7 @@ class Simulation{
         }
 
         this.runTutorial = function(code, num) {
+            this.reset();
             console.log('Running tutorial');
             map = mapFS.readMap('./maps/tutorial.json');
             let startingPosition = [0.5, 0.5];
