@@ -45,7 +45,6 @@ export class MessageboxComponent implements OnInit, OnDestroy{
     updateScroll() {
         if (!this.scrolled) {
             const element = document.getElementById("msgbox");
-            console.log(element.scrollHeight);
             element.scrollTop = element.scrollHeight;
         }
     }

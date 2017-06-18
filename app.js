@@ -84,8 +84,10 @@ db.init(() => {
         //iterate physics
         setInterval(function () {
             let sim = raceBack.getSim(simId);
-            if(sim !== undefined)
+            if(sim !== undefined){
                 socket.emit('updateClient', sim.packageGraphics());
+            }
+
         }, 1000 / 30);
 
         socket.on('disconnect', function () {

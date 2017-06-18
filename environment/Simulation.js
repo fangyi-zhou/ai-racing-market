@@ -170,7 +170,8 @@ class Simulation{
 
         this.addRaceCar = function (clientID, position) {
             let car = new RaceCar.RaceCar(this.raceCars.count()+1, clientID, this.world, position, 0);
-            return this.addRaceCarToWorld(car);
+            return car;
+            //return this.addRaceCarToWorld(car);
         };
 
         // Change the map in the world
@@ -290,7 +291,6 @@ class Simulation{
                 this.AIs.set(child.carId, child);
                 this.raceCars.set(child.carId, child.car);
             }
-
             // Begin the race
             this.currentRaceDuration = timeLength;
             this.raceStartTime = this.world.time;

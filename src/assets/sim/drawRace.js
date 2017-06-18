@@ -159,16 +159,16 @@ function removeUser(id) {
     cars[id] = undefined;
 }
 
-var getCars = function(){
-    var keys = [];
-    for(var car in cars){
+function getCars(){
+    let keys = [];
+    for(let car in cars){
         keys.push(car);
     }
     return keys;
 }
 
 // Key controls
-var keys = {
+let keys = {
     '37': 0, // left
     '39': 0, // right
     '38': 0, // up
