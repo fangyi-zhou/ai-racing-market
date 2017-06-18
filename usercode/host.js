@@ -35,7 +35,6 @@ function processGetCommand(child, splatInput) {
             child.write(car.getSpeed());
             break;
         case "rays":
-            console.log('ray request')
             const rayDists = car.rayDists;
             rayDists.forEach((value, idx) => {
                 child.write(`${idx} ${value}`);
