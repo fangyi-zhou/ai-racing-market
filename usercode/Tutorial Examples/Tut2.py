@@ -21,13 +21,15 @@ def get_sensor_output():
     sensor_output = []
     for i in range(number_sensors):
         next_ray = sys.stdin.readline() # Each ray distance is read from standard input
-        sensor_output += [next_ray.split()[1]] # Add the ray distance to our collection
+        sensor_output += [float(next_ray.split()[1])] # Add the ray distance to our collection
     return sensor_output; # Return all the ray distances
 
 # The definition for when an object is too close
-min_object_distance = sensor_range / 5
+min_object_distance = sensor_range / 5.0
 def object_too_close(sensor_a, sensor_b):
-    return (sensor_a < min_object_distance) and (sensor_b < min_object_distance)
+    print sensor_a
+    print (sensor_a < min_object_distance)
+    return (sensor_a < min_object_distance) or (sensor_b < min_object_distance)
 
 while (True):
     # Get the sensor input
