@@ -4,6 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {OrderModule} from "ngx-order-pipe";
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import {ChartModule} from 'angular2-highcharts';
 
 import {AppComponent} from "./app.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
@@ -23,6 +24,7 @@ import { ChallengeComponent } from './challenges/challenges.component';
 import { PlayAgainstAIComponent } from './playAgainstAI/playAgainstAI.component';
 import { MessageboxComponent } from './rooms/messagebox/messagebox.component';
 
+declare var require: any;
 
 @NgModule({
     imports: [
@@ -32,7 +34,8 @@ import { MessageboxComponent } from './rooms/messagebox/messagebox.component';
         HttpModule,
         OrderModule,
         AngularMultiSelectModule,
-        InfiniteScrollModule
+        InfiniteScrollModule,
+        ChartModule.forRoot(require('highcharts'))
     ],
     declarations: [
         AppComponent,

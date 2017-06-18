@@ -45,6 +45,9 @@
         my.namespace.publicFunc();
         my.namespace.updateMsg(info.winner);
     });
+    socket.on('updateGraph', function(info){
+        my.namespace.updateStats(info.point);
+    })
   }
 
   function syncServerWithMovement() {

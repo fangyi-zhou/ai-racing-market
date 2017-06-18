@@ -91,6 +91,12 @@ function runTutorial(code, tutorialNumber) {
     getSim(baseTutorial + tutorialNumber).runTutorial(code, tutorialNumber);
 }
 
+function updateGraph(point) {
+    this.io.emit('updateGraph',{
+        point:point
+    })
+}
+
 module.exports.getSim = getSim;
 module.exports.init = init;
 module.exports.fixedTimeStep = fixedTimeStep;
@@ -98,3 +104,4 @@ module.exports.getAllSims = getAllSims;
 module.exports.addSim = addSim;
 module.exports.runTutorial = runTutorial;
 module.exports.SimMode = Simulation.SimMode;
+module.exports.updateGraph=updateGraph;

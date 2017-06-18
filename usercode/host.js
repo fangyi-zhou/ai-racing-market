@@ -72,10 +72,7 @@ function processSetCommand(child, splatInput) {
 }
 
 function processStatCommand(child, splatInput) {
-    let control = {};
-    const carId = child.carId;
-
-    let newPoint = splatInput[1];
+    raceBack.updateGraph((splatInput[1]));
 }
 
 function processSingleCommand(child, data) {
