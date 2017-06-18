@@ -257,7 +257,7 @@ class Simulation{
                 clientCar.frontWheel.steerValue = steerValue;
             }
             if (control["engineForce"] !== undefined && control["engineForce"] !== null) {
-                let engineForce = Math.min(Math.max(control["engineForce"], -2), 4);
+                let engineForce = Math.min(Math.max(control["engineForce"], -2), 3);
                 clientCar.backWheel.engineForce = engineForce;
                 let breaking = (clientCar.backWheel.getSpeed() > 0.1 && engineForce < 0)
                     || (clientCar.backWheel.getSpeed() < -0.1 && engineForce > 0);

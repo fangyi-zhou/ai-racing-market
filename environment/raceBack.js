@@ -6,6 +6,8 @@ const util = require('./util');
 const Map = require('./maps/Map');
 const Simulation = require('./Simulation');
 const mapFS = require('./mapSave');
+const datebase = require('../db');
+const random = require('array-permutation').random;
 
 // Globals
 let fixedTimeStep, raceDuration, numAIinRace;
@@ -70,9 +72,19 @@ function getAllSims(){
 function addSim(id, mode, AI){
     let mapCopy = util.arrayCopy(current_map);
     simulations.addSimulation(id, mapCopy, this.io, mode);
-    if(AI !== ''){
-        simulations.addAI(id,[AI,AI,AI,AI]);
-    }
+    datebase.getRandomScripts(function(err,scripts){
+       if (err){
+           //WHAT to do here?
+       } else {
+            let scriptIds = random(scripts.length);
+            let scriptCompete = [AI];
+            for (let i = 0;i < 3;i++){
+                scriptCompete.push(scripts[scriptIds[i]]._id);
+            }
+           simulations.addAI(id,scriptCompete);
+       }
+    });
+
 }
 
 function runTutorial(code, tutorialNumber) {

@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col s2">
-        <h3 class="semi-transparent center">All Races </h3>
-        <ul class="rooms">
+        <h4 class="semi-transparent-block center vert-padding">Races </h4>
+        <ul class="rooms center">
             <li *ngFor="let room of rooms"
                 [class.selected]="room === selectedRoom"
                 (click)="onSelect(room)">
@@ -9,32 +9,41 @@
             </li>
         </ul>
         <div *ngIf="auth.loggedIn();else notLoggedIn">
-                <label>Scripts</label>
                 <angular2-multiselect [data]="userScripts"  [(ngModel)]="selectedItems"
                                       [settings]= "dropDownSettings"
                                       (onSelect)="onItemSelect($event)"></angular2-multiselect>
             <ng-template #notLoggedIn>
-                LOL
+                We'll run a race with default AI
             </ng-template>
         </div>
-        <button class="btn btn-warning" (click)="runNewSim()">Queue Up</button>
+        <button class="btn btn-warning center" (click)="runNewSim()">Queue Up</button>
     </div>
 
     <div class="col s8">
         <div *ngIf="selectedRoom; else elseBlock">
-            <h3 class="semi-transparent center">Currently viewing Race {{selectedRoom.id}}</h3>
+            <span class="semi-transparent-block center">Currently viewing Race {{selectedRoom.id}}</span>
         </div>
-        <ng-template #elseBlock><h3 class="semi-transparent center">Please Select a Race</h3></ng-template>
+        <ng-template #elseBlock><h3 class="semi-transparent-block center">Please Select a Race</h3></ng-template>
         <div style="text-align: center">
             <canvas id="PIXIcanvas" width="800" height="640" tabindex="0"
                     style="touch-action: none; cursor: inherit;" class="pixiCanvas"></canvas>
         </div>
     </div>
     <div class="col s2">
-        <h3 class="semi-transparent center">View controls</h3>
-        <a class="btn waves-effect semi-transparent" (click)="zoomIn()">Zoom In </a> <br><br>
-        <a class="btn waves-effect semi-transparent" (click)="zoomOut()">Zoom Out </a> <br><br>
-        <a class="btn waves-effect semi-transparent" (click)="switchCar()">Switch Car </a>
+        <h4 class="semi-transparent-block center vert-padding">View controls</h4>
+        <div style="width: 2%"></div>
+        <a class="btn black-text semi-transparent-block" (click)="zoomIn()">
+            Zoom In
+            <i class="fa fa-search-plus" aria-hidden="true"></i>
+        </a> <br><br>
+        <a class="btn black-text semi-transparent-block" (click)="zoomOut()">
+            Zoom Out
+            <i class="fa fa-search-minus" aria-hidden="true"></i>
+        </a> <br><br>
+        <a class="btn black-text semi-transparent-block" (click)="switchCar()">
+            Switch Car
+            <i class="fa fa-exchange" aria-hidden="true"></i>
+        </a>
     </div>
 </div>
 <app-messagebox></app-messagebox>
