@@ -12,7 +12,9 @@ import { LandingComponent } from './landing/landing.component';
 import { StatisticsComponent} from './statistics/statistics.component';
 import { TutorialComponent} from './tutorial/tutorial.component';
 import { TrainingComponent} from './training/training.component';
-import { ChallengeComponent } from './challenges/challenges.component'
+import { ChallengeComponent } from './challenges/challenges.component';
+import { PlayAgainstAIComponent } from './playAgainstAI/playAgainstAI.component';
+
 
 const routes: Routes = [
     { path: '', redirectTo: '/app-landing', pathMatch: 'full' },
@@ -26,7 +28,8 @@ const routes: Routes = [
     { path: 'app-statistics', component: StatisticsComponent},
     { path: 'app-tutorial', component: TutorialComponent},
     { path: 'app-training', component: TrainingComponent},
-    { path: 'challenges', component: ChallengeComponent}
+    { path: 'challenges', component: ChallengeComponent},
+    { path: 'app-playAgainstAI', component: PlayAgainstAIComponent }
 ];
 
 @NgModule({

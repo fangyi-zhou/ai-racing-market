@@ -43,6 +43,8 @@ export class LoginComponent implements OnInit {
 
     onGuest() {
         //TODO: Implement guest login (just give them a login username)
+        this.credential.username = "Guest";
+        this.credential.password = "123";
         this.auth.login(this.credential, this.successCallback(this), this.failureCallback(this));
     }
 

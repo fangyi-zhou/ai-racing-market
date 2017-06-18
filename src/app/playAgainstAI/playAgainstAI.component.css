@@ -1,0 +1,73 @@
+
+.selected {
+    background-color: #CFD8DC !important;
+    color: white;
+}
+.scripts {
+    margin: 0 0 3em 0;
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+}
+.scripts li {
+    cursor: pointer;
+    position: relative;
+    left: 0;
+    background-color: #EEE;
+    margin: 0.5em 0 0.5em 0;
+    padding: 0.3em;
+    height: inherit;
+    border-radius: 4px;
+}
+.scripts li.selected:hover {
+    background-color: #BBD8DC !important;
+    color: white;
+}
+.scripts li:hover {
+    color: #607D8B;
+    background-color: #DDD;
+    left: .1em;
+}
+.scripts .text {
+    position: relative;
+    top: -3px;
+}
+.scripts .badge {
+    display: inline-block;
+    font-size: small;
+    color: white;
+    padding: 0.8em 0.7em 0 0.7em;
+    background-color: #607D8B;
+    line-height: 1em;
+    position: relative;
+    left: -1px;
+    top: -4px;
+    height: 1.8em;
+    margin-right: .8em;
+    border-radius: 4px 0 0 4px;
+}
+.pixiCanvas {
+    position: relative;
+    width: 85%;
+    min-width: 70%;
+}
+.semi-transparent-block {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 2%;
+    border-radius: 15px;
+    width: 100%;
+}
+
+.btn {
+    width: 100%;
+}
+
+.vert-padding {
+    padding: 5% 0 5% 0;
+    margin: 10% 0 10% 0;
+}
+
+.overflow-scroll {
+    height: 350px;
+    overflow: scroll;
+}
