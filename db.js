@@ -48,6 +48,10 @@ function getUserScripts(username, callback) {
     db.collection(SCRIPT_COLLECTION).find({username: username}).toArray(callback);
 }
 
+function getRandomScripts(callback) {
+    db.collection(SCRIPT_COLLECTION).find({}).toArray(callback);
+}
+
 module.exports.getScriptById = getScriptById;
 module.exports.createScript = createScript;
 module.exports.getUserByUsername = getUserByUsername;
@@ -55,4 +59,5 @@ module.exports.createUser = createUser;
 module.exports.getAllUsers = getAllUsers;
 module.exports.getAllScripts = getAllScripts;
 module.exports.getUserScripts = getUserScripts;
+module.exports.getRandomScripts = getRandomScripts;
 module.exports.init = init;

@@ -9,12 +9,11 @@
             </li>
         </ul>
         <div *ngIf="auth.loggedIn();else notLoggedIn">
-                <label>Scripts</label>
                 <angular2-multiselect [data]="userScripts"  [(ngModel)]="selectedItems"
                                       [settings]= "dropDownSettings"
                                       (onSelect)="onItemSelect($event)"></angular2-multiselect>
             <ng-template #notLoggedIn>
-                LOL
+                We'll run a race with default AI
             </ng-template>
         </div>
         <button class="btn btn-warning" (click)="runNewSim()">Queue Up</button>
