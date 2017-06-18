@@ -12,8 +12,6 @@ interface Tutorials {
     c: boolean;
 }
 
-
-
 @Component({
   selector: 'app-tutorial',
   templateUrl: './tutorial.component.html',
@@ -36,10 +34,10 @@ export class TutorialComponent implements OnInit {
     constructor(private codeEditorService: CodeEditorService) { }
 
   ngOnInit() {
-      this.codeEditorService.loadCodeEditor("tut1Editor");
-      this.codeEditorService.postCode(this.tutorialCode[1-1]);
-      this.codeEditorService.loadCodeEditor("tut2Editor");
-      this.codeEditorService.postCode(this.tutorialCode[2-1]);
+      this.codeEditorService.loadCodeEditor("tut1Editor", 1);
+      this.codeEditorService.postCode(this.tutorialCode[1-1], 1);
+      this.codeEditorService.loadCodeEditor("tut2Editor", 2);
+      this.codeEditorService.postCode(this.tutorialCode[2-1], 2);
   }
 
     tutorial1() {
@@ -47,9 +45,14 @@ export class TutorialComponent implements OnInit {
     }
     tryTutorial(num) {
         this.tutorial.a = !this.tutorial.a;
+        let canvasName = "TutorialCanvas" + num;
+        let x : any = document.getElementById(canvasName);
+        x.height = 500;
 
-        communication.initGraphics("TutorialCanvas" + num);
+        // document.getElementById(canvasName).height = 500;
+        communication.initGraphics(canvasName);
         communication.init(this.tutorialSimIDBase + num);
-        communication.runTutorial(this.codeEditorService.getCode(), num);
+        console.log(this.codeEditorService.getCode(num))
+        communication.runTutorial(this.codeEditorService.getCode(num), num);
     }
 }

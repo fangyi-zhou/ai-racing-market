@@ -39,6 +39,10 @@ function init(io, maxSims) {
     let mapCopy = util.arrayCopy(current_map);
     simulations.addSimulation(1337, mapCopy, io, Simulation.SimMode.Training);
 
+    // This simulation is reserved for challenges
+    mapCopy = util.arrayCopy(current_map);
+    simulations.addSimulation(1338, mapCopy, io, Simulation.SimMode.Training);
+
     for (let i = 0; i < numTutorialSteps; i++) {
         mapCopy = util.arrayCopy(current_map);
         simulations.addSimulation(baseTutorial + i + 1, mapCopy, io, Simulation.SimMode.Challenges);

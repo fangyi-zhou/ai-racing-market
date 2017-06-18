@@ -171,7 +171,7 @@ class Simulation{
         this.addRaceCar = function (clientID, position) {
             let car = new RaceCar.RaceCar(this.raceCars.count()+1, clientID, this.world, position, 0);
             return car;
-            //return this.addRaceCarToWorld(car);
+            // return this.addRaceCarToWorld(car);
         };
 
         // Change the map in the world
@@ -331,14 +331,16 @@ class Simulation{
         this.challenges = [this.challenge1, this.challenge2, this.challenge3];
 
         this.runChallenge = function(scriptID, userLevel) {
-            console.log('Running challenge')
+            this.reset();
+            console.log('Running challenge');
             map = mapFS.readMap('./maps/challenges/' + userLevel + '.json');
             this.challenges[userLevel](scriptID);
             let startingPosition = [0.5, 0.5];
             let child = AIHost.createCar(io, scriptID, this.id, startingPosition, AIHost.ChildModes.RankedRacing);
+            // this.addRaceCarToWorld(child.car);
             let mapCopy = util.arrayCopy([map.segments, map.gates, map.startGate]);
             this.changeMap(mapCopy);
-        }
+        };
 
         this.runTutorial = function(code, num) {
             this.reset();
@@ -346,6 +348,7 @@ class Simulation{
             map = mapFS.readMap('./maps/tutorial.json');
             let startingPosition = [0.5, 0.5];
             let child = AIHost.createCar(io, "5943b183d4713c5ae6c9f895", this.id, startingPosition, AIHost.ChildModes.Training, code);
+            this.addRaceCarToWorld(child.car);
             let mapCopy = util.arrayCopy([map.segments, map.gates, map.startGate]);
             this.changeMap(mapCopy);
         }
