@@ -35,9 +35,9 @@ export class PlayAgainstAIComponent implements OnInit {
     }
     playAI(script: Script): void {
         // TODO: clear graphics
-        // communication.disconnectOnSwap();
-        // communication.init(1337);
-        // communication.train(script._id);
+        communication.disconnectOnSwap();
+        communication.init(180);
+        communication.playAgainstAI(script._id);
     }
     zoomIn(): void {
         communication.zoomIn();

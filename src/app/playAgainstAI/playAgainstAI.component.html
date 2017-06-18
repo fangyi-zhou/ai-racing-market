@@ -9,11 +9,11 @@
                     <span>Script {{script.scriptName}} </span>
                 </li>
             </ul>
+            <div *ngIf="selectedScript">
+                <button class="btn btn-warning" (click)="playAI(selectedScript)">Play</button>
+            </div>
         </div>
         <div style="width: 2%"></div>
-        <div *ngIf="selectedScript">
-            <button class="btn btn-warning" (click)="playAI(selectedScript)">Play</button>
-        </div>
 
     </div>
 

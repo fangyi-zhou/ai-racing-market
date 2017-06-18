@@ -54,6 +54,7 @@ function initDraw(canvasID="PIXIcanvas") {
     // User control
     renderer.view.addEventListener('keydown', onKeyPress);
     function onKeyPress(evt) {
+        console.log(evt.keyCode)
         keys[evt.keyCode] = 1;
         communication.syncServerWithMovement();
     }
@@ -169,9 +170,9 @@ function getCars(){
 
 // Key controls
 let keys = {
-    '37': 0, // left
-    '39': 0, // right
-    '38': 0, // up
-    '40': 0 // down
+    '65': 0, // left
+    '68': 0, // right
+    '83': 0, // up
+    '87': 0 // down
 };
 

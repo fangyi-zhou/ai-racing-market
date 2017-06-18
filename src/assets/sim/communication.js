@@ -50,13 +50,15 @@
     })
   }
 
+
+
   function syncServerWithMovement() {
     if (socket != null) {
       socket.emit('movement', {
-        '37': keys[37],
-        '38': keys[38],
-        '39': keys[39],
-        '40': keys[40]
+        '37': keys[68],
+        '38': keys[87],
+        '39': keys[65],
+        '40': keys[83]
       })
     }
   }
@@ -94,6 +96,13 @@
       })
   }
 
+    function playAgainstAI(scriptId) {
+        socket.emit('clientPlayAI', {
+            id:180,
+            scriptId : scriptId
+        })
+    }
+
   function switchCar(){
       //TODO switch car views
       carIDs = getCars();
@@ -130,7 +139,8 @@
       'train':train,
       'initChallenge':initChallenge,
       'attemptChallenge': attemptChallenge,
-      'runTutorial': runTutorial
+      'runTutorial': runTutorial,
+      'playAgainstAI': playAgainstAI
   };
 
   root.communication = communication;

@@ -231,7 +231,7 @@ class Simulation{
         this.addClient = function(clientID) {
             if (this.mode === SimMode.ClientDrive) {
                 console.log('USER', clientID);
-                const initPosition = [0, 0];
+                const initPosition = [0.5, 0.5];
                 this.addRaceCar(clientID, initPosition);
             }
         };
@@ -320,7 +320,16 @@ class Simulation{
             this.mode = SimMode.Training;
             let startingPosition = [0.5, 0.5];
             let child = AIHost.createCar(io, scriptID, this.id, startingPosition, AIHost.ChildModes.Training);
-            this.AIs.set(child.clientID, scriptID);
+            this.AIs.set(child, scriptID);
+        };
+
+        this.clientPlayAI = function(scriptID, clientID) {
+            this.reset();
+            this.mode = SimMode.ClientDrive;
+            let startingPosition = [0.5, 0.5];
+            let child = AIHost.createCar(io, scriptID, this.id, startingPosition, AIHost.ChildModes.Training);
+            this.AIs.set(child, scriptID);
+            this.addClient(clientID);
         };
 
         // Challenge Mode

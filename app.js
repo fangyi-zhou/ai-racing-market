@@ -119,6 +119,12 @@ db.init(() => {
             raceBack.getSim(info.id).train(info.scriptId);
         });
 
+        socket.on('clientPlayAI', function (info) {
+            // let sim = raceBack.getSim(simId);
+            // if(sim !== undefined)
+            raceBack.getSim(info.id).clientPlayAI(info.scriptId, socket.id);
+        });
+
         socket.on('challenge', function (info) {
             // let sim = raceBack.getSim(simId);
             // if(sim !== undefined)
