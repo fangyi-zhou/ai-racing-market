@@ -21,7 +21,7 @@
 
     <div class="col s8">
         <div *ngIf="selectedRoom; else elseBlock">
-            <span class="semi-transparent-block center">Currently viewing Race {{selectedRoom.id}}</span>
+            <h3 class="semi-transparent-block center">Currently viewing Race {{selectedRoom.id}}</h3>
         </div>
         <ng-template #elseBlock><h3 class="semi-transparent-block center">Please Select a Race</h3></ng-template>
         <div style="text-align: center">
