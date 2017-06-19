@@ -24,7 +24,13 @@ import { ChallengeComponent } from './challenges/challenges.component';
 import { PlayAgainstAIComponent } from './playAgainstAI/playAgainstAI.component';
 import { MessageboxComponent } from './rooms/messagebox/messagebox.component';
 
-declare var require: any;
+declare const require: any;
+
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
+export function highchartsFactory() {
+    return require('highcharts');
+}
+
 
 @NgModule({
     imports: [
@@ -35,7 +41,13 @@ declare var require: any;
         OrderModule,
         AngularMultiSelectModule,
         InfiniteScrollModule,
-        ChartModule.forRoot(require('highcharts'))
+        ChartModule
+    ],
+    providers: [
+        {
+            provide: HighchartsStatic,
+            useFactory: highchartsFactory
+        }
     ],
     declarations: [
         AppComponent,
