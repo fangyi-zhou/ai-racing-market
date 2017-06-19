@@ -35,18 +35,18 @@ export class TutorialComponent implements OnInit {
       this.codeEditorService.postCode(this.tutorialCode[1-1], 1);
       this.codeEditorService.loadCodeEditor("tut2Editor", 2);
       this.codeEditorService.postCode(this.tutorialCode[2-1], 2);
-      this.codeEditorService.loadCodeEditor("tut3Editor", 3);
-      this.codeEditorService.postCode(this.tutorialCode[3-1], 3);
-      let x : any = document.getElementById("tut3Editor");
-      x.style.height = "0px";
   }
 
     revealTutorial3() {
+        this.codeEditorService.loadCodeEditor("tut3Editor", 3);
+        this.codeEditorService.postCode(this.tutorialCode[3-1], 3);
         let x : any = document.getElementById("tut3Editor");
         this.tutorial3 = !this.tutorial3;
         if (this.tutorial3) {
+            x.style.visibility = "visible";
             x.style.height = "300px";
         } else {
+            x.style.visibility = "hidden";
             x.style.height = "0px";
         }
     }
