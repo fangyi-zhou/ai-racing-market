@@ -61,7 +61,6 @@ export class LoginComponent implements OnInit {
 
     successCallback(self) {
         return (token) => {
-            alert("success!");
             self.router.navigate(['./app-dashboard']);
         }
     }

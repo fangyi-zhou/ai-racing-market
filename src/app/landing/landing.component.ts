@@ -12,6 +12,8 @@ export class LandingComponent implements OnInit {
 
   constructor(private auth: AuthService, private router: Router) { }
 
+    scrolledDown : boolean = false;
+
   ngOnInit() {
       if (this.auth.loggedIn())
       {
@@ -20,7 +22,12 @@ export class LandingComponent implements OnInit {
       document.getElementById('hiddenDiv').style.visibility = 'hidden';
   }
 
+    hasScrolled() {
+        return this.scrolledDown;
+    }
+
     scrollLanding() {
+        this.scrolledDown = !this.scrolledDown;
         document.getElementById('hiddenDiv').style.visibility = 'visible'
         console.log('Scrolling down')
         // $("#hiddenDiv").animate({ scrollTop: 0 }, "fast");

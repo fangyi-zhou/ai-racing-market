@@ -1,6 +1,6 @@
 <div id="contentBox" align="center" class="jumbotron" xmlns="http://www.w3.org/1999/html">
     <h1 align="center" >AI Racing Market</h1>
-    <img src="./assets/img/landing.gif">
+    <img *ngIf="!hasScrolled()" src="./assets/img/landing.gif">
 
     <p>Program your race car to compete and race against other AI beginners from around the world!</p>
     <!--<div class="column">-->
@@ -15,27 +15,36 @@
     <!--</div>-->
     <!-- columns divs, float left, no margin so there is no space between column, width=1/3 -->
     <div align="center">
-        <a align="center" class="btn btn-primary btn-lg" (click)="scrollLanding()"><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></a>
+        <a align="center" class="btn btn-primary btn-lg" (click)="scrollLanding()"><i *ngIf="!hasScrolled()" class="fa fa-arrow-circle-down" aria-hidden="true"></i><i *ngIf="hasScrolled()" class="fa fa-arrow-circle-up" aria-hidden="true"></i></a>
     </div>
 
 </div>
-<div id="hiddenDiv">
-    <div id="column1" style="float:left; margin:0; width:50%;">
-
+<div class="overall" id="hiddenDiv">
+    <div style="float:left; margin:0; width:50%;">
         <div align="center" class="jumbotron">
             <a class="btn btn-primary btn-lg" routerLink="/app-tutorial" routerLinkActive="active" role="button">
                 <i class="fa fa-list-ol fa-fw"></i>Tutorial
             </a> <br>
-            Learn how to control a car in a race.
+            <div align="center" class="objectives">
+                Learn how to write code to drive a race car like this:
+                <img style="max-width: 100%;" src="./assets/img/tutorial.gif">
+            </div>
         </div>
     </div>
 
-    <div id="column2" style="float:left; margin:0;width:50%;">
+    <div style="float:left; margin:0;width:50%;">
         <div align="center" class="jumbotron">
             <a class="btn btn-primary btn-lg" routerLink="/app-login" routerLinkActive="active" role="button">
                 <i class="fa fa-key fa-fw"></i>Login
             </a> <br>
-            Login for:
+            <div align="left" class="objectives">
+                Login or play as a guest for:
+                <ol>
+                    <li> Writing your own code </li>
+                    <li> Racing against it yourself </li>
+                    <li> Racing it against submissions from other users </li>
+                </ol>
+            </div>
         </div>
     </div>
 </div>

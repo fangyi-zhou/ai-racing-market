@@ -122,7 +122,9 @@ db.init(() => {
         socket.on('clientPlayAI', function (info) {
             // let sim = raceBack.getSim(simId);
             // if(sim !== undefined)
-            raceBack.getSim(info.id).clientPlayAI(info.scriptId, socket.id);
+            let sim = raceBack.getSim(info.id);
+            sim.clientPlayAI(info.scriptId, socket.id);
+            sim.addClient(socket.id);
         });
 
         socket.on('challenge', function (info) {

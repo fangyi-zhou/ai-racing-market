@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col s2">
-        <h4 class="semi-transparent-block center"> Training </h4>
+        <h4 class="semi-transparent-block center"> Your AIs </h4>
         <div class="overflow-scroll" id="user-script">
             <ul class="scripts">
                 <li *ngFor="let script of scripts"
@@ -9,11 +9,11 @@
                     <span>Script {{script.scriptName}} </span>
                 </li>
             </ul>
+            <div *ngIf="selectedScript">
+                <button class="btn btn-warning" (click)="trainAi(selectedScript)">Train</button>
+            </div>
         </div>
         <div style="width: 2%"></div>
-        <div *ngIf="selectedScript">
-            <button class="btn btn-warning" (click)="trainAi(selectedScript)">Train</button>
-        </div>
 
     </div>
 

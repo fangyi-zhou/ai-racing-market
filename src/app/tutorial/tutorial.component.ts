@@ -59,6 +59,7 @@ export class TutorialComponent implements OnInit {
         let canvasName = "TutorialCanvas" + num;
         let x : any = document.getElementById(canvasName);
         x.height = 300;
+        // x.scrollTo();
 
         // document.getElementById(canvasName).height = 500;
         communication.initGraphics(canvasName);
