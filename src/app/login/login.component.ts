@@ -24,6 +24,12 @@ export class LoginComponent implements OnInit {
         level: 1
     };
 
+    static guest: Credential = {
+        username: "guest",
+        password: "123",
+        level: 1
+    };
+
     constructor(private auth: AuthService, private router: Router) {
     }
 
@@ -42,10 +48,7 @@ export class LoginComponent implements OnInit {
     }
 
     onGuest() {
-        //TODO: Implement guest login (just give them a login username)
-        this.credential.username = "Guest";
-        this.credential.password = "123";
-        this.auth.login(this.credential, this.successCallback(this), this.failureCallback(this));
+        this.auth.login(LoginComponent.guest, this.successCallback(this), this.failureCallback(this));
     }
 
     onRegister() {
