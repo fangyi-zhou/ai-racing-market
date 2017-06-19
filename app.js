@@ -71,7 +71,7 @@ db.init(() => {
                 //TODO
             } else {
                 io.to(socket.id).emit('init', sim.initIO(socket.id));
-                sim.addClient(socket.id);
+                // sim.addClient(socket.id);
             }
         });
 

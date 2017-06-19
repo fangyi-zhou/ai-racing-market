@@ -97,6 +97,9 @@ function updateAllGraphics(info) {
         if (viewingCarID === null) {
             viewingCarID = car.clientID;
         }
+        if (car.clientID === clientCarID) {
+            viewingCarID = clientCarID;
+        }
 
         // Centre client view on the car they control
         if (viewingCarID === car.clientID) {

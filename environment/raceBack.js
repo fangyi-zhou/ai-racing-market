@@ -24,8 +24,10 @@ let io;
 
 function init(io, maxSims) {
     this.io = io;
-    defaultMap = mapFS.readMap('./maps/slalem2.json');
+    defaultMap = mapFS.readMap('./maps/silverstone.json');
+    trainRaw = mapFS.readMap('./maps/slalem2.json')
     current_map = [defaultMap["segments"], defaultMap["gates"], defaultMap["startGate"]];
+    trainMap = [trainRaw["segments"], trainRaw["gates"], trainRaw["startGate"]];
 
     // Globals
     fixedTimeStep = 0.06;
@@ -38,7 +40,7 @@ function init(io, maxSims) {
     simulations = new Simulation.Simulations(maxSims);
 
     // This simulation is reserved for AI training mode
-    let mapCopy = util.arrayCopy(current_map);
+    let mapCopy = util.arrayCopy(trainMap);
     simulations.addSimulation(1337, mapCopy, io, Simulation.SimMode.Training);
 
     // This simulation is reserved for challenges
@@ -83,7 +85,10 @@ function addSim(id, mode, AI){
             let scriptIds = random(scripts.length);
             let scriptCompete = [AI];
             for (let i = 0;i < 3;i++){
-                scriptCompete.push(scripts[scriptIds[i]]._id);
+                // scriptCompete.push(scripts[scriptIds[i]]._id);
+                // scriptCompete.push(scripts[scriptIds[i]]._id);
+                scriptCompete.push("59443068f3c6b64de31f4f03")
+                scriptCompete.push("59443578d3f1484f50b908e2")
             }
            simulations.addAI(id,scriptCompete);
        }

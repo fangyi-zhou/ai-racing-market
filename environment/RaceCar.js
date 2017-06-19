@@ -94,7 +94,7 @@ function p2RaceCar(collision_id,clientID, world, position, angle, width, height,
     let backWheel = vehicle.addWheel({
         localPosition: [0, -0.5] // back
     });
-    backWheel.setSideFriction(3); // Less side friction on back wheel makes it easier to drift
+    backWheel.setSideFriction(4.5); // Less side friction on back wheel makes it easier to drift
 
     backWheel.engineForce = 0;
     frontWheel.steerValue = 0;

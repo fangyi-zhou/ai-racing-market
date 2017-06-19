@@ -229,11 +229,11 @@ class Simulation{
 
         // Adds a client car to the simulation that the client can control
         this.addClient = function(clientID) {
-            if (this.mode === SimMode.ClientDrive) {
+            // if (this.mode === SimMode.ClientDrive) {
                 console.log('USER', clientID);
                 const initPosition = [0.5, 0.5];
                 this.addRaceCar(clientID, initPosition);
-            }
+            // }
         };
 
         // Updates a car's movement instructions in the simulation and then applies them to the car
@@ -324,12 +324,13 @@ class Simulation{
         };
 
         this.clientPlayAI = function(scriptID, clientID) {
+            console.log('New clinet vs ai');
             this.reset();
             this.mode = SimMode.ClientDrive;
-            let startingPosition = [0.5, 0.5];
-            let child = AIHost.createCar(io, scriptID, this.id, startingPosition, AIHost.ChildModes.Training);
+            let startingPosition = [0.5, 1.5];
+            let child = AIHost.createCar(io, scriptID, this.id, startingPosition, AIHost.ChildModes.Racing);
             this.AIs.set(child, scriptID);
-            this.addClient(clientID);
+            // this.addClient(clientID);
         };
 
         // Challenge Mode
