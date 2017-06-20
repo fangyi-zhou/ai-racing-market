@@ -54,13 +54,15 @@ class Child extends EventEmitter {
         children.set(this.carId, this);
         // Get script
         db.getScriptById(scriptId, (err, doc) => {
-            if (!(mode === ChildModes.Training) && (err || doc) === null) {
+            if (!(this.mode === ChildModes.Training) && (err || doc) === null) {
                 console.log("Cannot get script");
                 this.write = (_) => {};
                 this.kill = () => {};
             } else if (this.mode === ChildModes.Racing) {
                 const dockerTag = `user-code-${Date.now()}`;
                 this.script = doc.code;
+                this.car.scriptOwner = doc.username;
+                this.car.scriptName = doc.scriptName;
                 const tempDirectory = tempDir.sync();
                 fs.copySync(__dirname + '/Dockerfile', tempDirectory + "/Dockerfile");
                 fs.writeFileSync(tempDirectory + "/code.py", this.script);
@@ -81,6 +83,10 @@ class Child extends EventEmitter {
                     }
                 );
             } else if (this.mode === ChildModes.Training) {
+                if (doc) {
+                    this.car.scriptOwner = doc.username;
+                    this.car.scriptName = doc.scriptName;
+                }
                 if (rawCode == "") {
                     this.script = doc.code;
                 } else {

@@ -96,7 +96,7 @@ class Simulation{
         this.configureWorld = function() {
             this.world.gravity = [0,0];
             this.world.defaultContactMaterial.friction = 0.001;
-            this.world.defaultContactMaterial.restitution = 0.6;
+            this.world.defaultContactMaterial.restitution = 0.8;
         };
         this.configureWorld();
 
@@ -117,39 +117,37 @@ class Simulation{
         this.raceStartTime = 0;
         this.currentRaceDuration = Number.MAX_VALUE;
 
-        this.findFirstPlaceCar = function() {
-            let bestCar = undefined;
-            let bestLastGate = -Number.MAX_VALUE;
-            this.raceCars.forEach(function(car, id) {
-                if (car.lastGate > bestLastGate) {
-                    bestCar = car;
-                    bestLastGate = car.lastGate;
-                }
-            });
-            return bestCar;
-        };
-
         this.endRace = function() {
             let result;
             if (this.raceCars.count() === 0) {
                 console.log('Race ran between 0 cars');
                 result = 'Race ran between 0 cars';
+                this.io.emit('raceFinish', {
+                    id: this.id,
+                    winner: result
+                });
             }else{
-                let winner = this.findFirstPlaceCar();
-                /********** Removed since winner is sometimes null *************/
-                console.log('Race ended. In first place is: ', winner.clientID, ' breaking ', winner.lastGate, ' gates!');
+                let raceSorted = this.raceCars.values();
+                raceSorted.sort(function(b,a){return a.lastGate - b.lastGate;});
+                this.io.emit('raceFinish', {winner: "Race ended."});
+                for (let i in raceSorted){
+                    if (raceSorted.hasOwnProperty(i)) {
+                        result = 'In place '+ (parseInt(i)+1) + ' is: '+ raceSorted[i].scriptName +' of '+raceSorted[i].scriptOwner + ', breaking '+ raceSorted[i].lastGate+ ' gates!';
+                        this.io.emit('raceFinish', {
+                            id: this.id,
+                            winner: result
+                        });
+                        this.simulations.removeSimulation(this.id);
+                    }
+                }
                 this.AIs.forEach(function(id, child) {
                     child.kill();
                 });
-                db.getScriptById(this.carScripts.get(winner.clientID), (err,res) =>{
-                    result = 'Race ended. In first place is: '+ res.scriptName +' of '+res.username + ', breaking '+ winner.lastGate+ ' gates!';
-                    this.io.emit('raceFinish', {
-                        id: this.id,
-                        winner: result
-                    });
-                    this.simulations.removeSimulation(this.id);
-                });
             }
+
+            // this.raceCars.forEach(function(car, id) {
+            //     console.log('Car: ', id, ' broke: ', car.lastGate, ' gates!');
+            // });
         };
 
         this.step = function(timeStep) {
@@ -274,7 +272,7 @@ class Simulation{
 
         // Clears the world and then adds the map again
         this.reset = function() {
-            this.AIs.forEach(function(id, child) {
+            this.AIs.forEach(function(child, id) {
                 child.kill();
             });
             this.world.clear();
