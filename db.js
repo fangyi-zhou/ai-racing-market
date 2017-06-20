@@ -37,7 +37,7 @@ function getUserByUsername(username, callback) {
 }
 
 function getAllUsers(callback){
-    db.collection(USER_COLLECTION).find({}).toArray(callback);
+    db.collection(USER_COLLECTION).find({ "username": { $ne: "guest" }}).toArray(callback);
 }
 
 function createUser(username, level, saltedPass, salt, callback) {
