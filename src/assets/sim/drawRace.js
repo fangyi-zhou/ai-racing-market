@@ -103,7 +103,7 @@ function updateAllGraphics(info) {
         }
 
         if (cars[id] === undefined) {
-            cars[id] = new RaceCarGraphic(car.colour);
+            cars[id] = new RaceCarGraphic(id === clientCarID ? 0xFF0000 : car.colour);
         }
         cars[id].carGraphic.position.x = car.position[0];
         cars[id].carGraphic.position.y = car.position[1];

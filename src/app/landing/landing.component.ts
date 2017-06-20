@@ -19,7 +19,6 @@ export class LandingComponent implements OnInit {
       {
           this.router.navigate(["./app-dashboard"]);
       }
-      document.getElementById('hiddenDiv').style.visibility = 'hidden';
   }
 
     hasScrolled() {
@@ -28,8 +27,6 @@ export class LandingComponent implements OnInit {
 
     scrollLanding() {
         this.scrolledDown = !this.scrolledDown;
-        document.getElementById('hiddenDiv').style.visibility = 'visible'
-        console.log('Scrolling down')
         // $("#hiddenDiv").animate({ scrollTop: 0 }, "fast");
     }
 }
