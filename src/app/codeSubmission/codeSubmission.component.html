@@ -1,20 +1,24 @@
 <div class="section">
     <div class="row" >
-        <div class="col s9" style="text-align: center">
-            <div class="semi-transparent">
-                <h4 > Upload your submission here</h4>
+        <div class="col s7" style="text-align: center">
+            <div class="semi-transparent-block">
+                <h4 class="center">Give your AI a name </h4>
+                <div class="container">
+                    <input class="form-control" [(ngModel)]="script.scriptName" placeholder="my-awesome-ai" />
+                </div>
+                <h5> Upload a file or paste your code below</h5>
                 <input type="file" placeholder="Upload file..." (change)="changeListener($event)"  />
+                <br />
+                <br />
+                <div id="editor" class="container left-align" style="height: 350px;">{{defaultCode}}</div>
+                <br />
+                <button class="btn btn-lg" type="submit" name="action" (click)="submitScript()">Submit
+                    <i class="fa fa-arrow-circle-o-right fa-fw"></i></button>
             </div>
-            <div>
-                <label>Script name: </label>
-                <input [(ngModel)]="script.scriptName" placeholder="Doc" />
-            </div>
-            <div id="editor" class="container left-align" style="height: 500px;">{{defaultCode}}</div>
-            <button class="btn waves-effect semi-transparent" type="submit" name="action" (click)="submitScript()">Submit
-                <i class="fa fa-arrow-circle-o-right fa-fw"></i></button>
         </div>
-        <div class="col s3 semi-transparent">
-            Some controls/API description
+        <div class="col s5 semi-transparent-block">
+            <h4 class="center">Cheat Sheet</h4>
+            <img class="cheatImg" src="/assets/img/cheatsheep.png">
         </div>
     </div>
 
