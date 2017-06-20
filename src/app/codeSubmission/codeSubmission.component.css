@@ -15,3 +15,18 @@ input::placeholder {
     max-width:100%;
     max-height:100%;
 }
+.commandImg {
+    max-width:75%;
+    max-height:75%;
+}
+.overall {
+    display: flex;
+}
+.objectives {
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 95%;
+    padding: 1%;
+    border-radius: 7px;
+    margin: 1%;
+    color: rgba(255, 255, 255, 1);
+}

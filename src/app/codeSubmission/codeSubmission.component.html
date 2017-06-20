@@ -1,24 +1,35 @@
 <div class="section">
     <div class="row" >
-        <div class="col s7" style="text-align: center">
-            <div class="semi-transparent-block">
-                <h4 class="center">Give your AI a name </h4>
-                <div class="container">
-                    <input class="form-control" [(ngModel)]="script.scriptName" placeholder="my-awesome-ai" />
+        <div class="overall">
+        <div class="col s10" style="text-align: center">
+            <div align="center" class="semi-transparent-block">
+                <div align="center" class="objectives">
+                    <h4 class="center">Give your AI a name:</h4>
+                    <div class="container">
+                        <input class="form-control" [(ngModel)]="script.scriptName" placeholder="my-awesome-ai" />
+                    </div>
                 </div>
-                <h5> Upload a file or paste your code below</h5>
-                <input type="file" placeholder="Upload file..." (change)="changeListener($event)"  />
-                <br />
-                <br />
-                <div id="editor" class="container left-align" style="height: 350px;">{{defaultCode}}</div>
-                <br />
-                <button class="btn btn-lg" type="submit" name="action" (click)="submitScript()">Submit
-                    <i class="fa fa-arrow-circle-o-right fa-fw"></i></button>
+
+                <div align="center" class="objectives">
+                    <h5> Upload a file or program your AI:</h5>
+                    <div align="center">
+                        <input type="file" placeholder="Upload file..." (change)="changeListener($event)"  />
+                    </div>
+                    <br />
+                    <div id="editor" class="container left-align" style="height: 350px;">{{defaultCode}}</div>
+                    <br />
+                    <button class="btn btn-lg" type="submit" name="action" (click)="submitScript()">Submit
+                        <i class="fa fa-arrow-circle-o-right fa-fw"></i></button>
+                </div>
             </div>
         </div>
-        <div class="col s5 semi-transparent-block">
-            <h4 class="center">Cheat Sheet</h4>
-            <img class="cheatImg" src="/assets/img/cheatsheep.png">
+        <div class="col s5 semi-transparent-block" style="float:left; margin:0; width:30%;">
+            <h4 class="center"><b>Cheat Sheet</b></h4>
+            <img class="cheatImg" src="/assets/img/carDiagram.png">
+            <div align="center">
+                <img class="commandImg" src="/assets/img/carSummary.png">
+            </div>
+        </div>
         </div>
     </div>
 
