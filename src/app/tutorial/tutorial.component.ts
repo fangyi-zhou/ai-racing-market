@@ -62,8 +62,9 @@ export class TutorialComponent implements OnInit {
         // x.scrollTo();
 
         // document.getElementById(canvasName).height = 500;
-        communication.initGraphics(canvasName);
-        communication.init(this.tutorialSimIDBase + num);
+        let simID = this.tutorialSimIDBase + num;
+        communication.initGraphics(canvasName, 1, simID);
+        communication.init(simID);
         communication.runTutorial(this.codeEditorService.getCode(num), num);
     }
 }

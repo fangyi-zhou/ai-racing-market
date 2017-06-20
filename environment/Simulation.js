@@ -38,7 +38,7 @@ class Simulations{
         this.addAI = function(id, AI){
             let sim = this.simulations.get(id);
             sim.runRace(70,AI);
-        }
+        };
         this.checkCheckpoints = function() {
             this.simulations.forEach(function(sim, id) {
                 sim.checkCheckpoints();
@@ -69,7 +69,7 @@ class Simulations{
                 }
             });
             return sims;
-        }
+        };
     }
 }
 
@@ -189,13 +189,15 @@ class Simulation{
         // Prepare graphical representation for front end
         this.packageGraphics = function() {
             let graphics_dict = {};
+            let simID = this.id;
             this.raceCars.forEach(function (raceCar, key) {
                 graphics_dict[raceCar.clientID] = {
                     position: raceCar.box_graphic.position,
                     angle: raceCar.box_graphic.angle,
                     rayEnds: raceCar.rayEnds,
                     colour: raceCar.colour,
-                    clientID: raceCar.clientID
+                    clientID: raceCar.clientID,
+                    simID: simID
                 }
             });
             return graphics_dict;

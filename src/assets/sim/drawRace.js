@@ -15,15 +15,24 @@ var stage;
 var container;
 var currentMap;
 var carViewCount = 0;
+var drawingSimID;
 
-function initDraw(canvasID="PIXIcanvas") {
+const drawModes = {
+    Normal: 0,
+    Tutorial: 1
+};
+
+var drawMode;
+
+function initDraw(canvasID="PIXIcanvas", mode, simID) {
     //Map
     currentMap = new _Map();
+    drawingSimID = simID;
 
     // Create the PIXI renderer
-    console.log(document.body.childElementCount);
-
     canvas = document.getElementById(canvasID);
+
+    drawMode = mode;
 
     renderer = PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas}, true, true);
     // Make the canvas focusable
@@ -40,9 +49,6 @@ function initDraw(canvasID="PIXIcanvas") {
 
     //backgroundTexture.baseTexture.width = stageWidth;
     //backgroundTexture.update();
-
-
-
 
     // Add transform to the container
     container.position.x = renderer.width / 2; // center at origin
@@ -84,9 +90,18 @@ function drawMap(map, checkpoints, startGate) {
 }
 
 function updateAllGraphics(info) {
+    let count = 0
     for (let id in info) {
         if (!info.hasOwnProperty(id)) continue;
         let car = info[id];
+
+        if (drawMode === drawModes.Tutorial) {
+            if (car.simID !== drawingSimID) {
+                continue;
+            }
+            count ++;
+        }
+
         if (cars[id] === undefined) {
             cars[id] = new RaceCarGraphic(car.colour);
         }
@@ -94,11 +109,13 @@ function updateAllGraphics(info) {
         cars[id].carGraphic.position.y = car.position[1];
         cars[id].carGraphic.rotation = car.angle;
 
+
         if (viewingCarID === null) {
-            viewingCarID = car.clientID;
-        }
-        if (car.clientID === clientCarID) {
-            viewingCarID = clientCarID;
+            if (car.clientID === clientCarID) {
+                viewingCarID = clientCarID;
+            } else {
+                viewingCarID = car.clientID;
+            }
         }
 
         // Centre client view on the car they control
@@ -112,6 +129,7 @@ function updateAllGraphics(info) {
             let rayEnd = car.rayEnds[j];
             cars[id].rayGraphics[j].currentPath.shape.points = [car.position[0], car.position[1], rayEnd[0], rayEnd[1]];
         }
+
     }
 
     requestAnimationFrame(function () {
@@ -120,6 +138,7 @@ function updateAllGraphics(info) {
 }
 
 function initWorld(info) {
+    viewingCarID = null;
     carWidth = info.carWidth;
     carHeight = info.carHeight;
     numRays = info.numRays;
@@ -154,7 +173,6 @@ function RaceCarGraphic(colour) {
 
 function removeUser(id) {
     let car = cars[id];
-    console.log(car === undefined);
     if (car === undefined) return;
     for (let ray_id in car.rayGraphics) {
         container.removeChild(car.rayGraphics[ray_id]);

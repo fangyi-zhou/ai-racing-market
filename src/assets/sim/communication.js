@@ -6,8 +6,8 @@
 
     var socket = undefined;
 
-    function initGraphics(canvasID){
-        initDraw(canvasID);
+    function initGraphics(canvasID, mode=drawModes.Normal, simID=-1){
+        initDraw(canvasID, mode, simID);
     }
 
   function init(id) {
@@ -104,8 +104,8 @@
     }
 
   function switchCar(){
-      //TODO switch car views
       carIDs = getCars();
+      console.log('length: ', carIDs.length);
       if (carIDs.length === 0) {
           return;
       }
@@ -126,6 +126,7 @@
             code: code,
             tutorialNumber: tutorialNumber
         });
+        this.switchCar();
     }
 
   var communication = {
