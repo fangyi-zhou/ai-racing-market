@@ -5,7 +5,7 @@
     width: 100%;
 }
 input.form-control {
-    color: black;
+    color: white;
 }
 
 input::placeholder {
