@@ -15,7 +15,7 @@ import {isUndefined} from "util";
 
 export class CodeSubmissionComponent implements OnInit{
     script = new Script();
-  defaultCode = "import sys";
+  defaultCode = "import sys\n\ndef sendCommand(command):\n print command\n sys.stdout.flush()";
   constructor(private codeEditorService: CodeEditorService, private scriptService: ScriptService, private auth: AuthService) { }
 
   ngOnInit(): void{
