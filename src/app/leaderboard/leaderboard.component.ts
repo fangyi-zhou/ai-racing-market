@@ -20,7 +20,7 @@ export class LeaderBoardComponent implements OnInit {
             .getUsers()
             .then((entry: Entry[]) => {
                 this.entries = entry.map((entry) => {
-                    entry.value = Math.random() * 10;
+                    entry.value = Math.sqrt(-2 * Math.log(Math.random()))*Math.cos((2*Math.PI) * Math.random())+3;
                     return entry;
                 }).sort(function (a, b) {
                     return b.value - a.value;

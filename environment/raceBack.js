@@ -84,11 +84,11 @@ function addSim(id, mode, AI){
        } else {
             let scriptIds = random(scripts.length);
             let scriptCompete = [AI];
-            for (let i = 0;i < 3;i++){
-                // scriptCompete.push(scripts[scriptIds[i]]._id);
-                // scriptCompete.push(scripts[scriptIds[i]]._id);
-                scriptCompete.push("59443068f3c6b64de31f4f03")
-                scriptCompete.push("59443578d3f1484f50b908e2")
+            for (let i = 0;i < 5;i++){
+                scriptCompete.push(scripts[scriptIds[i]]._id);
+                //scriptCompete.push(scripts[scriptIds[i]]._id);
+                // scriptCompete.push("59443068f3c6b64de31f4f03")
+                // scriptCompete.push("59443578d3f1484f50b908e2")
             }
            simulations.addAI(id,scriptCompete);
        }
