@@ -1,3 +1,5 @@
+<div class="jumbotron">
+
 <div class="row">
     <div class="col s2">
         <h4 class="semi-transparent-block center"> Your AIs </h4>
@@ -26,20 +28,21 @@
     <div class="col s2">
         <h4 class="semi-transparent-block center vert-padding">View controls</h4>
         <div style="width: 2%"></div>
-        <a class="btn black-text semi-transparent-block" (click)="zoomIn()">
+        <a class="btn semi-transparent-block" (click)="zoomIn()">
             Zoom In
             <i class="fa fa-search-plus" aria-hidden="true"></i>
         </a> <br><br>
-        <a class="btn black-text semi-transparent-block" (click)="zoomOut()">
+        <a class="btn semi-transparent-block" (click)="zoomOut()">
             Zoom Out
             <i class="fa fa-search-minus" aria-hidden="true"></i>
         </a> <br><br>
-        <a class="btn black-text semi-transparent-block" (click)="switchCar()">
-            Switch Car
+        <a class="btn semi-transparent-block" (click)="switchCar()">
+            Switch
             <i class="fa fa-exchange" aria-hidden="true"></i>
         </a>
     </div>
+    </div>
 </div>
+<div class="jumbotron">
     <chart [options]="options" style="height: 300px"></chart>
-
-
+</div>
