@@ -11,7 +11,7 @@
                 *ngFor="let entry of entries; index as i">
                 <td>{{i+1}}</td>
                 <td>{{entry.name}}</td>
-                <td>{{entry.value}}</td>
+                <td>{{entry.value.toFixed(2)}}</td>
             </tr>
         </table>
     </div>
