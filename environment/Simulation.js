@@ -272,7 +272,7 @@ class Simulation{
 
         // Clears the world and then adds the map again
         this.reset = function() {
-            this.AIs.forEach(function(child, id) {
+            this.AIs.forEach(function(id, child) {
                 child.kill();
             });
             this.world.clear();
