@@ -10,6 +10,8 @@ const RaceCar = require('./RaceCar');
 const AIHost = require('../usercode/host');
 const mapFS = require('./mapSave');
 const db = require('../db');
+const maxEngineForce = 3;
+const minEngineForce = -2;
 
 class Simulations{
     constructor (maxSims) {
@@ -241,8 +243,8 @@ class Simulation{
             let control = {};
             control["steerValue"] = keys[37] - keys[39];
             if (keys[38] && keys[40]) control["engineForce"] = 0;
-            else if (keys[38]) control["engineForce"] = 2;
-            else if (keys[40]) control["engineForce"] = -0.5;
+            else if (keys[38]) control["engineForce"] = maxEngineForce;
+            else if (keys[40]) control["engineForce"] = minEngineForce;
             else control["engineForce"] = 0;
             this.applyMove(control, clientID);
         };
@@ -260,7 +262,7 @@ class Simulation{
                 clientCar.frontWheel.steerValue = steerValue;
             }
             if (control["engineForce"] !== undefined && control["engineForce"] !== null) {
-                let engineForce = Math.min(Math.max(control["engineForce"], -2), 3);
+                let engineForce = Math.min(Math.max(control["engineForce"], minEngineForce), maxEngineForce);
                 clientCar.backWheel.engineForce = engineForce;
                 let breaking = (clientCar.backWheel.getSpeed() > 0.1 && engineForce < 0)
                     || (clientCar.backWheel.getSpeed() < -0.1 && engineForce > 0);

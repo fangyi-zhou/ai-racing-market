@@ -4,6 +4,7 @@ import {ScriptService} from '../scripts/script.service';
 import {AuthService} from '../auth.service';
 import {Script} from '../scripts/script';
 import {MessageboxComponent } from './messagebox/messagebox.component';
+import {isUndefined} from "util";
 
 export class Room {
     AI?: string;
@@ -88,27 +89,29 @@ export class RaceComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
     runNewSim() {
-        this.messagebox.updateMsg('New Race due to start in 3.....');
-        setTimeout(() => {
-            this.messagebox.updateMsg('2.....');
+        if (!isUndefined(this.selectedItems[0])) {
+            this.messagebox.updateMsg('New Race due to start in 3.....');
             setTimeout(() => {
-                this.messagebox.updateMsg('1.....');
+                this.messagebox.updateMsg('2.....');
                 setTimeout(() => {
-                    this.messagebox.updateMsg('Start!');
-                    const room: Room = {
-                        id: this.rooms.length,
-                        mode: 0,
-                        name: 'bar',
-                        AI: this.selectedItems.length !== 0 ? this.selectedItems[0].id : ''
-                    };
-                    this.raceService.createSim(room).then((newSim: Room) => {
-                        this.rooms.push(room);
-                        this.onSelect(room);
-                        this.switchCar();
-                    });
+                    this.messagebox.updateMsg('1.....');
+                    setTimeout(() => {
+                        this.messagebox.updateMsg('Start!');
+                        const room: Room = {
+                            id: this.rooms.length,
+                            mode: 0,
+                            name: 'bar',
+                            AI: this.selectedItems[0].id
+                        };
+                        this.raceService.createSim(room).then((newSim: Room) => {
+                            this.rooms.push(room);
+                            this.onSelect(room);
+                            this.switchCar();
+                        });
+                    }, 1000);
                 }, 1000);
             }, 1000);
-        }, 1000);
+        }
     }
     zoomIn(): void {
         communication.zoomIn();
