@@ -110,6 +110,11 @@ function updateAllGraphics(info) {
         cars[id].carGraphic.rotation = car.angle;
 
 
+
+        if (car.clientID === clientCarID) {
+            viewingCarID = clientCarID;
+        }
+
         if (viewingCarID === null) {
             if (car.clientID === clientCarID) {
                 viewingCarID = clientCarID;

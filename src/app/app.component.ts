@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
     providers: [AuthService]
 })
 export class AppComponent {
-    title = 'AI Racing Market';
+    title = 'AI Racing';
     constructor(private auth: AuthService, private router: Router) {}
 
     onLogout() {
